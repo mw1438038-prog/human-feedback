@@ -1,14 +1,24 @@
 
-import os
 import uuid
-from pathlib import Path
+from io import BytesIO
 
-from flask import Blueprint, jsonify, request, current_app
+from flask import (
+    Blueprint,
+    jsonify,
+    request,
+    current_app,
+    send_file
+)
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 
 from extensions import db
 from models import UserProfile
+from services.storage import (
+    save_file,
+    get_file,
+    delete_file
+)
 
 
 profile_bp = Blueprint(
@@ -23,50 +33,19 @@ ALLOWED_IMAGE_EXTENSIONS = {
 
 MAX_PROFILE_IMAGE_SIZE = 5 * 1024 * 1024
 
+IMAGE_CONTENT_TYPES = {
+    "jpg": "image/jpeg",
+    "jpeg": "image/jpeg",
+    "png": "image/png",
+    "webp": "image/webp"
+}
+
 
 def error_response(message, status=400):
     return jsonify({
         "success": False,
         "message": message
     }), status
-
-
-def get_upload_root():
-    return Path(
-        current_app.config["UPLOAD_FOLDER"]
-    ).resolve()
-
-
-def resolve_upload_path(relative_path):
-    if not relative_path:
-        return None
-
-    upload_root = get_upload_root()
-    file_path = (upload_root / relative_path).resolve()
-
-    if upload_root not in file_path.parents:
-        current_app.logger.warning(
-            "Blocked unsafe upload path."
-        )
-        return None
-
-    return file_path
-
-
-def delete_profile_picture(relative_path):
-    file_path = resolve_upload_path(relative_path)
-
-    if not file_path:
-        return
-
-    try:
-        if file_path.is_file():
-            file_path.unlink()
-
-    except OSError:
-        current_app.logger.exception(
-            "Unable to delete profile picture."
-        )
 
 
 def get_user_profile():
@@ -96,6 +75,10 @@ def serialize_profile(user, profile):
         "bio": profile.bio,
         "has_profile_picture": bool(
             profile.profile_picture
+        ),
+        "profile_picture_url": (
+            "/api/profile/picture"
+            if profile.profile_picture else None
         ),
         "created_at": (
             user.created_at.isoformat()
@@ -281,6 +264,43 @@ def change_password():
     })
 
 
+@profile_bp.get("/picture")
+@login_required
+def get_profile_picture():
+    profile = UserProfile.query.filter_by(
+        user_id=current_user.id
+    ).first()
+
+    if not profile or not profile.profile_picture:
+        return error_response(
+            "No profile picture found.",
+            404
+        )
+
+    file_object = get_file(
+        profile.profile_picture
+    )
+
+    if not file_object:
+        return error_response(
+            "Profile picture not found.",
+            404
+        )
+
+    response = send_file(
+        BytesIO(file_object.data),
+        mimetype=file_object.content_type,
+        download_name=file_object.filename,
+        as_attachment=False,
+        conditional=True
+    )
+
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Cache-Control"] = "private, no-store"
+
+    return response
+
+
 @profile_bp.post("/picture")
 @login_required
 def upload_profile_picture():
@@ -323,52 +343,32 @@ def upload_profile_picture():
             "The uploaded file is not a valid image."
         )
 
-    upload_root = get_upload_root()
-    upload_folder = upload_root / "profiles"
-    upload_folder.mkdir(
-        parents=True,
-        exist_ok=True
-    )
-
     filename = (
         f"user_{current_user.id}_"
         f"{uuid.uuid4().hex}.{extension}"
     )
 
-    safe_filename = secure_filename(filename)
-    relative_path = str(
-        Path("profiles") / safe_filename
-    ).replace("\\", "/")
-
-    destination = resolve_upload_path(relative_path)
-
-    if not destination:
-        return error_response(
-            "Invalid upload destination.",
-            500
-        )
+    content_type = IMAGE_CONTENT_TYPES[extension]
 
     profile = get_user_profile()
     old_picture = profile.profile_picture
 
     try:
-        with open(destination, "wb") as image_file:
-            image_file.write(file_bytes)
+        new_storage_key = save_file(
+            content=file_bytes,
+            filename=filename,
+            content_type=content_type
+        )
 
-        profile.profile_picture = relative_path
+        profile.profile_picture = new_storage_key
+
+        if old_picture:
+            delete_file(old_picture)
 
         db.session.commit()
 
     except Exception:
         db.session.rollback()
-
-        try:
-            if destination.is_file():
-                destination.unlink()
-        except OSError:
-            current_app.logger.exception(
-                "Unable to remove failed profile upload."
-            )
 
         current_app.logger.exception(
             "Profile picture upload failed."
@@ -379,12 +379,10 @@ def upload_profile_picture():
             500
         )
 
-    if old_picture:
-        delete_profile_picture(old_picture)
-
     return jsonify({
         "success": True,
-        "message": "Profile picture uploaded successfully."
+        "message": "Profile picture uploaded successfully.",
+        "profile_picture_url": "/api/profile/picture"
     })
 
 
@@ -403,11 +401,24 @@ def remove_profile_picture():
 
     old_picture = profile.profile_picture
 
-    profile.profile_picture = None
+    try:
+        profile.profile_picture = None
 
-    db.session.commit()
+        delete_file(old_picture)
 
-    delete_profile_picture(old_picture)
+        db.session.commit()
+
+    except Exception:
+        db.session.rollback()
+
+        current_app.logger.exception(
+            "Profile picture removal failed."
+        )
+
+        return error_response(
+            "Unable to remove profile picture.",
+            500
+        )
 
     return jsonify({
         "success": True,

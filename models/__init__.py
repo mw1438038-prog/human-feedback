@@ -20,6 +20,7 @@ from models.report_category import ReportCategory
 from models.report import Report
 
 from models.audit_log import AuditLog
+from models.file_object import FileObject
 
 
 __all__ = [
@@ -38,4 +39,5 @@ __all__ = [
     "ReportCategory",
     "Report",
     "AuditLog",
+    "FileObject",
 ]

@@ -27,7 +27,7 @@ from extensions import (
 # Load all models
 import models
 
-# Import all 13 route blueprints
+# Import all route blueprints
 from routes.auth import auth_bp
 from routes.dashboard import dashboard_bp
 from routes.websites import websites_bp
@@ -79,11 +79,13 @@ def create_app():
 
         return wrapped
 
-    # Create upload directory
-    os.makedirs(
-        app.config["UPLOAD_FOLDER"],
-        exist_ok=True
-    )
+    # Create local upload directory only during local development.
+    # Vercel deployment filesystem is read-only.
+    if not os.getenv("VERCEL"):
+        os.makedirs(
+            app.config["UPLOAD_FOLDER"],
+            exist_ok=True
+        )
 
     # Register all API blueprints
     app.register_blueprint(auth_bp)
@@ -318,7 +320,6 @@ def create_app():
     # API ENDPOINTS
     # ==========================================
 
-    # CSRF token endpoint
     @app.get("/api/csrf-token")
     def csrf_token():
         return jsonify({
@@ -326,7 +327,6 @@ def create_app():
             "csrf_token": generate_csrf()
         })
 
-    # API health check
     @app.get("/api/health")
     def health():
         return jsonify({
@@ -336,7 +336,6 @@ def create_app():
             "status": "running"
         })
 
-    # Return initialized Flask application
     return app
 
 
