@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription | HUMAN FEEDBACK</title>
+    <style>
+        :root {
+            --navy: #172554;
+            --dark: #101B40;
+            --orange: #F97316;
+            --orange-dark: #EA580C;
+            --bg: #F8FAFC;
+            --soft: #FFF7ED;
+            --text: #263247;
+            --muted: #64748B;
+            --border: #E2E8F0;
+            --green: #15803D;
+            --red: #DC2626;
+            --shadow: 0 8px 25px rgba(23,37,84,.06);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button { font: inherit; }
+
+        .app { display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            background: var(--dark);
+            color: white;
+            padding: 26px 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: 800;
+            padding: 0 12px 30px;
+        }
+
+        .brand span { color: var(--orange); }
+
+        .nav-label {
+            color: #94A3B8;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 15px 12px 9px;
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 9px;
+            color: #CBD5E1;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .nav a:hover, .nav a.active {
+            background: rgba(249,115,22,.15);
+            color: white;
+        }
+
+        .nav a.active { border-left: 3px solid var(--orange); }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,.12);
+            padding: 20px 10px 0;
+        }
+
+        .user { display: flex; align-items: center; gap: 10px; }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--orange);
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+        }
+
+        .user strong { display: block; font-size: 12px; }
+        .user small { color: #94A3B8; font-size: 11px; }
+
+        .main { flex: 1; min-width: 0; }
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 34px;
+        }
+
+        .topbar h2 { color: var(--navy); font-size: 19px; }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .top-right a { font-size: 13px; color: var(--muted); }
+
+        .top-right .upgrade {
+            background: var(--orange);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .content {
+            max-width: 1100px;
+            margin: auto;
+            padding: 32px;
+        }
+
+        .page-heading { margin-bottom: 25px; }
+
+        .page-heading h1 {
+            font-size: 27px;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 23px;
+            box-shadow: var(--shadow);
+            margin-bottom: 22px;
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-heading h2 { color: var(--navy); font-size: 16px; }
+        .panel-heading p { color: var(--muted); font-size: 11px; margin-top: 6px; line-height: 1.6; }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 20px;
+            background: #FFF7ED;
+            color: #C2410C;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status:before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--orange);
+        }
+
+        .overview {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .overview-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .overview-card.highlight {
+            background: var(--navy);
+            color: white;
+            border-color: var(--navy);
+        }
+
+        .overview-card small {
+            display: block;
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .overview-card.highlight small { color: #CBD5E1; }
+
+        .overview-card strong {
+            display: block;
+            font-size: 25px;
+            color: var(--navy);
+            margin-bottom: 7px;
+        }
+
+        .overview-card.highlight strong { color: white; }
+
+        .overview-card p {
+            font-size: 10px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .overview-card.highlight p { color: #CBD5E1; }
+
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .plan {
+            position: relative;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px 19px;
+            box-shadow: var(--shadow);
+        }
+
+        .plan.current { border: 2px solid var(--orange); }
+
+        .plan h3 { color: var(--navy); font-size: 16px; margin-bottom: 10px; }
+
+        .plan-price {
+            font-size: 29px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .plan-price span {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 400;
+        }
+
+        .plan-description {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.6;
+            min-height: 35px;
+            margin: 10px 0 15px;
+        }
+
+        .plan ul { list-style: none; margin: 15px 0 20px; }
+
+        .plan li {
+            font-size: 11px;
+            color: var(--text);
+            padding: 8px 0;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .plan li:before {
+            content: "✓";
+            color: var(--orange);
+            font-weight: 800;
+            margin-right: 8px;
+        }
+
+        .plan-button {
+            display: block;
+            width: 100%;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--navy);
+            border-radius: 8px;
+            padding: 11px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .plan-button.primary {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: white;
+        }
+
+        .plan-button:disabled {
+            cursor: default;
+            opacity: .7;
+        }
+
+        .current-label {
+            position: absolute;
+            top: -11px;
+            right: 15px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: var(--orange);
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .table-wrap { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 550px;
+        }
+
+        th, td {
+            padding: 14px 12px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            font-size: 11px;
+        }
+
+        th {
+            color: var(--muted);
+            font-weight: 700;
+            background: #F8FAFC;
+        }
+
+        td { color: var(--text); }
+        td strong { color: var(--navy); }
+
+        .empty-state {
+            text-align: center;
+            padding: 25px 10px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .notice {
+            background: var(--soft);
+            border: 1px solid #FED7AA;
+            border-left: 4px solid var(--orange);
+            border-radius: 9px;
+            padding: 17px 18px;
+            margin-bottom: 20px;
+        }
+
+        .notice h3 { color: var(--navy); font-size: 13px; margin-bottom: 7px; }
+        .notice p { color: var(--muted); font-size: 11px; line-height: 1.7; }
+
+        .message {
+            display: none;
+            padding: 13px 15px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            background: #FFF7ED;
+            color: #9A3412;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .-note {
+            text-align: center;
+            padding: 15px 5px 5px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .mobile-menu {
+            display: none;
+            border: 0;
+            background: none;
+            font-size: 23px;
+            color: var(--navy);
+            cursor: pointer;
+        }
+
+        @media(max-width: 1050px) {
+            .sidebar { width: 215px; }
+            .content { padding: 25px 20px; }
+        }
+
+        @media(max-width: 850px) {
+            .overview { grid-template-columns: repeat(2, 1fr); }
+            .overview-card:first-child { grid-column: span 2; }
+            .plan-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media(max-width: 720px) {
+            .sidebar {
+                position: fixed;
+                z-index: 20;
+                top: 0;
+                bottom: 0;
+                left: -260px;
+                width: 250px;
+                transition: left .25s;
+            }
+
+            .sidebar.show { left: 0; }
+            .mobile-menu { display: block; }
+
+            .topbar { height: 65px; padding: 0 16px; }
+            .topbar h2 { font-size: 16px; }
+            .top-right { gap: 9px; }
+            .top-right a:first-child { display: none; }
+            .top-right .upgrade { font-size: 11px; padding: 9px 11px; }
+
+            .content { padding: 22px 14px; }
+            .page-heading h1 { font-size: 23px; }
+            .panel { padding: 18px 14px; }
+        }
+
+        @media(max-width: 560px) {
+            .overview { grid-template-columns: 1fr; }
+            .overview-card:first-child { grid-column: auto; }
+            .plan-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">HUMAN <span>FEEDBACK</span></div>
+
+        <nav class="nav">
+            <div class="nav-label">MAIN MENU</div>
+            <a href="/dashboard">▦ Dashboard</a>
+            <a href="/my-websites">▣ My Websites</a>
+            <a href="/feedback">✉ Feedback</a>
+            <a href="/replies">▤ Replies</a>
+
+            <div class="nav-label">ACCOUNT</div>
+            <a href="/credits">◈ My Credits</a>
+            <a href="/credit-history">◷ Credit History</a>
+            <a href="/analytics">▥ Analytics</a>
+            <a href="/notifications">♢ Notifications</a>
+            <a href="/reports">⚑ Reports</a>
+
+            <div class="nav-label">SETTINGS</div>
+            <a href="/profile">♙ My Profile</a>
+            <a href="/settings">⚙ Settings</a>
+            <a href="/subscription" class="active">◇ Subscription</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="user">
+                <div class="avatar">HF</div>
+                <div>
+                    <strong>Account</strong>
+                    <small>Pro Member</small>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+<section class="empty-state" role="status">
+  <h1>No data available</h1>
+  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
+</section>
+</main>
+</div>
+</body>
+</html>

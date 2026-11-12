@@ -1,0 +1,531 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact HUMAN FEEDBACK for questions, support or general enquiries.">
+    <title>Contact Us — HUMAN FEEDBACK</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .contact-hero {
+            padding: 85px 0 65px;
+            text-align: center;
+            background: linear-gradient(135deg, #FFF7ED, #FFFFFF 70%);
+        }
+
+        .contact-hero h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #172554;
+            font-size: clamp(36px, 5vw, 55px);
+            line-height: 1.2;
+            letter-spacing: -1.8px;
+            margin: 18px 0;
+        }
+
+        .contact-hero h1 span {
+            color: #F97316;
+        }
+
+        .contact-hero p {
+            max-width: 600px;
+            margin: auto;
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .contact-breadcrumb {
+            font-size: 12px;
+            color: #8993A5;
+            margin-bottom: 25px;
+        }
+
+        .contact-breadcrumb a {
+            color: #F97316;
+            font-weight: 700;
+        }
+
+        .contact-section {
+            padding: 75px 0;
+            background: #FFFFFF;
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: .85fr 1.15fr;
+            gap: 35px;
+            align-items: start;
+        }
+
+        .contact-info {
+            padding: 38px;
+            background: #172554;
+            border-radius: 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-info::after {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 50%;
+            right: -100px;
+            bottom: -100px;
+        }
+
+        .contact-info h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 26px;
+            margin-bottom: 15px;
+        }
+
+        .contact-info > p {
+            color: #C6D0E4;
+            font-size: 13px;
+            line-height: 1.9;
+            margin-bottom: 35px;
+        }
+
+        .contact-detail {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-icon {
+            flex-shrink: 0;
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: rgba(249,115,22,.17);
+            color: #FB923C;
+            font-size: 19px;
+        }
+
+        .contact-detail h3 {
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .contact-detail p,
+        .contact-detail a {
+            color: #C6D0E4;
+            font-size: 12px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .contact-form-card {
+            padding: 38px;
+            border: 1px solid #E8EAF0;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(23,37,84,.04);
+        }
+
+        .contact-form-card h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #172554;
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .contact-form-card > p {
+            color: #718096;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 28px;
+        }
+
+        .contact-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 19px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            color: #263247;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #E1E5EC;
+            border-radius: 11px;
+            background: #FAFBFD;
+            color: #263247;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            outline: none;
+            transition: .2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #F97316;
+            box-shadow: 0 0 0 3px rgba(249,115,22,.1);
+        }
+
+        .form-group textarea {
+            min-height: 145px;
+            resize: vertical;
+        }
+
+        .form-note {
+            grid-column: 1 / -1;
+            color: #8993A5;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .contact-submit {
+            grid-column: 1 / -1;
+            width: fit-content;
+            border: none;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .contact-submit:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        .contact-faq {
+            padding: 55px 0 75px;
+            background: #F8FAFC;
+            text-align: center;
+        }
+
+        .contact-faq h2 {
+            color: #172554;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 29px;
+            margin-bottom: 12px;
+        }
+
+        .contact-faq p {
+            color: #718096;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .contact-faq a {
+            color: #F97316;
+            font-weight: 700;
+        }
+
+        @media (max-width: 800px) {
+            .contact-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .contact-hero {
+                padding: 65px 0 50px;
+            }
+
+            .contact-section {
+                padding: 50px 0;
+            }
+
+            .contact-info,
+            .contact-form-card {
+                padding: 25px;
+            }
+
+            .contact-form {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full,
+            .form-note,
+            .contact-submit {
+                grid-column: 1;
+            }
+
+            .contact-submit {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-wrapper">
+
+            <a href="/" class="brand">
+                <span class="brand-icon">H</span>
+                <span>HUMAN<span class="brand-highlight">FEEDBACK</span></span>
+            </a>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="/">Home</a>
+                <a href="/#how-it-works">How It Works</a>
+                <a href="/#features">Features</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/#faq">FAQ</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="/login" class="login-link">Log in</a>
+                <a href="/register" class="btn btn-primary nav-button">
+                    Get Started <span>→</span>
+                </a>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+
+        </div>
+    </header>
+
+    <main>
+
+        <section class="contact-hero">
+            <div class="container">
+
+                <div class="contact-breadcrumb">
+                    <a href="/">Home</a> / Contact Us
+                </div>
+
+                <span class="section-label">WE'RE HERE TO HELP</span>
+
+                <h1>
+                    Let's Start a <span>Conversation.</span>
+                </h1>
+
+                <p>
+                    Have a question, need assistance or want to share
+                    an idea? Send us a message. We'd love to hear from you.
+                </p>
+
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container contact-layout">
+
+                <aside class="contact-info">
+
+                    <h2>Get in Touch</h2>
+
+                    <p>
+                        Whether you're experiencing an issue or simply
+                        have a question about HUMAN FEEDBACK, we're
+                        happy to hear from you.
+                    </p>
+
+                    <div class="contact-detail">
+                        <div class="contact-icon">✉</div>
+                        <div>
+                            <h3>Email Support</h3>
+                            <a href="mailto:hi@tybwork.com">
+                                hi@tybwork.com
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail">
+                        <div class="contact-icon">◷</div>
+                        <div>
+                            <h3>Support Availability</h3>
+                            <p>
+                                Send us your message anytime.
+                                We'll respond as soon as possible.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail">
+                        <div class="contact-icon">◎</div>
+                        <div>
+                            <h3>Platform</h3>
+                            <p>HUMAN FEEDBACK</p>
+                        </div>
+                    </div>
+
+                </aside>
+
+                <div class="contact-form-card">
+
+                    <h2>Send Us a Message</h2>
+
+                    <p>
+                        Fill in the details below and tell us how we
+                        can help.
+                    </p>
+
+                    <form class="contact-form" id="contactForm">
+
+                        <div class="form-group">
+                            <label for="contactName">Full Name</label>
+                            <input
+                                type="text"
+                                id="contactName"
+                                name="name"
+                                placeholder="Your full name"
+                                maxlength="100"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactEmail">Email Address</label>
+                            <input
+                                type="email"
+                                id="contactEmail"
+                                name="email"
+                                placeholder="you@example.com"
+                                maxlength="254"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="contactSubject">Subject</label>
+                            <select id="contactSubject" name="subject" required>
+                                <option value="">Select a subject</option>
+                                <option value="General Enquiry">General Enquiry</option>
+                                <option value="Account Support">Account Support</option>
+                                <option value="Website Feedback">Website Feedback</option>
+                                <option value="Credits and Rewards">Credits and Rewards</option>
+                                <option value="Billing and Subscription">Billing and Subscription</option>
+                                <option value="Report a Problem">Report a Problem</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="contactMessage">Your Message</label>
+                            <textarea
+                                id="contactMessage"
+                                name="message"
+                                placeholder="Tell us how we can help..."
+                                maxlength="10000"
+                                required
+                            ></textarea>
+                        </div>
+
+                        <p class="form-note">
+                            This is a design-only form at this stage.
+                            Message submission will be connected later.
+                        </p>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-large contact-submit"
+                            id="contactSubmit"
+                        >
+                            Send Message <span>→</span>
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </section>
+
+        <section class="contact-faq">
+            <div class="container">
+                <h2>Looking for Quick Answers?</h2>
+
+                <p>
+                    You may find what you need on our
+                    <a href="/#faq">Frequently Asked Questions</a>
+                    page.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+
+            <div class="footer-grid">
+
+                <div class="footer-brand">
+                    <a href="/" class="brand footer-logo">
+                        <span class="brand-icon">H</span>
+                        <span>HUMAN<span class="brand-highlight">FEEDBACK</span></span>
+                    </a>
+
+                    <p>
+                        Better websites begin with better feedback.
+                        Grow together with a community that values
+                        honest opinions and meaningful improvements.
+                    </p>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Platform</h4>
+                    <a href="/#how-it-works">How It Works</a>
+                    <a href="/#features">Features</a>
+                    <a href="/#pricing">Pricing</a>
+                    <a href="/#faq">FAQ</a>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <a href="/about">About Us</a>
+                    <a href="/contact">Contact</a>
+                    <a href="/#faq">FAQ</a>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <a href="/privacy-policy">Privacy Policy</a>
+                    <a href="/terms">Terms of Service</a>
+                    <a href="/cookie-policy">Cookie Policy</a>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 HUMAN FEEDBACK. All rights reserved.</p>
+                <p>Built for better website experiences.</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

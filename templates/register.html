@@ -1,0 +1,751 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create your HUMAN FEEDBACK account and join the website feedback community.">
+    <title>Create Account — HUMAN FEEDBACK</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            min-height: 100vh;
+            background: #F8FAFC;
+        }
+
+        .auth-header {
+            background: #FFFFFF;
+            border-bottom: 1px solid #E8EAF0;
+        }
+
+        .auth-header .container {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .auth-header-link {
+            color: #718096;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .auth-header-link a {
+            color: #F97316;
+            font-weight: 800;
+        }
+
+        .register-main {
+            min-height: calc(100vh - 79px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .register-visual {
+            background: linear-gradient(145deg, #101B40, #243B75);
+            padding: 60px 9%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-visual::before,
+        .register-visual::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .register-visual::before {
+            width: 420px;
+            height: 420px;
+            right: -170px;
+            top: -150px;
+        }
+
+        .register-visual::after {
+            width: 300px;
+            height: 300px;
+            right: -110px;
+            top: -90px;
+        }
+
+        .register-visual-content {
+            max-width: 490px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .register-visual-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 13px;
+            border-radius: 30px;
+            color: #FED7AA;
+            background: rgba(249,115,22,.15);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .8px;
+        }
+
+        .register-visual h1 {
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(34px, 4vw, 48px);
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+            margin: 27px 0 18px;
+        }
+
+        .register-visual h1 span {
+            color: #FB923C;
+        }
+
+        .register-visual-description {
+            color: #C6D0E4;
+            font-size: 13px;
+            line-height: 1.9;
+            max-width: 420px;
+        }
+
+        .register-points {
+            display: grid;
+            gap: 18px;
+            margin-top: 40px;
+        }
+
+        .register-point {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+        }
+
+        .register-point-icon {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,.1);
+            color: #FDBA74;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .register-point strong {
+            display: block;
+            color: white;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .register-point p {
+            color: #B8C4DA;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .register-form-side {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 25px;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 440px;
+            background: #FFFFFF;
+            border: 1px solid #E8EAF0;
+            border-radius: 22px;
+            padding: 35px 38px;
+            box-shadow: 0 12px 45px rgba(23,37,84,.05);
+        }
+
+        .register-card-label {
+            color: #F97316;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .register-card h2 {
+            color: #172554;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 28px;
+            letter-spacing: -.8px;
+            margin: 11px 0 7px;
+        }
+
+        .register-card-description {
+            color: #8993A5;
+            font-size: 12px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .register-field {
+            margin-bottom: 16px;
+        }
+
+        .register-field label {
+            display: block;
+            color: #263247;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .register-input-wrap {
+            position: relative;
+        }
+
+        .register-input {
+            width: 100%;
+            height: 46px;
+            padding: 0 13px;
+            border: 1px solid #E1E6EF;
+            border-radius: 10px;
+            outline: none;
+            background: #FFFFFF;
+            color: #263247;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            transition: .2s ease;
+        }
+
+        .register-input::placeholder {
+            color: #A0A9B8;
+        }
+
+        .register-input:focus {
+            border-color: #F97316;
+            box-shadow: 0 0 0 3px rgba(249,115,22,.1);
+        }
+
+        .register-password-input {
+            padding-right: 70px;
+        }
+
+        .register-password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            color: #F97316;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .register-password-hint {
+            color: #929BAB;
+            font-size: 10px;
+            margin-top: 7px;
+        }
+
+        .register-terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            color: #718096;
+            font-size: 10px;
+            line-height: 1.7;
+            margin: 19px 0 21px;
+        }
+
+        .register-terms input {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            accent-color: #F97316;
+        }
+
+        .register-terms a {
+            color: #F97316;
+            font-weight: 700;
+        }
+
+        .register-submit {
+            width: 100%;
+            min-height: 48px;
+            border: none;
+            border-radius: 10px;
+            background: #F97316;
+            color: #FFFFFF;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .register-submit:hover {
+            background: #EA580C;
+            transform: translateY(-1px);
+        }
+
+        .register-submit:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .register-message {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 9px;
+            margin-bottom: 17px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .register-message.success {
+            display: block;
+            background: #F0FDF4;
+            border: 1px solid #BBF7D0;
+            color: #166534;
+        }
+
+        .register-message.error {
+            display: block;
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            color: #991B1B;
+        }
+
+        .register-login {
+            text-align: center;
+            color: #718096;
+            font-size: 11px;
+            margin-top: 22px;
+        }
+
+        .register-login a {
+            color: #F97316;
+            font-weight: 800;
+        }
+
+        .register-security {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+            color: #8993A5;
+            font-size: 10px;
+            margin-top: 23px;
+        }
+
+        @media (max-width: 850px) {
+            .register-main {
+                grid-template-columns: 1fr;
+            }
+
+            .register-visual {
+                display: none;
+            }
+
+            .register-form-side {
+                min-height: calc(100vh - 79px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-header .container {
+                min-height: 68px;
+            }
+
+            .auth-header-link {
+                font-size: 10px;
+            }
+
+            .register-form-side {
+                padding: 30px 16px;
+            }
+
+            .register-card {
+                padding: 28px 22px;
+                border-radius: 17px;
+            }
+
+            .register-card h2 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="auth-header">
+        <div class="container">
+
+            <a href="/" class="brand">
+                <span class="brand-icon">H</span>
+                <span>HUMAN<span class="brand-highlight">FEEDBACK</span></span>
+            </a>
+
+            <div class="auth-header-link">
+                Already have an account?
+                <a href="/login">Sign in</a>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="register-main">
+
+        <section class="register-visual">
+            <div class="register-visual-content">
+
+                <span class="register-visual-label">
+                    <span>✦</span> JOIN THE COMMUNITY
+                </span>
+
+                <h1>
+                    Better Websites
+                    Begin With
+                    <span>Real People.</span>
+                </h1>
+
+                <p class="register-visual-description">
+                    Create your account and become part of a community
+                    where website owners and real people help each
+                    other build better online experiences.
+                </p>
+
+                <div class="register-points">
+
+                    <div class="register-point">
+                        <div class="register-point-icon">◎</div>
+                        <div>
+                            <strong>One Account, Everything Connected</strong>
+                            <p>Manage your websites, feedback and account activity.</p>
+                        </div>
+                    </div>
+
+                    <div class="register-point">
+                        <div class="register-point-icon">★</div>
+                        <div>
+                            <strong>Earn 10 Credits</strong>
+                            <p>Get 10 credits for every feedback approved by an admin.</p>
+                        </div>
+                    </div>
+
+                    <div class="register-point">
+                        <div class="register-point-icon">↗</div>
+                        <div>
+                            <strong>Grow Through Feedback</strong>
+                            <p>Share useful feedback and discover new perspectives.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <section class="register-form-side">
+
+            <div class="register-card">
+
+                <span class="register-card-label">GET STARTED</span>
+
+                <h2>Create Your Account</h2>
+
+                <p class="register-card-description">
+                    Fill in your details below to join HUMAN FEEDBACK.
+                </p>
+
+                <div
+                    id="registerMessage"
+                    class="register-message"
+                    role="status"
+                    aria-live="polite"
+                ></div>
+
+                <form id="registerForm">
+
+                    <div class="register-field">
+                        <label for="fullName">Full Name</label>
+
+                        <input
+                            class="register-input"
+                            type="text"
+                            id="fullName"
+                            name="full_name"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            minlength="2"
+                            maxlength="120"
+                            required
+                        >
+                    </div>
+
+                    <div class="register-field">
+                        <label for="email">Email Address</label>
+
+                        <input
+                            class="register-input"
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            maxlength="255"
+                            required
+                        >
+                    </div>
+
+                    <div class="register-field">
+                        <label for="password">Password</label>
+
+                        <div class="register-input-wrap">
+                            <input
+                                class="register-input register-password-input"
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="register-password-toggle"
+                                data-target="password"
+                            >
+                                Show
+                            </button>
+                        </div>
+
+                        <p class="register-password-hint">
+                            Use at least 8 characters.
+                        </p>
+                    </div>
+
+                    <div class="register-field">
+                        <label for="confirmPassword">Confirm Password</label>
+
+                        <div class="register-input-wrap">
+                            <input
+                                class="register-input register-password-input"
+                                type="password"
+                                id="confirmPassword"
+                                name="confirm_password"
+                                placeholder="Enter your password again"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="register-password-toggle"
+                                data-target="confirmPassword"
+                            >
+                                Show
+                            </button>
+                        </div>
+                    </div>
+
+                    <label class="register-terms">
+                        <input type="checkbox" id="terms" name="terms" required>
+
+                        <span>
+                            I agree to the
+                            <a href="/terms" target="_blank">Terms &amp; Conditions</a>
+                            and
+                            <a href="/privacy-policy" target="_blank">Privacy Policy</a>.
+                        </span>
+                    </label>
+
+                    <button type="submit" class="register-submit">
+                        Create Account <span>→</span>
+                    </button>
+
+                </form>
+
+                <p class="register-login">
+                    Already registered?
+                    <a href="/login">Sign in to your account</a>
+                </p>
+
+                <div class="register-security">
+                    <span>▣</span>
+                    Your account information is kept secure.
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        "use strict";
+
+        const registerForm = document.getElementById("registerForm");
+        const registerMessage = document.getElementById("registerMessage");
+        const registerButton = registerForm.querySelector('button[type="submit"]');
+
+        function showRegisterMessage(type, message) {
+            registerMessage.className = "register-message " + type;
+            registerMessage.textContent = message;
+            registerMessage.style.display = "block";
+        }
+
+        function clearRegisterMessage() {
+            registerMessage.className = "register-message";
+            registerMessage.textContent = "";
+            registerMessage.style.display = "none";
+        }
+
+        document.querySelectorAll(".register-password-toggle").forEach(function (button) {
+            button.addEventListener("click", function () {
+                const input = document.getElementById(button.dataset.target);
+                const isPassword = input.type === "password";
+
+                input.type = isPassword ? "text" : "password";
+                button.textContent = isPassword ? "Hide" : "Show";
+            });
+        });
+
+        async function getCsrfToken() {
+            const response = await fetch("/api/csrf-token", {
+                method: "GET",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Unable to initialize secure registration. Please refresh the page.");
+            }
+
+            const data = await response.json();
+
+            const token = typeof data === "string"
+                ? data
+                : (data.csrf_token || data.token || "");
+
+            if (!token) {
+                throw new Error("Security token unavailable. Please refresh the page.");
+            }
+
+            return token;
+        }
+
+        registerForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            clearRegisterMessage();
+
+            if (!registerForm.reportValidity()) {
+                return;
+            }
+
+            const fullName = document.getElementById("fullName").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+            const termsAccepted = document.getElementById("terms").checked;
+
+            if (fullName.length < 2) {
+                showRegisterMessage("error", "Please enter your full name.");
+                return;
+            }
+
+            if (password.length < 8) {
+                showRegisterMessage("error", "Password must contain at least 8 characters.");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showRegisterMessage("error", "Passwords do not match. Please check both password fields.");
+                return;
+            }
+
+            if (!termsAccepted) {
+                showRegisterMessage("error", "Please accept the Terms & Conditions and Privacy Policy.");
+                return;
+            }
+
+            registerButton.disabled = true;
+            registerButton.textContent = "Creating Account...";
+
+            try {
+                const csrfToken = await getCsrfToken();
+
+                const response = await fetch("/api/auth/register", {
+                    method: "POST",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-CSRFToken": csrfToken
+                    },
+                    body: JSON.stringify({
+                        name: fullName,
+                        email: email,
+                        password: password,
+                        confirm_password: confirmPassword
+                    })
+                });
+
+                const data = await response.json().catch(() => ({}));
+
+                if (!response.ok || data.success === false) {
+                    throw new Error(
+                        data.message || "Registration failed. Please try again."
+                    );
+                }
+
+                registerForm.reset();
+
+                document.querySelectorAll(".register-password-toggle").forEach(function (button) {
+                    button.textContent = "Show";
+                });
+
+                document.getElementById("password").type = "password";
+                document.getElementById("confirmPassword").type = "password";
+
+                showRegisterMessage(
+                    "success",
+                    data.message || "Your account has been created. Please check your email to verify your account before signing in."
+                );
+
+            } catch (error) {
+                showRegisterMessage(
+                    "error",
+                    error.message || "Something went wrong. Please try again."
+                );
+
+            } finally {
+                registerButton.disabled = false;
+                registerButton.innerHTML = 'Create Account <span>→</span>';
+            }
+        });
+    </script>
+
+</body>
+</html>

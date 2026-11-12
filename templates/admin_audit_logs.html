@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit Logs | HUMAN FEEDBACK Admin</title>
+<style>
+:root{--navy:#172554;--dark:#101B40;--orange:#F97316;--orange-dark:#EA580C;--bg:#F8FAFC;--soft:#FFF7ED;--text:#263247;--muted:#64748B;--border:#E2E8F0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.app{display:flex;min-height:100vh}
+.sidebar{width:250px;flex-shrink:0;background:var(--dark);color:white;padding:26px 18px;display:flex;flex-direction:column}
+.brand{font-size:20px;font-weight:800;padding:0 12px 25px;line-height:1.4}
+.brand span{color:var(--orange)}
+.admin-tag{display:inline-block;background:rgba(249,115,22,.18);color:#FDBA74;padding:5px 9px;border-radius:5px;font-size:9px;letter-spacing:1px;margin:0 12px 22px}
+.nav-label{color:#94A3B8;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:14px 12px 9px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px;border-radius:9px;color:#CBD5E1;font-size:12px;margin-bottom:4px}
+.nav a:hover,.nav a.active{background:rgba(249,115,22,.15);color:white}
+.nav a.active{border-left:3px solid var(--orange)}
+.sidebar-bottom{margin-top:auto;border-top:1px solid rgba(255,255,255,.12);padding:20px 10px 0}
+.user{display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--orange);display:grid;place-items:center;font-weight:700}
+.user strong{display:block;font-size:12px}.user small{color:#94A3B8;font-size:10px}
+.main{flex:1;min-width:0}
+.topbar{height:75px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+.topbar h2{color:var(--navy);font-size:19px}
+.top-right a{color:var(--orange-dark);font-size:11px;font-weight:700}
+.content{max-width:1400px;margin:auto;padding:30px}
+.breadcrumb{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:11px;margin-bottom:20px}
+.breadcrumb a{color:var(--orange-dark);font-weight:700}
+.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
+.heading h1{color:var(--navy);font-size:25px;margin-bottom:7px}
+.heading p{color:var(--muted);font-size:12px;line-height:1.6}
+.notice{background:var(--soft);border:1px solid #FED7AA;border-left:4px solid var(--orange);border-radius:9px;padding:13px 16px;margin-bottom:20px}
+.notice strong{display:block;color:var(--navy);font-size:12px;margin-bottom:5px}
+.notice p{color:var(--muted);font-size:11px;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat-card{background:white;border:1px solid var(--border);border-radius:11px;padding:17px}
+.stat-card span{display:block;color:var(--muted);font-size:10px;margin-bottom:11px}
+.stat-card strong{display:block;color:var(--navy);font-size:24px}
+.panel{background:white;border:1px solid var(--border);border-radius:12px;padding:21px;margin-bottom:20px;min-width:0}
+.panel-heading{margin-bottom:17px;padding-bottom:13px;border-bottom:1px solid var(--border)}
+.panel-heading h2{color:var(--navy);font-size:15px}
+.panel-heading p{color:var(--muted);font-size:10px;margin-top:5px;line-height:1.5}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}
+.filters input,.filters select{padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:white;color:var(--text);font-size:11px;outline:none}
+.filters input{flex:1;min-width:180px}
+.filters input:focus,.filters select:focus{border-color:var(--orange)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:950px}
+th,td{padding:13px 11px;border-bottom:1px solid var(--border);text-align:left;font-size:10px}
+th{background:#F8FAFC;color:var(--muted);font-weight:700}
+td{color:var(--text)}
+td strong{color:var(--navy)}
+.subtext{display:block;color:var(--muted);font-size:9px;margin-top:4px}
+.badge{display:inline-block;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+.badge.success{background:#F0FDF4;color:#166534}
+.badge.warning{background:#FFF7ED;color:#C2410C}
+.badge.security{background:#EFF6FF;color:#1D4ED8}
+.badge.failed{background:#FEF2F2;color:#B91C1C}
+.empty-state{text-align:center;padding:28px;color:var(--muted);font-size:11px}
+.btn{display:inline-flex;justify-content:center;align-items:center;border:1px solid var(--border);background:white;color:var(--text);border-radius:8px;padding:9px 12px;font-size:10px;font-weight:700;cursor:pointer}
+.btn.primary{background:var(--orange);color:white;border-color:var(--orange)}
+.message{display:none;padding:12px 14px;border-radius:8px;background:#FFF7ED;color:#9A3412;font-size:11px;line-height:1.6;margin-bottom:16px}
+.guidelines{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.guidelines strong{font-size:12px;color:var(--navy)}
+.guidelines p{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px}
+.mobile-menu{display:none;border:0;background:none;color:var(--navy);font-size:23px;cursor:pointer}
+.footer-note{text-align:center;padding:20px 5px 5px;color:var(--muted);font-size:10px}
+@media(max-width:1100px){.sidebar{width:220px}.content{padding:24px 20px}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.sidebar{position:fixed;z-index:20;top:0;bottom:0;left:-260px;width:250px;transition:left .25s}.sidebar.show{left:0}.mobile-menu{display:block}.topbar{height:65px;padding:0 15px}.topbar h2{font-size:16px}.content{padding:20px 14px}.heading{flex-direction:column}.heading h1{font-size:22px}.panel{padding:16px 13px}}
+@media(max-width:450px){.stats{gap:9px}.stat-card{padding:13px}.stat-card strong{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+    <div class="brand">HUMAN <span>FEEDBACK</span></div>
+    <span class="admin-tag">ADMINISTRATION</span>
+    <nav class="nav">
+        <div class="nav-label">OVERVIEW</div>
+        <a href="/admin">▦ Admin Dashboard</a>
+        <div class="nav-label">USER MANAGEMENT</div>
+        <a href="/admin/users">♙ All Users</a>
+        <a href="/admin/credit-management">◈ Credit Management</a>
+        <div class="nav-label">WEBSITE MANAGEMENT</div>
+        <a href="/admin/website-approvals">▣ Website Approvals</a>
+        <a href="/admin/website-suspensions">⊘ Suspensions</a>
+        <div class="nav-label">MODERATION</div>
+        <a href="/admin/feedback-moderation">✉ Feedback Moderation</a>
+        <a href="/admin/reports">⚑ User Reports</a>
+        <div class="nav-label">SYSTEM</div>
+        <a href="/admin/audit-logs" class="active">◷ Audit Logs</a>
+        <a href="/admin/profile">⚙ Admin Profile</a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="user"><div class="avatar">AD</div><div><strong>Admin User</strong><small>Administrator</small></div></div>
+    </div>
+</aside>
+
+<main class="main">
+<section class="empty-state" role="status">
+  <h1>No data available</h1>
+  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
+</section>
+</main>
+</div>
+</body>
+</html>

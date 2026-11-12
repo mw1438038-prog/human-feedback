@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | HUMAN FEEDBACK</title>
+    <style>
+        :root {
+            --navy: #172554;
+            --dark: #101B40;
+            --orange: #F97316;
+            --orange-dark: #EA580C;
+            --bg: #F8FAFC;
+            --soft: #FFF7ED;
+            --text: #263247;
+            --muted: #64748B;
+            --border: #E2E8F0;
+            --green: #15803D;
+            --red: #DC2626;
+            --shadow: 0 8px 25px rgba(23,37,84,.06);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button, input, select, textarea { font: inherit; }
+
+        .app { display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            background: var(--dark);
+            color: white;
+            padding: 26px 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: 800;
+            padding: 0 12px 30px;
+        }
+
+        .brand span { color: var(--orange); }
+
+        .nav-label {
+            color: #94A3B8;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 15px 12px 9px;
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 9px;
+            color: #CBD5E1;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .nav a:hover, .nav a.active {
+            background: rgba(249,115,22,.15);
+            color: white;
+        }
+
+        .nav a.active { border-left: 3px solid var(--orange); }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,.12);
+            padding: 20px 10px 0;
+        }
+
+        .user { display: flex; align-items: center; gap: 10px; }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--orange);
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+        }
+
+        .user strong { display: block; font-size: 12px; }
+        .user small { color: #94A3B8; font-size: 11px; }
+
+        .main { flex: 1; min-width: 0; }
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 34px;
+        }
+
+        .topbar h2 { color: var(--navy); font-size: 19px; }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .top-right a { font-size: 13px; color: var(--muted); }
+
+        .top-right .upgrade {
+            background: var(--orange);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .content {
+            max-width: 1150px;
+            margin: auto;
+            padding: 32px;
+        }
+
+        .page-heading { margin-bottom: 25px; }
+
+        .page-heading h1 {
+            font-size: 27px;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 23px;
+            box-shadow: var(--shadow);
+            margin-bottom: 22px;
+        }
+
+        .profile-card { text-align: center; }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 5px auto 17px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--navy), #334A83);
+            color: white;
+            font-size: 32px;
+            font-weight: 800;
+            border: 4px solid #FFF0E5;
+        }
+
+        .profile-card h2 { color: var(--navy); font-size: 19px; margin-bottom: 6px; }
+        .profile-card .email { color: var(--muted); font-size: 12px; margin-bottom: 14px; }
+
+        .member-badge {
+            display: inline-block;
+            padding: 7px 12px;
+            background: var(--soft);
+            color: var(--orange-dark);
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .profile-details {
+            text-align: left;
+            border-top: 1px solid var(--border);
+            margin-top: 21px;
+            padding-top: 18px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 0;
+            font-size: 11px;
+        }
+
+        .detail-row span:first-child { color: var(--muted); }
+        .detail-row strong { color: var(--navy); text-align: right; }
+
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .panel-heading h2 { color: var(--navy); font-size: 17px; }
+        .panel-heading p { color: var(--muted); font-size: 11px; margin-top: 6px; }
+
+        .field-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .field { margin-bottom: 17px; }
+
+        .field label {
+            display: block;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .field input, .field select, .field textarea {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 13px;
+            font-size: 12px;
+            color: var(--text);
+            outline: none;
+            background: white;
+        }
+
+        .field input:focus, .field select:focus, .field textarea:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(249,115,22,.1);
+        }
+
+        .field input:disabled {
+            background: #F1F5F9;
+            color: var(--muted);
+            cursor: not-allowed;
+        }
+
+        .field textarea { min-height: 95px; resize: vertical; line-height: 1.6; }
+
+        .field small {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 6px;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 11px 16px;
+            background: white;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn.primary {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: white;
+        }
+
+        .btn.primary:hover { background: var(--orange-dark); }
+        .btn:disabled { opacity: .6; cursor: not-allowed; }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 7px;
+        }
+
+        .message {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .message.success { background: #F0FDF4; color: #166534; }
+        .message.error { background: #FEF2F2; color: #B91C1C; }
+
+        .notice {
+            background: var(--soft);
+            border: 1px solid #FED7AA;
+            border-left: 4px solid var(--orange);
+            border-radius: 9px;
+            padding: 16px 18px;
+        }
+
+        .notice h3 { color: var(--navy); font-size: 13px; margin-bottom: 7px; }
+        .notice p { color: var(--muted); font-size: 11px; line-height: 1.7; }
+
+        .-note {
+            text-align: center;
+            padding: 20px 5px 5px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .mobile-menu {
+            display: none;
+            border: 0;
+            background: none;
+            font-size: 23px;
+            color: var(--navy);
+            cursor: pointer;
+        }
+
+        @media(max-width: 1000px) {
+            .sidebar { width: 215px; }
+            .content { padding: 25px 20px; }
+            .profile-layout { grid-template-columns: 250px 1fr; }
+        }
+
+        @media(max-width: 800px) {
+            .profile-layout { grid-template-columns: 1fr; }
+            .profile-card { max-width: none; }
+        }
+
+        @media(max-width: 720px) {
+            .sidebar {
+                position: fixed;
+                z-index: 20;
+                top: 0;
+                bottom: 0;
+                left: -260px;
+                width: 250px;
+                transition: left .25s;
+            }
+
+            .sidebar.show { left: 0; }
+            .mobile-menu { display: block; }
+
+            .topbar { height: 65px; padding: 0 16px; }
+            .topbar h2 { font-size: 16px; }
+            .top-right { gap: 9px; }
+            .top-right a:first-child { display: none; }
+            .top-right .upgrade { font-size: 11px; padding: 9px 11px; }
+
+            .content { padding: 22px 14px; }
+            .page-heading h1 { font-size: 23px; }
+            .panel { padding: 18px 14px; }
+        }
+
+        @media(max-width: 520px) {
+            .field-grid { grid-template-columns: 1fr; gap: 0; }
+            .form-actions { flex-direction: column; }
+            .form-actions .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">HUMAN <span>FEEDBACK</span></div>
+
+        <nav class="nav">
+            <div class="nav-label">MAIN MENU</div>
+            <a href="/dashboard">▦ Dashboard</a>
+            <a href="/my-websites">▣ My Websites</a>
+            <a href="/feedback">✉ Feedback</a>
+            <a href="/replies">▤ Replies</a>
+
+            <div class="nav-label">ACCOUNT</div>
+            <a href="/credits">◈ My Credits</a>
+            <a href="/credit-history">◷ Credit History</a>
+            <a href="/analytics">▥ Analytics</a>
+            <a href="/notifications">♢ Notifications</a>
+            <a href="/reports">⚑ Reports</a>
+
+            <div class="nav-label">SETTINGS</div>
+            <a href="/profile" class="active">♙ My Profile</a>
+            <a href="/settings">⚙ Settings</a>
+            <a href="/subscription">◇ Subscription</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="user">
+                <div class="avatar">HF</div>
+                <div>
+                    <strong>Account</strong>
+                    <small>Pro Member</small>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+<section class="empty-state" role="status">
+  <h1>No data available</h1>
+  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
+</section>
+</main>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.getElementById("menuToggle");
+
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener("click", function () {
+            sidebar.classList.toggle("show");
+            menuToggle.textContent =
+                sidebar.classList.contains("show") ? "✕" : "☰";
+        });
+    }
+
+    const form = document.getElementById("profileForm");
+    const successMessage = document.getElementById("successMessage");
+    const errorMessage = document.getElementById("errorMessage");
+
+    const firstName = document.getElementById("firstName");
+    const lastName = document.getElementById("lastName");
+
+    const initialValues = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        phone: document.getElementById("phone").value,
+        company: document.getElementById("company").value,
+        country: document.getElementById("country").value,
+        bio: document.getElementById("bio").value
+    };
+
+    function updatePreview() {
+        const first = firstName.value.trim();
+        const last = lastName.value.trim();
+        const fullName = (first + " " + last).trim();
+
+        document.getElementById("profileDisplayName").textContent = fullName || "Your Name";
+
+        const initials = ((first.charAt(0) || "") + (last.charAt(0) || "")).toUpperCase();
+        document.getElementById("profileAvatar").textContent = initials || "U";
+    }
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        successMessage.style.display = "none";
+        errorMessage.style.display = "none";
+
+        if (!firstName.value.trim() || !lastName.value.trim()) {
+            errorMessage.textContent = "Please enter both your first name and last name.";
+            errorMessage.style.display = "block";
+            return;
+        }
+
+        if (firstName.value.trim().length > 60 || lastName.value.trim().length > 60) {
+            errorMessage.textContent = "Names cannot exceed 60 characters.";
+            errorMessage.style.display = "block";
+            return;
+        }
+
+        updatePreview();
+        successMessage.style.display = "block";
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", function () {
+        setTimeout(function () {
+            firstName.value = initialValues.firstName;
+            lastName.value = initialValues.lastName;
+            document.getElementById("phone").value = initialValues.phone;
+            document.getElementById("company").value = initialValues.company;
+            document.getElementById("country").value = initialValues.country;
+            document.getElementById("bio").value = initialValues.bio;
+
+            successMessage.style.display = "none";
+            errorMessage.style.display = "none";
+            updatePreview();
+        }, 0);
+    });
+
+    updatePreview();
+});
+</script>
+</body>
+</html>

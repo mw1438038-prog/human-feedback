@@ -1,0 +1,43 @@
+@'
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Local database and uploaded files
+instance/
+uploads/
+*.db
+*.sqlite
+*.sqlite3
+
+# Tests - do not deploy
+tests/
+test_*.py
+*_test.py
+
+# Development tools
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.idea/
+.vscode/
+
+# Vercel
+.vercel/
+'@ | Set-Content -Path .gitignore -Encoding utf8
+# Backup files
+*.bak
+*.bak

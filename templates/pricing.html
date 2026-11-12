@@ -1,0 +1,793 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore HUMAN FEEDBACK plans. Choose Free, Pro or Business to improve your websites with real human feedback.">
+    <title>Pricing & Plans — HUMAN FEEDBACK</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .pricing-hero {
+            padding: 85px 0 55px;
+            background: linear-gradient(135deg, #FFF7ED, #FFFFFF 70%);
+            text-align: center;
+        }
+
+        .pricing-hero h1 {
+            color: #172554;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(36px, 5vw, 55px);
+            letter-spacing: -1.8px;
+            margin: 18px 0;
+        }
+
+        .pricing-hero h1 span {
+            color: #F97316;
+        }
+
+        .pricing-hero p {
+            max-width: 630px;
+            margin: auto;
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .pricing-breadcrumb {
+            color: #8993A5;
+            font-size: 12px;
+            margin-bottom: 25px;
+        }
+
+        .pricing-breadcrumb a {
+            color: #F97316;
+            font-weight: 700;
+        }
+
+        .pricing-main {
+            padding: 65px 0 85px;
+            background: #FFFFFF;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        .plan-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 32px 27px;
+            border: 1px solid #E5E9F0;
+            border-radius: 22px;
+            background: white;
+            transition: .25s ease;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(23,37,84,.08);
+        }
+
+        .plan-card.featured {
+            border: 2px solid #F97316;
+            box-shadow: 0 12px 35px rgba(249,115,22,.09);
+        }
+
+        .popular-label {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #F97316;
+            color: white;
+            border-radius: 30px;
+            padding: 7px 18px;
+            font-size: 10px;
+            font-weight: 800;
+            white-space: nowrap;
+            letter-spacing: .4px;
+        }
+
+        .plan-name {
+            color: #172554;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .plan-description {
+            color: #8993A5;
+            font-size: 12px;
+            line-height: 1.8;
+            min-height: 42px;
+            margin: 10px 0 22px;
+        }
+
+        .plan-price {
+            color: #172554;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 43px;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        .plan-price span {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0;
+            color: #8993A5;
+        }
+
+        .plan-period {
+            color: #8993A5;
+            font-size: 11px;
+            margin-top: 5px;
+            min-height: 18px;
+        }
+
+        .plan-divider {
+            height: 1px;
+            background: #EDF0F4;
+            margin: 25px 0;
+        }
+
+        .plan-features-title {
+            color: #172554;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 17px;
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 28px;
+            flex: 1;
+        }
+
+        .plan-features li {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            color: #566176;
+            font-size: 12px;
+            line-height: 1.7;
+            margin-bottom: 13px;
+        }
+
+        .feature-check {
+            color: #F97316;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .plan-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .plan-note {
+            color: #8993A5;
+            font-size: 11px;
+            text-align: center;
+            line-height: 1.8;
+            margin-top: 30px;
+        }
+
+        .comparison-section {
+            padding: 75px 0;
+            background: #F8FAFC;
+        }
+
+        .comparison-heading {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .comparison-heading h2 {
+            color: #172554;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(27px, 4vw, 36px);
+            margin-bottom: 12px;
+        }
+
+        .comparison-heading h2 span {
+            color: #F97316;
+        }
+
+        .comparison-heading p {
+            color: #718096;
+            font-size: 13px;
+        }
+
+        .comparison-table-wrap {
+            overflow-x: auto;
+            background: white;
+            border: 1px solid #E5E9F0;
+            border-radius: 18px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 18px 22px;
+            border-bottom: 1px solid #EDF0F4;
+            text-align: center;
+            font-size: 12px;
+            color: #566176;
+        }
+
+        .comparison-table th {
+            color: #172554;
+            font-weight: 800;
+            background: #FAFBFD;
+        }
+
+        .comparison-table th:first-child,
+        .comparison-table td:first-child {
+            text-align: left;
+            font-weight: 700;
+            color: #263247;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-check {
+            color: #F97316;
+            font-weight: 800;
+        }
+
+        .table-no {
+            color: #A0A9B8;
+        }
+
+        .pricing-faq {
+            padding: 75px 0;
+            background: white;
+        }
+
+        .pricing-faq-heading {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .pricing-faq-heading h2 {
+            color: #172554;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 32px;
+        }
+
+        .pricing-faq-heading h2 span {
+            color: #F97316;
+        }
+
+        .pricing-faq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .pricing-faq-item {
+            padding: 24px;
+            border: 1px solid #E8EAF0;
+            border-radius: 16px;
+        }
+
+        .pricing-faq-item h3 {
+            color: #172554;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .pricing-faq-item p {
+            color: #718096;
+            font-size: 12px;
+            line-height: 1.9;
+        }
+
+        .pricing-bottom-cta {
+            padding: 70px 0;
+            text-align: center;
+            background: linear-gradient(115deg, #172554, #243B75);
+        }
+
+        .pricing-bottom-cta h2 {
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(28px, 4vw, 40px);
+            margin-bottom: 14px;
+        }
+
+        .pricing-bottom-cta h2 span {
+            color: #FB923C;
+        }
+
+        .pricing-bottom-cta p {
+            max-width: 560px;
+            margin: 0 auto 25px;
+            color: #C6D0E4;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 900px) {
+            .pricing-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 25px;
+            }
+
+            .plan-card:last-child {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .pricing-hero {
+                padding: 65px 0 45px;
+            }
+
+            .pricing-main {
+                padding: 45px 0 60px;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .plan-card:last-child {
+                grid-column: auto;
+            }
+
+            .plan-card {
+                padding: 28px 24px;
+            }
+
+            .pricing-faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-section,
+            .pricing-faq {
+                padding: 55px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-wrapper">
+
+            <a href="/" class="brand">
+                <span class="brand-icon">H</span>
+                <span>HUMAN<span class="brand-highlight">FEEDBACK</span></span>
+            </a>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="/">Home</a>
+                <a href="/#how-it-works">How It Works</a>
+                <a href="/#features">Features</a>
+                <a href="/pricing">Pricing</a>
+                <a href="/#faq">FAQ</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="/login" class="login-link">Log in</a>
+                <a href="/register" class="btn btn-primary nav-button">
+                    Get Started <span>→</span>
+                </a>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+
+        </div>
+    </header>
+
+    <main>
+
+        <section class="pricing-hero">
+            <div class="container">
+
+                <div class="pricing-breadcrumb">
+                    <a href="/">Home</a> / Pricing
+                </div>
+
+                <span class="section-label">SIMPLE & TRANSPARENT PRICING</span>
+
+                <h1>
+                    Choose a Plan That
+                    <span>Fits Your Goals.</span>
+                </h1>
+
+                <p>
+                    Start with a 30-day trial or choose a paid plan
+                    for more website capacity. Get the tools and
+                    community feedback you need to improve your websites.
+                </p>
+
+            </div>
+        </section>
+
+        <section class="pricing-main">
+            <div class="container">
+
+                <div class="pricing-grid">
+
+                    <!-- FREE PLAN -->
+                    <article class="plan-card">
+
+                        <h2 class="plan-name">Free</h2>
+
+                        <p class="plan-description">
+                            Explore the platform and experience
+                            the HUMAN FEEDBACK community.
+                        </p>
+
+                        <div class="plan-price">
+                            $0 <span>/ free</span>
+                        </div>
+
+                        <p class="plan-period">One-time 30-day trial</p>
+
+                        <div class="plan-divider"></div>
+
+                        <p class="plan-features-title">What's included</p>
+
+                        <ul class="plan-features">
+                            <li><span class="feature-check">✓</span> 30-day trial period</li>
+                            <li><span class="feature-check">✓</span> Maximum 1 website</li>
+                            <li><span class="feature-check">✓</span> 1,000 available credits required to submit a website</li>
+                            <li><span class="feature-check">✓</span> Access to eligible platform features during the trial</li>
+                            <li><span class="feature-check">✓</span> Feedback and credit history</li>
+                        </ul>
+
+                        <a href="/register" class="btn btn-outline plan-button">
+                            Start Free Trial <span>→</span>
+                        </a>
+
+                    </article>
+
+                    <!-- PRO PLAN -->
+                    <article class="plan-card featured">
+
+                        <span class="popular-label">POPULAR CHOICE</span>
+
+                        <h2 class="plan-name">Pro</h2>
+
+                        <p class="plan-description">
+                            For individuals and growing creators
+                            managing multiple websites.
+                        </p>
+
+                        <div class="plan-price">
+                            $9 <span>/ month</span>
+                        </div>
+
+                        <p class="plan-period">Monthly subscription</p>
+
+                        <div class="plan-divider"></div>
+
+                        <p class="plan-features-title">Everything you need</p>
+
+                        <ul class="plan-features">
+                            <li><span class="feature-check">✓</span> Up to 3 websites</li>
+                            <li><span class="feature-check">✓</span> No minimum credit requirement to submit websites</li>
+                            <li><span class="feature-check">✓</span> Access to platform features while subscription is active</li>
+                            <li><span class="feature-check">✓</span> Feedback and credit history</li>
+                            <li><span class="feature-check">✓</span> Website feedback management</li>
+                        </ul>
+
+                        <a href="/register" class="btn btn-primary plan-button">
+                            Choose Pro <span>→</span>
+                        </a>
+
+                    </article>
+
+                    <!-- BUSINESS PLAN -->
+                    <article class="plan-card">
+
+                        <h2 class="plan-name">Business</h2>
+
+                        <p class="plan-description">
+                            For businesses and teams managing
+                            multiple websites.
+                        </p>
+
+                        <div class="plan-price">
+                            $24 <span>/ month</span>
+                        </div>
+
+                        <p class="plan-period">Monthly subscription</p>
+
+                        <div class="plan-divider"></div>
+
+                        <p class="plan-features-title">Everything in Pro, plus</p>
+
+                        <ul class="plan-features">
+                            <li><span class="feature-check">✓</span> Unlimited websites</li>
+                            <li><span class="feature-check">✓</span> No minimum credit requirement to submit websites</li>
+                            <li><span class="feature-check">✓</span> Access to platform features while subscription is active</li>
+                            <li><span class="feature-check">✓</span> Feedback and credit history</li>
+                            <li><span class="feature-check">✓</span> Manage a larger website portfolio</li>
+                        </ul>
+
+                        <a href="/register" class="btn btn-outline plan-button">
+                            Choose Business <span>→</span>
+                        </a>
+
+                    </article>
+
+                </div>
+
+                <p class="plan-note">
+                    Paid plan checkout and recurring payment functionality
+                    will be made available when billing integration is launched.
+                    Displayed prices are in USD.
+                </p>
+
+            </div>
+        </section>
+
+        <section class="comparison-section">
+            <div class="container">
+
+                <div class="comparison-heading">
+                    <span class="section-label">COMPARE PLANS</span>
+
+                    <h2>
+                        Find the Right
+                        <span>Plan for You.</span>
+                    </h2>
+
+                    <p>Compare the key differences between our plans.</p>
+                </div>
+
+                <div class="comparison-table-wrap">
+                    <table class="comparison-table">
+
+                        <thead>
+                            <tr>
+                                <th>Features</th>
+                                <th>Free</th>
+                                <th>Pro</th>
+                                <th>Business</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Price</td>
+                                <td>$0</td>
+                                <td>$9/month</td>
+                                <td>$24/month</td>
+                            </tr>
+
+                            <tr>
+                                <td>Plan duration</td>
+                                <td>30 days</td>
+                                <td>Monthly</td>
+                                <td>Monthly</td>
+                            </tr>
+
+                            <tr>
+                                <td>Website limit</td>
+                                <td>1</td>
+                                <td>Up to 3</td>
+                                <td>Unlimited</td>
+                            </tr>
+
+                            <tr>
+                                <td>Minimum credits to submit a website</td>
+                                <td>1,000</td>
+                                <td>No minimum</td>
+                                <td>No minimum</td>
+                            </tr>
+
+                            <tr>
+                                <td>Feedback history</td>
+                                <td><span class="table-check">✓</span></td>
+                                <td><span class="table-check">✓</span></td>
+                                <td><span class="table-check">✓</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Credit history</td>
+                                <td><span class="table-check">✓</span></td>
+                                <td><span class="table-check">✓</span></td>
+                                <td><span class="table-check">✓</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Website management</td>
+                                <td><span class="table-check">✓</span></td>
+                                <td><span class="table-check">✓</span></td>
+                                <td><span class="table-check">✓</span></td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="pricing-faq">
+            <div class="container">
+
+                <div class="pricing-faq-heading">
+                    <span class="section-label">PRICING QUESTIONS</span>
+
+                    <h2>
+                        Frequently Asked
+                        <span>Questions.</span>
+                    </h2>
+                </div>
+
+                <div class="pricing-faq-grid">
+
+                    <article class="pricing-faq-item">
+                        <h3>When does my Free trial start?</h3>
+                        <p>
+                            Your one-time 30-day Free trial starts when
+                            you successfully log in for the first time
+                            after registering.
+                        </p>
+                    </article>
+
+                    <article class="pricing-faq-item">
+                        <h3>Can I add a website on the Free plan?</h3>
+                        <p>
+                            Yes. The Free plan allows a maximum of one
+                            website. You need at least 1,000 available
+                            credits to submit that website.
+                        </p>
+                    </article>
+
+                    <article class="pricing-faq-item">
+                        <h3>Do Pro and Business require credits to add websites?</h3>
+                        <p>
+                            No. Pro and Business subscribers do not need
+                            a minimum credit balance to submit websites.
+                            Their website limits depend on their plan.
+                        </p>
+                    </article>
+
+                    <article class="pricing-faq-item">
+                        <h3>What happens when my Free trial expires?</h3>
+                        <p>
+                            You can still log in and access your account,
+                            but platform features remain locked until
+                            you purchase a paid plan. Your existing
+                            account data and history are retained.
+                        </p>
+                    </article>
+
+                    <article class="pricing-faq-item">
+                        <h3>Can I upgrade my plan?</h3>
+                        <p>
+                            You can choose a paid plan when you need
+                            additional website capacity or continued
+                            access after your trial.
+                        </p>
+                    </article>
+
+                    <article class="pricing-faq-item">
+                        <h3>Are paid subscriptions monthly?</h3>
+                        <p>
+                            Yes. Pro and Business are monthly plans.
+                            Payment and subscription management will
+                            be available when billing is integrated.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+        <section class="pricing-bottom-cta">
+            <div class="container">
+
+                <h2>
+                    Ready to Grow With
+                    <span>Real Feedback?</span>
+                </h2>
+
+                <p>
+                    Start your journey with HUMAN FEEDBACK and
+                    discover how useful perspectives can help
+                    improve your website.
+                </p>
+
+                <a href="/register" class="btn btn-light btn-large">
+                    Get Started Today <span>→</span>
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+
+            <div class="footer-grid">
+
+                <div class="footer-brand">
+                    <a href="/" class="brand footer-logo">
+                        <span class="brand-icon">H</span>
+                        <span>HUMAN<span class="brand-highlight">FEEDBACK</span></span>
+                    </a>
+
+                    <p>
+                        Better websites begin with better feedback.
+                        Grow together with a community that values
+                        honest opinions and meaningful improvements.
+                    </p>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Platform</h4>
+                    <a href="/#how-it-works">How It Works</a>
+                    <a href="/#features">Features</a>
+                    <a href="/pricing">Pricing</a>
+                    <a href="/#faq">FAQ</a>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <a href="/about">About Us</a>
+                    <a href="/contact">Contact</a>
+                    <a href="/#faq">FAQ</a>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <a href="/privacy-policy">Privacy Policy</a>
+                    <a href="/terms">Terms of Service</a>
+                    <a href="/cookie-policy">Cookie Policy</a>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 HUMAN FEEDBACK. All rights reserved.</p>
+                <p>Built for better website experiences.</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

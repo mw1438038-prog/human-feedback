@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn how HUMAN FEEDBACK collects, uses, stores, and protects your personal information and platform data.">
+    <title>Privacy Policy | HUMAN FEEDBACK</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .legal-page {
+            background: #F8FAFC;
+            min-height: 100vh;
+            padding: 65px 20px 90px;
+            color: #263247;
+        }
+        .legal-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .legal-heading {
+            text-align: center;
+            margin-bottom: 42px;
+        }
+        .legal-heading .eyebrow {
+            display: inline-block;
+            color: #EA580C;
+            background: #FFF7ED;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .legal-heading h1 {
+            color: #172554;
+            font-size: clamp(32px, 5vw, 46px);
+            margin: 0 0 14px;
+        }
+        .legal-heading p {
+            color: #64748B;
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 0;
+        }
+        .legal-notice {
+            background: #FFF7ED;
+            border: 1px solid #FED7AA;
+            border-left: 4px solid #F97316;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 28px;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+        .legal-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(16, 27, 64, 0.035);
+        }
+        .legal-card h2 {
+            color: #172554;
+            font-size: 21px;
+            margin: 0 0 15px;
+        }
+        .legal-card h3 {
+            color: #263247;
+            font-size: 16px;
+            margin: 20px 0 8px;
+        }
+        .legal-card p,
+        .legal-card li {
+            color: #64748B;
+            font-size: 14px;
+            line-height: 1.85;
+        }
+        .legal-card p {
+            margin: 0 0 12px;
+        }
+        .legal-card ul {
+            padding-left: 22px;
+            margin: 10px 0;
+        }
+        .legal-card li {
+            padding-left: 4px;
+            margin-bottom: 7px;
+        }
+        .legal-card strong {
+            color: #263247;
+        }
+        .legal-contact {
+            color: #EA580C;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .legal-contact:hover {
+            text-decoration: underline;
+        }
+        .legal-updated {
+            color: #94A3B8;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        @media (max-width: 600px) {
+            .legal-page {
+                padding: 40px 14px 60px;
+            }
+            .legal-card {
+                padding: 21px 18px;
+            }
+            .legal-card h2 {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'partials/navbar.html' ignore missing %}
+
+    <main class="legal-page">
+        <div class="legal-container">
+
+            <header class="legal-heading">
+                <span class="eyebrow">YOUR PRIVACY MATTERS</span>
+                <h1>Privacy Policy</h1>
+                <p>
+                    This policy explains how HUMAN FEEDBACK collects,
+                    uses, stores, and protects information when you use
+                    our platform.
+                </p>
+            </header>
+
+            <div class="legal-notice">
+                <strong>Privacy notice:</strong> This is a general privacy
+                policy draft. Before launch, the platform operator should
+                verify it against the actual data collected, hosting
+                providers, email services, cookies, retention practices,
+                and applicable privacy laws.
+            </div>
+
+            <section class="legal-card">
+                <h2>1. Introduction</h2>
+                <p>
+                    HUMAN FEEDBACK respects your privacy. This Privacy
+                    Policy describes the types of information that may
+                    be collected when you visit or use our platform and
+                    how that information may be handled.
+                </p>
+                <p>
+                    By using the platform, you acknowledge that you have
+                    read this policy. Where consent is legally required,
+                    we will seek it separately.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>2. Information We May Collect</h2>
+
+                <h3>Account Information</h3>
+                <ul>
+                    <li>Name or display name.</li>
+                    <li>Email address.</li>
+                    <li>Password credentials stored using appropriate security measures.</li>
+                    <li>Account status and email verification information.</li>
+                    <li>Profile details you choose to provide.</li>
+                </ul>
+
+                <h3>Website Information</h3>
+                <ul>
+                    <li>Website name and URL.</li>
+                    <li>Website descriptions and submitted details.</li>
+                    <li>Ownership or authorization proof submitted for review.</li>
+                    <li>Website approval, rejection, and moderation history.</li>
+                </ul>
+
+                <h3>Feedback Information</h3>
+                <ul>
+                    <li>Ratings and written feedback comments.</li>
+                    <li>Optional screenshots or supporting evidence.</li>
+                    <li>Feedback approval and moderation status.</li>
+                    <li>Replies, reports, and related communication.</li>
+                </ul>
+
+                <h3>Usage and Technical Information</h3>
+                <ul>
+                    <li>Account activity and platform interactions.</li>
+                    <li>Credit balances and transaction history.</li>
+                    <li>Notifications and relevant activity records.</li>
+                    <li>Technical logs, error information, and security records.</li>
+                    <li>Device, browser, and IP information where collected by our services.</li>
+                </ul>
+            </section>
+
+            <section class="legal-card">
+                <h2>3. How We Use Information</h2>
+                <p>Information may be used to:</p>
+                <ul>
+                    <li>Create and manage user accounts.</li>
+                    <li>Verify email addresses and support account security.</li>
+                    <li>Register and review submitted websites.</li>
+                    <li>Process feedback, ratings, replies, and reports.</li>
+                    <li>Calculate and maintain credit balances.</li>
+                    <li>Display dashboards, analytics, and activity history.</li>
+                    <li>Send important account and platform notifications.</li>
+                    <li>Investigate fraud, abuse, spam, and security incidents.</li>
+                    <li>Maintain, troubleshoot, and improve platform performance.</li>
+                    <li>Meet legal and regulatory obligations.</li>
+                </ul>
+            </section>
+
+            <section class="legal-card">
+                <h2>4. Public and Shared Information</h2>
+                <p>
+                    Some information submitted to HUMAN FEEDBACK may be
+                    visible to other users depending on the feature and
+                    platform settings.
+                </p>
+                <ul>
+                    <li>Website information may be displayed to platform users.</li>
+                    <li>Approved feedback may be displayed on relevant website pages.</li>
+                    <li>Website owners may be able to view feedback about their websites.</li>
+                    <li>Replies may be visible to users who can access the relevant feedback.</li>
+                </ul>
+                <p>
+                    Do not include passwords, private contact details,
+                    financial information, or other sensitive personal
+                    information in public feedback or screenshots.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>5. Email Communications</h2>
+                <p>
+                    We may use your email address for account-related
+                    communications, including:
+                </p>
+                <ul>
+                    <li>Email verification.</li>
+                    <li>Password reset instructions.</li>
+                    <li>Important account and security notifications.</li>
+                    <li>Responses to support or contact requests.</li>
+                    <li>Important changes to platform policies or services.</li>
+                </ul>
+                <p>
+                    Promotional communications, if introduced, will be
+                    handled according to applicable consent and
+                    unsubscribe requirements.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>6. Cookies and Similar Technologies</h2>
+                <p>
+                    HUMAN FEEDBACK may use cookies or similar technologies
+                    to support essential website functionality and improve
+                    the user experience.
+                </p>
+                <ul>
+                    <li>Session cookies may help maintain login sessions.</li>
+                    <li>Security-related cookies may help protect accounts and forms.</li>
+                    <li>Preference cookies may remember selected settings where supported.</li>
+                    <li>Analytics technologies may be used if introduced and properly configured.</li>
+                </ul>
+                <p>
+                    You can manage cookies through your browser settings.
+                    Blocking essential cookies may prevent some platform
+                    features from working correctly.
+                </p>
+                <p>
+                    See our Cookie Policy for additional information.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>7. Legal Bases for Processing</h2>
+                <p>
+                    Where applicable privacy laws require a legal basis
+                    for processing personal information, we may rely on
+                    one or more of the following:
+                </p>
+                <ul>
+                    <li><strong>Contract:</strong> To provide account and platform services you request.</li>
+                    <li><strong>Legitimate interests:</strong> To maintain security, prevent abuse, and improve services, where permitted by law.</li>
+                    <li><strong>Consent:</strong> Where you have given consent for a specific purpose.</li>
+                    <li><strong>Legal obligations:</strong> To comply with applicable laws and valid legal requests.</li>
+                </ul>
+            </section>
+
+            <section class="legal-card">
+                <h2>8. Sharing of Information</h2>
+                <p>
+                    We do not sell personal information to third parties.
+                    We may share information in limited circumstances,
+                    such as:
+                </p>
+                <ul>
+                    <li><strong>Service providers:</strong> Hosting, database, email delivery, security, and infrastructure providers that support the platform.</li>
+                    <li><strong>Other users:</strong> Information that must be displayed to provide website feedback and related platform features.</li>
+                    <li><strong>Legal requirements:</strong> Where disclosure is required by law or valid legal process.</li>
+                    <li><strong>Security and protection:</strong> Where necessary to investigate fraud, protect users, or safeguard platform rights.</li>
+                    <li><strong>Business changes:</strong> In connection with a merger, restructuring, or transfer, subject to applicable privacy requirements.</li>
+                </ul>
+                <p>
+                    Service providers are expected to handle information
+                    according to appropriate contractual and security
+                    requirements.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>9. Data Storage and Security</h2>
+                <p>
+                    We use reasonable technical and organizational measures
+                    designed to protect personal information against
+                    unauthorized access, alteration, disclosure, or loss.
+                </p>
+                <p>Security measures may include:</p>
+                <ul>
+                    <li>Protected account authentication.</li>
+                    <li>Access controls and permissions.</li>
+                    <li>Secure connections where supported.</li>
+                    <li>Restricted access to administrative functions.</li>
+                    <li>Monitoring and security-related logging.</li>
+                </ul>
+                <p>
+                    No internet-based service can guarantee absolute
+                    security. Users should also protect their passwords
+                    and devices.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>10. Data Retention</h2>
+                <p>
+                    We retain information for as long as reasonably
+                    necessary for the purposes described in this policy,
+                    including account management, platform operation,
+                    security, dispute handling, and legal compliance.
+                </p>
+                <p>
+                    When a user's Free Trial expires, account information
+                    and history may remain stored even though access to
+                    platform features becomes restricted.
+                </p>
+                <p>
+                    Information may be deleted, anonymized, or retained
+                    for a longer period where required or permitted by law.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>11. Your Privacy Rights</h2>
+                <p>
+                    Depending on your location and applicable law, you
+                    may have rights to:
+                </p>
+                <ul>
+                    <li>Request access to personal information we hold about you.</li>
+                    <li>Request correction of inaccurate information.</li>
+                    <li>Request deletion of certain personal information.</li>
+                    <li>Object to or request restriction of certain processing.</li>
+                    <li>Withdraw consent where processing is based on consent.</li>
+                    <li>Request a copy of information where data portability rights apply.</li>
+                    <li>Submit a complaint to a relevant privacy authority.</li>
+                </ul>
+                <p>
+                    These rights may be subject to legal exceptions.
+                    We may need to verify your identity before processing
+                    a request.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>12. Children's Privacy</h2>
+                <p>
+                    HUMAN FEEDBACK is not designed for children who are
+                    below the minimum age required to use the platform
+                    under applicable law.
+                </p>
+                <p>
+                    We do not knowingly collect personal information from
+                    children in violation of applicable legal requirements.
+                    If you believe a child has provided personal information
+                    improperly, please contact us.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>13. International Data Transfers</h2>
+                <p>
+                    Our service providers or infrastructure may process
+                    information in countries other than your country of
+                    residence.
+                </p>
+                <p>
+                    Where required by law, appropriate safeguards will
+                    be used for international transfers of personal
+                    information.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>14. Third-Party Services</h2>
+                <p>
+                    The platform may rely on third-party services for
+                    hosting, databases, email delivery, security, or other
+                    technical functions.
+                </p>
+                <p>
+                    These providers may process information on our behalf
+                    to deliver their services. Their own privacy policies
+                    may also apply to information they collect directly.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>15. Changes to This Privacy Policy</h2>
+                <p>
+                    We may update this Privacy Policy to reflect changes
+                    in our platform, service providers, data practices,
+                    or legal requirements.
+                </p>
+                <p>
+                    Updated versions will be published on this page with
+                    a revised effective date. Where required, we will
+                    provide additional notice or obtain consent.
+                </p>
+            </section>
+
+            <section class="legal-card">
+                <h2>16. Contact Us About Privacy</h2>
+                <p>
+                    If you have questions about this Privacy Policy or
+                    wish to make a privacy request, please contact us
+                    through our contact page.
+                </p>
+                <p>
+                    <a class="legal-contact" href="{{ url_for('contact_page') }}">
+                        Contact HUMAN FEEDBACK
+                    </a>
+                </p>
+            </section>
+
+            <p class="legal-updated">
+                Last updated: November 2026
+            </p>
+
+        </div>
+    </main>
+
+    {% include 'partials/footer.html' ignore missing %}
+
+</body>
+</html>

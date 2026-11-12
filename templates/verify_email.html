@@ -1,0 +1,489 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Verify your email address for your HUMAN FEEDBACK account.">
+    <title>Verify Email — HUMAN FEEDBACK</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            min-height: 100vh;
+            background: #F8FAFC;
+        }
+
+        .verify-header {
+            background: #FFFFFF;
+            border-bottom: 1px solid #E8EAF0;
+        }
+
+        .verify-header .container {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .verify-header-link {
+            color: #718096;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .verify-header-link a {
+            color: #F97316;
+            font-weight: 800;
+        }
+
+        .verify-main {
+            min-height: calc(100vh - 79px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .verify-visual {
+            background: linear-gradient(145deg, #101B40, #243B75);
+            padding: 65px 9%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verify-visual::before,
+        .verify-visual::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .verify-visual::before {
+            width: 420px;
+            height: 420px;
+            right: -170px;
+            top: -150px;
+        }
+
+        .verify-visual::after {
+            width: 300px;
+            height: 300px;
+            right: -110px;
+            top: -90px;
+        }
+
+        .verify-visual-content {
+            max-width: 490px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .verify-visual-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 13px;
+            border-radius: 30px;
+            color: #FED7AA;
+            background: rgba(249,115,22,.15);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .8px;
+        }
+
+        .verify-visual h1 {
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(34px, 4vw, 48px);
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+            margin: 27px 0 18px;
+        }
+
+        .verify-visual h1 span {
+            color: #FB923C;
+        }
+
+        .verify-visual-description {
+            color: #C6D0E4;
+            font-size: 13px;
+            line-height: 1.9;
+            max-width: 420px;
+        }
+
+        .verify-benefits {
+            display: grid;
+            gap: 18px;
+            margin-top: 40px;
+        }
+
+        .verify-benefit {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+        }
+
+        .verify-benefit-icon {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,.1);
+            color: #FDBA74;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .verify-benefit strong {
+            display: block;
+            color: white;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .verify-benefit p {
+            color: #B8C4DA;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .verify-form-side {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 55px 25px;
+        }
+
+        .verify-card {
+            width: 100%;
+            max-width: 430px;
+            background: #FFFFFF;
+            border: 1px solid #E8EAF0;
+            border-radius: 22px;
+            padding: 40px;
+            box-shadow: 0 12px 45px rgba(23,37,84,.05);
+            text-align: center;
+        }
+
+        .verify-icon {
+            width: 76px;
+            height: 76px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 25px;
+            border-radius: 22px;
+            background: #FFF7ED;
+            color: #F97316;
+            font-size: 32px;
+        }
+
+        .verify-card-label {
+            color: #F97316;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .verify-card h2 {
+            color: #172554;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 28px;
+            letter-spacing: -.8px;
+            margin: 12px 0 10px;
+        }
+
+        .verify-description {
+            color: #8993A5;
+            font-size: 12px;
+            line-height: 1.8;
+            margin-bottom: 22px;
+        }
+
+        .verify-email-box {
+            padding: 14px;
+            background: #F8FAFC;
+            border: 1px solid #E8EAF0;
+            border-radius: 11px;
+            margin-bottom: 23px;
+        }
+
+        .verify-email-label {
+            color: #8993A5;
+            font-size: 10px;
+            margin-bottom: 6px;
+        }
+
+        .verify-email-address {
+            color: #172554;
+            font-size: 12px;
+            font-weight: 800;
+            overflow-wrap: anywhere;
+        }
+
+        .verify-instructions {
+            text-align: left;
+            background: #FFF7ED;
+            border: 1px solid #FED7AA;
+            border-radius: 11px;
+            padding: 15px;
+            margin-bottom: 23px;
+        }
+
+        .verify-instructions strong {
+            display: block;
+            color: #9A3412;
+            font-size: 11px;
+            margin-bottom: 7px;
+        }
+
+        .verify-instructions p {
+            color: #9A3412;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        .verify-resend {
+            width: 100%;
+            min-height: 48px;
+            border: none;
+            border-radius: 10px;
+            background: #F97316;
+            color: #FFFFFF;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .verify-resend:hover {
+            background: #EA580C;
+            transform: translateY(-1px);
+        }
+
+        .verify-resend:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .verify-login {
+            display: block;
+            margin-top: 21px;
+            color: #718096;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .verify-login:hover {
+            color: #F97316;
+        }
+
+        .verify-help {
+            color: #8993A5;
+            font-size: 10px;
+            line-height: 1.8;
+            margin-top: 25px;
+        }
+
+        .verify-help a {
+            color: #F97316;
+            font-weight: 800;
+        }
+
+        .verify-security {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+            color: #8993A5;
+            font-size: 10px;
+            margin-top: 22px;
+        }
+
+        @media (max-width: 850px) {
+            .verify-main {
+                grid-template-columns: 1fr;
+            }
+
+            .verify-visual {
+                display: none;
+            }
+
+            .verify-form-side {
+                min-height: calc(100vh - 79px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .verify-header .container {
+                min-height: 68px;
+            }
+
+            .verify-header-link {
+                font-size: 10px;
+            }
+
+            .verify-form-side {
+                padding: 35px 16px;
+            }
+
+            .verify-card {
+                padding: 28px 22px;
+                border-radius: 17px;
+            }
+
+            .verify-card h2 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="verify-header">
+        <div class="container">
+
+            <a href="/" class="brand">
+                <span class="brand-icon">H</span>
+                <span>HUMAN<span class="brand-highlight">FEEDBACK</span></span>
+            </a>
+
+            <div class="verify-header-link">
+                Already verified?
+                <a href="/login">Sign in</a>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="verify-main">
+
+        <section class="verify-visual">
+            <div class="verify-visual-content">
+
+                <span class="verify-visual-label">
+                    <span>✦</span> ONE MORE STEP
+                </span>
+
+                <h1>
+                    Verify Your Email.
+                    <span>Unlock Your Journey.</span>
+                </h1>
+
+                <p class="verify-visual-description">
+                    Confirm your email address to help protect your
+                    account and complete your HUMAN FEEDBACK
+                    registration process.
+                </p>
+
+                <div class="verify-benefits">
+
+                    <div class="verify-benefit">
+                        <div class="verify-benefit-icon">▣</div>
+                        <div>
+                            <strong>Account Protection</strong>
+                            <p>Confirm that you have access to your registered email address.</p>
+                        </div>
+                    </div>
+
+                    <div class="verify-benefit">
+                        <div class="verify-benefit-icon">✉</div>
+                        <div>
+                            <strong>Check Your Inbox</strong>
+                            <p>Look for the verification email and follow its instructions.</p>
+                        </div>
+                    </div>
+
+                    <div class="verify-benefit">
+                        <div class="verify-benefit-icon">↗</div>
+                        <div>
+                            <strong>Continue Your Journey</strong>
+                            <p>Complete registration and access your account.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <section class="verify-form-side">
+
+            <div class="verify-card">
+
+                <div class="verify-icon">✉</div>
+
+                <span class="verify-card-label">EMAIL CONFIRMATION</span>
+
+                <h2>Check Your Email</h2>
+
+                <p class="verify-description">
+                    We've prepared an email verification step for your
+                    account. Open your inbox and follow the verification
+                    link to confirm your email address.
+                </p>
+
+                <div class="verify-email-box">
+                    <p class="verify-email-label">Verification email address</p>
+                    <p class="verify-email-address" id="emailAddress">
+                        your-email@example.com
+                    </p>
+                </div>
+
+                <div class="verify-instructions">
+                    <strong>Didn't receive the email?</strong>
+                    <p>
+                        Check your spam or junk folder. Make sure your
+                        email address is correct, then try requesting
+                        another verification email.
+                    </p>
+                </div>
+
+                <!-- Frontend preview only: resend verification will be connected later. -->
+                <button type="button" class="verify-resend" id="resendButton">
+                    Resend Verification Email
+                </button>
+
+                <a href="/login" class="verify-login">
+                    Already verified? Go to Login →
+                </a>
+
+                <p class="verify-help">
+                    Need assistance?
+                    <a href="/contact">Contact our support team</a>.
+                </p>
+
+                <div class="verify-security">
+                    <span>▣</span>
+                    Your account information is kept secure.
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const resendButton = document.getElementById("resendButton");
+
+        resendButton.addEventListener("click", function () {
+            alert("Email verification frontend preview only. Resending verification emails will be connected to the backend later.");
+        });
+    </script>
+
+</body>
+</html>

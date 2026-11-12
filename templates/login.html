@@ -1,0 +1,627 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Log in to your HUMAN FEEDBACK account to manage websites, feedback and credits.">
+    <title>Log In — HUMAN FEEDBACK</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            min-height: 100vh;
+            background: #F8FAFC;
+        }
+
+        .auth-header {
+            background: #FFFFFF;
+            border-bottom: 1px solid #E8EAF0;
+        }
+
+        .auth-header .container {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .auth-header-link {
+            color: #718096;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .auth-header-link a {
+            color: #F97316;
+            font-weight: 800;
+        }
+
+        .auth-main {
+            min-height: calc(100vh - 79px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .auth-visual {
+            background: linear-gradient(145deg, #101B40, #243B75);
+            padding: 65px 9%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-visual::before,
+        .auth-visual::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .auth-visual::before {
+            width: 420px;
+            height: 420px;
+            right: -170px;
+            top: -150px;
+        }
+
+        .auth-visual::after {
+            width: 300px;
+            height: 300px;
+            right: -110px;
+            top: -90px;
+        }
+
+        .auth-visual-content {
+            max-width: 490px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-visual-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 13px;
+            border-radius: 30px;
+            color: #FED7AA;
+            background: rgba(249,115,22,.15);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .8px;
+        }
+
+        .auth-visual h1 {
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(34px, 4vw, 48px);
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+            margin: 27px 0 18px;
+        }
+
+        .auth-visual h1 span {
+            color: #FB923C;
+        }
+
+        .auth-visual-description {
+            color: #C6D0E4;
+            font-size: 13px;
+            line-height: 1.9;
+            max-width: 420px;
+        }
+
+        .auth-benefits {
+            display: grid;
+            gap: 18px;
+            margin-top: 40px;
+        }
+
+        .auth-benefit {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+        }
+
+        .auth-benefit-icon {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,.1);
+            color: #FDBA74;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .auth-benefit strong {
+            display: block;
+            color: white;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .auth-benefit p {
+            color: #B8C4DA;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .auth-form-side {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 55px 25px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+            background: #FFFFFF;
+            border: 1px solid #E8EAF0;
+            border-radius: 22px;
+            padding: 40px;
+            box-shadow: 0 12px 45px rgba(23,37,84,.05);
+        }
+
+        .auth-card-label {
+            color: #F97316;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .auth-card h2 {
+            color: #172554;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 29px;
+            letter-spacing: -.8px;
+            margin: 12px 0 8px;
+        }
+
+        .auth-card-description {
+            color: #8993A5;
+            font-size: 12px;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .auth-field {
+            margin-bottom: 19px;
+        }
+
+        .auth-field label {
+            display: block;
+            color: #263247;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        .auth-input-wrap {
+            position: relative;
+        }
+
+        .auth-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 14px;
+            border: 1px solid #E1E6EF;
+            border-radius: 10px;
+            outline: none;
+            background: #FFFFFF;
+            color: #263247;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            transition: .2s ease;
+        }
+
+        .auth-input::placeholder {
+            color: #A0A9B8;
+        }
+
+        .auth-input:focus {
+            border-color: #F97316;
+            box-shadow: 0 0 0 3px rgba(249,115,22,.1);
+        }
+
+        .password-input {
+            padding-right: 75px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            color: #F97316;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .auth-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 5px 0 25px;
+        }
+
+        .remember-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #718096;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .remember-label input {
+            accent-color: #F97316;
+            width: 14px;
+            height: 14px;
+        }
+
+        .forgot-link {
+            color: #F97316;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .auth-submit {
+            width: 100%;
+            min-height: 49px;
+            border: none;
+            border-radius: 10px;
+            background: #F97316;
+            color: #FFFFFF;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .auth-submit:hover {
+            background: #EA580C;
+            transform: translateY(-1px);
+        }
+
+        .auth-submit:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 25px 0;
+            color: #A0A9B8;
+            font-size: 10px;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #E8EAF0;
+        }
+
+        .auth-register {
+            text-align: center;
+            color: #718096;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .auth-register a {
+            color: #F97316;
+            font-weight: 800;
+        }
+
+        .auth-security {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+            color: #8993A5;
+            font-size: 10px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 850px) {
+            .auth-main {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-visual {
+                display: none;
+            }
+
+            .auth-form-side {
+                min-height: calc(100vh - 79px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-header .container {
+                min-height: 68px;
+            }
+
+            .auth-header-link {
+                font-size: 10px;
+            }
+
+            .auth-form-side {
+                padding: 35px 16px;
+            }
+
+            .auth-card {
+                padding: 28px 22px;
+                border-radius: 17px;
+            }
+
+            .auth-card h2 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="auth-header">
+        <div class="container">
+            <a href="/" class="brand">
+                <span class="brand-icon">H</span>
+                <span>HUMAN<span class="brand-highlight">FEEDBACK</span></span>
+            </a>
+
+            <div class="auth-header-link">
+                Don't have an account?
+                <a href="/register">Create account</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="auth-main">
+
+        <section class="auth-visual">
+            <div class="auth-visual-content">
+
+                <span class="auth-visual-label">
+                    <span>✦</span> WELCOME BACK
+                </span>
+
+                <h1>
+                    Your Next Great
+                    Website Starts
+                    <span>With Feedback.</span>
+                </h1>
+
+                <p class="auth-visual-description">
+                    Sign in to connect with a community that helps
+                    websites become better through honest,
+                    constructive human feedback.
+                </p>
+
+                <div class="auth-benefits">
+
+                    <div class="auth-benefit">
+                        <div class="auth-benefit-icon">↗</div>
+                        <div>
+                            <strong>Improve Your Websites</strong>
+                            <p>Get useful perspectives and actionable feedback.</p>
+                        </div>
+                    </div>
+
+                    <div class="auth-benefit">
+                        <div class="auth-benefit-icon">★</div>
+                        <div>
+                            <strong>Earn Credits</strong>
+                            <p>Receive 10 credits for every approved feedback submission.</p>
+                        </div>
+                    </div>
+
+                    <div class="auth-benefit">
+                        <div class="auth-benefit-icon">◎</div>
+                        <div>
+                            <strong>Manage Everything</strong>
+                            <p>Keep track of websites, feedback and account activity.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="auth-form-side">
+            <div class="auth-card">
+
+                <span class="auth-card-label">MEMBER ACCESS</span>
+
+                <h2>Welcome Back!</h2>
+
+                <p class="auth-card-description">
+                    Enter your account details to sign in to HUMAN FEEDBACK.
+                </p>
+
+                <form id="loginForm">
+
+                    <div class="auth-field">
+                        <label for="email">Email Address</label>
+                        <input
+                            class="auth-input"
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="password">Password</label>
+
+                        <div class="auth-input-wrap">
+                            <input
+                                class="auth-input password-input"
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                class="password-toggle"
+                                type="button"
+                                id="togglePassword"
+                            >
+                                Show
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="auth-options">
+                        <label class="remember-label">
+                            <input type="checkbox" name="remember">
+                            Remember me
+                        </label>
+
+                        <a href="/forgot-password" class="forgot-link">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <button type="submit" class="auth-submit">
+                        Sign In <span>→</span>
+                    </button>
+
+                </form>
+
+                <div class="auth-divider">OR</div>
+
+                <p class="auth-register">
+                    New to HUMAN FEEDBACK?
+                    <a href="/register">Create an account</a>
+                </p>
+
+                <div class="auth-security">
+                    <span>▣</span>
+                    Your account information is kept secure.
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        async function getCsrfToken() {
+            const response = await fetch("/api/csrf-token", {
+                credentials: "same-origin"
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.csrf_token) {
+                throw new Error("Security token could not be generated. Please refresh the page.");
+            }
+
+            return data.csrf_token;
+        }
+
+        function showLoginMessage(message) {
+            let element = document.getElementById("loginMessage");
+
+            if (!element) {
+                element = document.createElement("div");
+                element.id = "loginMessage";
+                element.setAttribute("role", "alert");
+                element.style.cssText = "margin:16px 0;padding:12px 14px;border-radius:8px;background:#FEF2F2;color:#991B1B;font-size:14px;line-height:1.5;";
+                document.getElementById("loginForm").prepend(element);
+            }
+
+            element.textContent = message;
+        }
+
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.getElementById("togglePassword");
+
+        togglePassword.addEventListener("click", function () {
+            const isPassword = passwordInput.type === "password";
+
+            passwordInput.type = isPassword ? "text" : "password";
+            togglePassword.textContent = isPassword ? "Hide" : "Show";
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const form = event.currentTarget;
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            const email = form.elements.email.value.trim();
+            const password = form.elements.password.value;
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Signing In...";
+
+            try {
+                const csrfToken = await getCsrfToken();
+
+                const response = await fetch("/api/auth/login", {
+                    method: "POST",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || "Login failed. Please check your details.");
+                }
+
+                window.location.href = "/dashboard";
+
+            } catch (error) {
+                showLoginMessage(
+                    error.message || "Something went wrong. Please try again."
+                );
+
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Sign In <span>→</span>';
+            }
+        });
+    </script>
+
+</body>
+</html>

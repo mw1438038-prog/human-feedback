@@ -1,0 +1,729 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | HUMAN FEEDBACK</title>
+    <style>
+        :root {
+            --navy: #172554;
+            --dark: #101B40;
+            --orange: #F97316;
+            --orange-dark: #EA580C;
+            --bg: #F8FAFC;
+            --soft: #FFF7ED;
+            --text: #263247;
+            --muted: #64748B;
+            --border: #E2E8F0;
+            --green: #15803D;
+            --red: #DC2626;
+            --shadow: 0 8px 25px rgba(23,37,84,.06);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button, input, select { font: inherit; }
+
+        .app { display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            background: var(--dark);
+            color: white;
+            padding: 26px 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: 800;
+            padding: 0 12px 30px;
+        }
+
+        .brand span { color: var(--orange); }
+
+        .nav-label {
+            color: #94A3B8;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 15px 12px 9px;
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 9px;
+            color: #CBD5E1;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .nav a:hover, .nav a.active {
+            background: rgba(249,115,22,.15);
+            color: white;
+        }
+
+        .nav a.active { border-left: 3px solid var(--orange); }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,.12);
+            padding: 20px 10px 0;
+        }
+
+        .user { display: flex; align-items: center; gap: 10px; }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--orange);
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+        }
+
+        .user strong { display: block; font-size: 12px; }
+        .user small { color: #94A3B8; font-size: 11px; }
+
+        .main { flex: 1; min-width: 0; }
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 34px;
+        }
+
+        .topbar h2 { color: var(--navy); font-size: 19px; }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .top-right a { font-size: 13px; color: var(--muted); }
+
+        .top-right .upgrade {
+            background: var(--orange);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .content {
+            max-width: 1050px;
+            margin: auto;
+            padding: 32px;
+        }
+
+        .page-heading { margin-bottom: 25px; }
+
+        .page-heading h1 {
+            font-size: 27px;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 23px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .panel-heading {
+            margin-bottom: 19px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-heading h2 { color: var(--navy); font-size: 16px; }
+        .panel-heading p { color: var(--muted); font-size: 11px; margin-top: 6px; line-height: 1.6; }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 17px 0;
+            border-bottom: 1px solid #EDF1F6;
+        }
+
+        .setting-row:last-child { border-bottom: 0; }
+
+        .setting-info { flex: 1; }
+
+        .setting-info strong {
+            display: block;
+            color: var(--navy);
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .setting-info p {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 43px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #CBD5E1;
+            border-radius: 20px;
+            transition: .2s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: .2s;
+        }
+
+        .switch input:checked + .slider { background: var(--orange); }
+        .switch input:checked + .slider:before { transform: translateX(19px); }
+
+        .field { margin-bottom: 17px; }
+
+        .field label {
+            display: block;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .field select, .field input {
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 11px 13px;
+            font-size: 12px;
+            color: var(--text);
+            background: white;
+            outline: none;
+        }
+
+        .field select:focus, .field input:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(249,115,22,.1);
+        }
+
+        .field small {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 6px;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 11px 16px;
+            background: white;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn.primary {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: white;
+        }
+
+        .btn.primary:hover { background: var(--orange-dark); }
+
+        .btn.danger {
+            color: var(--red);
+            border-color: #FECACA;
+            background: white;
+        }
+
+        .btn.danger:hover { background: #FEF2F2; }
+
+        .message {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .message.success { background: #F0FDF4; color: #166534; }
+        .message.error { background: #FEF2F2; color: #B91C1C; }
+
+        .notice {
+            background: var(--soft);
+            border: 1px solid #FED7AA;
+            border-left: 4px solid var(--orange);
+            border-radius: 9px;
+            padding: 16px 18px;
+        }
+
+        .notice h3 { color: var(--navy); font-size: 13px; margin-bottom: 7px; }
+        .notice p { color: var(--muted); font-size: 11px; line-height: 1.7; }
+
+        .danger-zone {
+            border-color: #FECACA;
+        }
+
+        .danger-zone .panel-heading h2 { color: var(--red); }
+
+        .mobile-menu {
+            display: none;
+            border: 0;
+            background: none;
+            font-size: 23px;
+            color: var(--navy);
+            cursor: pointer;
+        }
+
+        .-note {
+            text-align: center;
+            padding: 20px 5px 5px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        @media(max-width: 1000px) {
+            .sidebar { width: 215px; }
+            .content { padding: 25px 20px; }
+        }
+
+        @media(max-width: 720px) {
+            .sidebar {
+                position: fixed;
+                z-index: 20;
+                top: 0;
+                bottom: 0;
+                left: -260px;
+                width: 250px;
+                transition: left .25s;
+            }
+
+            .sidebar.show { left: 0; }
+            .mobile-menu { display: block; }
+
+            .topbar { height: 65px; padding: 0 16px; }
+            .topbar h2 { font-size: 16px; }
+            .top-right { gap: 9px; }
+            .top-right a:first-child { display: none; }
+            .top-right .upgrade { font-size: 11px; padding: 9px 11px; }
+
+            .content { padding: 22px 14px; }
+            .page-heading h1 { font-size: 23px; }
+            .panel { padding: 18px 14px; }
+        }
+
+        @media(max-width: 480px) {
+            .setting-row { gap: 10px; }
+            .setting-info strong { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">HUMAN <span>FEEDBACK</span></div>
+
+        <nav class="nav">
+            <div class="nav-label">MAIN MENU</div>
+            <a href="/dashboard">▦ Dashboard</a>
+            <a href="/my-websites">▣ My Websites</a>
+            <a href="/feedback">✉ Feedback</a>
+            <a href="/replies">▤ Replies</a>
+
+            <div class="nav-label">ACCOUNT</div>
+            <a href="/credits">◈ My Credits</a>
+            <a href="/credit-history">◷ Credit History</a>
+            <a href="/analytics">▥ Analytics</a>
+            <a href="/notifications">♢ Notifications</a>
+            <a href="/reports">⚑ Reports</a>
+
+            <div class="nav-label">SETTINGS</div>
+            <a href="/profile">♙ My Profile</a>
+            <a href="/settings" class="active">⚙ Settings</a>
+            <a href="/subscription">◇ Subscription</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="user">
+                <div class="avatar">JD</div>
+                <div>
+                    <strong>Account</strong>
+                    <small>Pro Member</small>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div style="display:flex;align-items:center;gap:14px;">
+                <button class="mobile-menu" id="menuToggle" aria-label="Toggle menu">☰</button>
+                <h2>Settings</h2>
+            </div>
+            <div class="top-right">
+                <a href="/profile">My Profile</a>
+                <a href="/subscription" class="upgrade">View Plans</a>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <section class="page-heading">
+                <h1>Account Settings</h1>
+                <p>Manage your notification preferences, privacy options and account security.</p>
+            </section>
+
+            <div class="message success" id="successMessage">
+                Your settings preview has been updated in this browser page only.
+            </div>
+
+            <div class="message error" id="errorMessage"></div>
+
+            <form id="settingsForm">
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Notification Preferences</h2>
+                        <p>Choose which types of notifications you want to receive.</p>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Email Notifications</strong>
+                            <p>Receive important account updates and activity notifications by email.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="emailNotifications" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Feedback Updates</strong>
+                            <p>Get updates when feedback is approved, rejected or receives a reply.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="feedbackNotifications" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Website Status Updates</strong>
+                            <p>Receive notifications about website submissions, reviews and status changes.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="websiteNotifications" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Credit Activity</strong>
+                            <p>Receive updates when credits are earned, refunded or adjusted.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="creditNotifications" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Product Announcements</strong>
+                            <p>Receive optional announcements about new features and improvements.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="marketingNotifications">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Privacy Preferences</h2>
+                        <p>Control how your public profile information is displayed.</p>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Show Public Display Name</strong>
+                            <p>Allow your display name to appear on permitted public feedback activities.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="publicName" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Show Profile Image</strong>
+                            <p>Allow your profile image to appear where profile information is displayed.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="publicImage" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Show Company Name</strong>
+                            <p>Allow your company or organization name to be displayed on your public profile.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="publicCompany">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Language & Region</h2>
+                        <p>Choose your preferred display language and time zone.</p>
+                    </div>
+
+                    <div class="field">
+                        <label for="language">Language</label>
+                        <select id="language">
+                            <option value="en">English</option>
+                        </select>
+                        <small>English is currently the available interface language.</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="timezone">Time Zone</label>
+                        <select id="timezone">
+                            <option value="UTC">UTC</option>
+                            <option value="Asia/Karachi">Asia/Karachi (Pakistan)</option>
+                            <option value="Europe/London">Europe/London</option>
+                            <option value="America/New_York">America/New_York</option>
+                            <option value="America/Los_Angeles">America/Los_Angeles</option>
+                            <option value="Asia/Dubai">Asia/Dubai</option>
+                            <option value="Australia/Sydney">Australia/Sydney</option>
+                        </select>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Security</h2>
+                        <p>Review important account security options.</p>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Password</strong>
+                            <p>Change your account password through the secure password management process.</p>
+                        </div>
+                        <a href="/forgot-password" class="btn">Change Password</a>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Two-Factor Authentication</strong>
+                            <p>Additional sign-in verification can help protect your account.</p>
+                        </div>
+                        <span style="font-size:11px;color:var(--muted);">Not configured</span>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Active Sessions</strong>
+                            <p>Session management will allow you to review and revoke signed-in devices.</p>
+                        </div>
+                        <span style="font-size:11px;color:var(--muted);">Coming with integration</span>
+                    </div>
+                </section>
+
+                <section class="panel danger-zone">
+                    <div class="panel-heading">
+                        <h2>Account Actions</h2>
+                        <p>Important account actions. These controls are previews only.</p>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Download My Data</strong>
+                            <p>Request a copy of your account information and activity history.</p>
+                        </div>
+                        <button type="button" class="btn" id="downloadBtn">Request Data</button>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <strong>Delete Account</strong>
+                            <p>Account deletion requires a secure confirmation process and clear information about data retention.</p>
+                        </div>
+                        <button type="button" class="btn danger" id="deleteBtn">Account Deletion</button>
+                    </div>
+                </section>
+
+                <div style="display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+                    <button type="reset" class="btn" id="resetBtn">Reset Changes</button>
+                    <button type="submit" class="btn primary">Save Settings</button>
+                </div>
+
+            </form>
+
+            <section class="notice">
+                <h3>Privacy & Security</h3>
+                <p>
+                    Your account settings should be handled securely. Password changes,
+                    data export, account deletion and notification delivery will require
+                    authenticated backend operations. Read our
+                    <a href="/privacy-policy" style="color:var(--orange-dark);font-weight:700;">Privacy Policy</a>
+                    for more information.
+                </p>
+            </section>
+
+            <p class="-note">
+                No preferences, security settings or account data are saved to the server.
+            </p>
+
+        </div>
+    </main>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.getElementById("menuToggle");
+
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener("click", function () {
+            sidebar.classList.toggle("show");
+            menuToggle.textContent =
+                sidebar.classList.contains("show") ? "✕" : "☰";
+        });
+    }
+
+    const form = document.getElementById("settingsForm");
+    const successMessage = document.getElementById("successMessage");
+    const errorMessage = document.getElementById("errorMessage");
+    const settingInputs = Array.from(
+        form.querySelectorAll("input, select")
+    );
+
+    const initialSettings = settingInputs.map(function (input) {
+        return {
+            id: input.id,
+            value: input.type === "checkbox" ? input.checked : input.value
+        };
+    });
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        successMessage.style.display = "block";
+        errorMessage.style.display = "none";
+
+        successMessage.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", function () {
+        setTimeout(function () {
+            initialSettings.forEach(function (setting) {
+                const input = document.getElementById(setting.id);
+
+                if (!input) return;
+
+                if (input.type === "checkbox") {
+                    input.checked = setting.value;
+                } else {
+                    input.value = setting.value;
+                }
+            });
+
+            successMessage.style.display = "none";
+            errorMessage.style.display = "none";
+        }, 0);
+    });
+
+    document.getElementById("downloadBtn").addEventListener("click", function () {
+        errorMessage.textContent =
+            "Data export is not connected yet. This preview has not created a data export request.";
+        errorMessage.style.display = "block";
+        successMessage.style.display = "none";
+    });
+
+    document.getElementById("deleteBtn").addEventListener("click", function () {
+        const confirmed = window.confirm(
+            "This is a preview only. Account deletion is not connected. Do you want to view this notice?"
+        );
+
+        if (confirmed) {
+            errorMessage.textContent =
+                "No account has been deleted. A secure account deletion workflow will be implemented during backend integration.";
+            errorMessage.style.display = "block";
+            successMessage.style.display = "none";
+        }
+    });
+});
+</script>
+</body>
+</html>

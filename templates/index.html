@@ -1,0 +1,666 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Exchange honest website feedback, earn credits and grow your online presence with HUMAN FEEDBACK.">
+
+    <title>HUMAN FEEDBACK â€” Give Feedback. Grow Together.</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-wrapper">
+
+            <a href="/" class="brand">
+                <span class="brand-icon">H</span>
+                <span>HUMAN<span class="brand-highlight">FEEDBACK</span></span>
+            </a>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="#home" class="active">Home</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="/login" class="login-link">Log in</a>
+                <a href="/register" class="btn btn-primary nav-button">
+                    Get Started <span>â†’</span>
+                </a>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                â˜°
+            </button>
+
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- HERO SECTION -->
+        <section class="hero" id="home">
+            <div class="container hero-grid">
+
+                <div class="hero-content">
+
+                    <div class="eyebrow">
+                        <span class="status-dot"></span>
+                        A COMMUNITY THAT GROWS TOGETHER
+                    </div>
+
+                    <h1>
+                        Better Websites<br>
+                        Start With <span>Real Feedback.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Give honest feedback on websites, earn credits,
+                        and get valuable insights to make your own website better.
+                        Growth works better together.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="/register" class="btn btn-primary btn-large">
+                            Start for Free <span>â†’</span>
+                        </a>
+
+                        <a href="#how-it-works" class="btn btn-outline btn-large">
+                            Explore How It Works
+                        </a>
+                    </div>
+
+                    <div class="hero-trust">
+                        <div class="avatar-stack">
+                            <span>JD</span>
+                            <span>AM</span>
+                            <span>SK</span>
+                            <span>+</span>
+                        </div>
+
+                        <div>
+                            <strong>Built for website creators</strong>
+                            <small>Give feedback. Receive feedback. Grow.</small>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- DASHBOARD PREVIEW -->
+                <div class="hero-visual">
+
+                    <div class="floating-tag tag-top">
+                        <span class="tag-icon">âœ¦</span>
+                        Honest feedback matters
+                    </div>
+
+                    <div class="dashboard-preview">
+
+                        <div class="preview-header">
+                            <div>
+                                <span class="preview-label">YOUR OVERVIEW</span>
+                                <h3>Welcome back, Alex ðŸ‘‹</h3>
+                            </div>
+
+                            <div class="preview-avatar">A</div>
+                        </div>
+
+                        <div class="preview-stats">
+
+                            <div class="preview-stat">
+                                <span>Available Credits</span>
+                                <strong>—</strong>
+                                <small class="positive">â†— Ready to use</small>
+                            </div>
+
+                            <div class="preview-stat">
+                                <span>Feedback Received</span>
+                                <strong>24</strong>
+                                <small class="positive">â†— Great progress</small>
+                            </div>
+
+                        </div>
+
+                        <div class="preview-chart">
+
+                            <div class="chart-heading">
+                                <div>
+                                    <span>FEEDBACK ACTIVITY</span>
+                                    <h4>Your growth journey</h4>
+                                </div>
+
+                                <span class="chart-period">Last 7 days</span>
+                            </div>
+
+                            <div class="chart-bars">
+                                <div style="height:35%"></div>
+                                <div style="height:55%"></div>
+                                <div style="height:42%"></div>
+                                <div style="height:75%"></div>
+                                <div style="height:58%"></div>
+                                <div style="height:90%"></div>
+                                <div style="height:68%"></div>
+                            </div>
+
+                            <div class="chart-days">
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+                                <span>Sun</span>
+                            </div>
+
+                        </div>
+
+                        <div class="preview-feedback">
+                            <div class="feedback-icon">âœ“</div>
+                            <div>
+                                <strong>Feedback approved</strong>
+                                <small>You've earned 10 credits</small>
+                            </div>
+                            <span class="reward">+10</span>
+                        </div>
+
+                    </div>
+
+                    <div class="floating-tag tag-bottom">
+                        <span>â˜…</span> Every review makes a difference
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- VALUE STRIP -->
+        <section class="value-strip">
+            <div class="container value-grid">
+                <div>
+                    <strong>Give</strong>
+                    <span>Honest feedback</span>
+                </div>
+                <div>
+                    <strong>Earn</strong>
+                    <span>Reward credits</span>
+                </div>
+                <div>
+                    <strong>Improve</strong>
+                    <span>Your website</span>
+                </div>
+                <div>
+                    <strong>Grow</strong>
+                    <span>Together</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- HOW IT WORKS -->
+        <section class="section" id="how-it-works">
+
+            <div class="container">
+
+                <div class="section-heading">
+                    <span class="section-label">SIMPLE BY DESIGN</span>
+                    <h2>Three Steps. <span>Real Progress.</span></h2>
+                    <p>
+                        Getting useful feedback and helping others
+                        improve their websites has never been easier.
+                    </p>
+                </div>
+
+                <div class="steps-grid">
+
+                    <article class="step-card">
+                        <div class="step-number">01</div>
+                        <div class="step-icon orange-icon">â†—</div>
+                        <h3>Explore Websites</h3>
+                        <p>
+                            Discover websites from other creators
+                            and explore their products and services.
+                        </p>
+                    </article>
+
+                    <article class="step-card featured-step">
+                        <div class="step-number">02</div>
+                        <div class="step-icon navy-icon">âœŽ</div>
+                        <h3>Share Your Feedback</h3>
+                        <p>
+                            Share thoughtful reviews about design,
+                            speed, usability and overall experience.
+                        </p>
+                    </article>
+
+                    <article class="step-card">
+                        <div class="step-number">03</div>
+                        <div class="step-icon orange-icon">â˜…</div>
+                        <h3>Earn & Grow</h3>
+                        <p>
+                            Get 10 credits for every approved feedback
+                            and use credits to submit your website.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FEATURES -->
+        <section class="section features-section" id="features">
+
+            <div class="container">
+
+                <div class="section-heading">
+                    <span class="section-label">MADE FOR BETTER EXPERIENCES</span>
+                    <h2>Everything You Need to <span>Grow.</span></h2>
+                    <p>
+                        Powerful tools that make exchanging website
+                        feedback simple, transparent and rewarding.
+                    </p>
+                </div>
+
+                <div class="features-grid">
+
+                    <article class="feature-card feature-large">
+                        <div class="feature-icon">â—Ž</div>
+                        <span class="feature-category">WEBSITE MANAGEMENT</span>
+                        <h3>Your Websites,<br>One Workspace.</h3>
+                        <p>
+                            Manage your submitted websites, track their
+                            approval status and monitor feedback activity.
+                        </p>
+                        
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">âœ¦</div>
+                        <span class="feature-category">REWARDS</span>
+                        <h3>Earn Valuable Credits.</h3>
+                        <p>
+                            Receive 10 credits for every approved
+                            feedback you contribute.
+                        </p>
+                        <div class="credit-illustration">
+                            <span>âœ¦</span>
+                            <strong>+10 Credits</strong>
+                        </div>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">â—·</div>
+                        <span class="feature-category">INSIGHTS</span>
+                        <h3>Track Your Progress.</h3>
+                        <p>
+                            Understand your feedback activity and
+                            website performance with clear insights.
+                        </p>
+                        <div class="insight-line">
+                            <span></span><span></span><span></span>
+                            <span></span><span></span><span></span>
+                            <span></span>
+                        </div>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">â—‡</div>
+                        <span class="feature-category">COMMUNITY</span>
+                        <h3>Grow Together.</h3>
+                        <p>
+                            Connect website creators and reviewers
+                            through meaningful feedback exchanges.
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">âœ“</div>
+                        <span class="feature-category">TRANSPARENCY</span>
+                        <h3>Fair & Reviewed Feedback.</h3>
+                        <p>
+                            Feedback goes through an approval process
+                            before credits are awarded.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PRICING -->
+        <section class="section pricing-section" id="pricing">
+
+            <div class="container">
+
+                <div class="section-heading">
+                    <span class="section-label">SIMPLE & TRANSPARENT</span>
+                    <h2>Choose Your Way to <span>Grow.</span></h2>
+                    <p>
+                        Start exploring for free and upgrade when
+                        you're ready for more.
+                    </p>
+                </div>
+
+                <div class="pricing-grid">
+
+                    <article class="pricing-card">
+                        <span class="plan-name">FREE TRIAL</span>
+                        <h3>$0 <small>/ 30 days</small></h3>
+                        <p>Explore the platform and get started.</p>
+
+                        <div class="plan-divider"></div>
+
+                        <ul>
+                            <li>âœ“ One website</li>
+                            <li>âœ“ Earn credits through approved feedback</li>
+                            <li>âœ“ Access during your 30-day trial</li>
+                            <li>âœ“ Basic dashboard</li>
+                        </ul>
+
+                        <a href="/register" class="btn btn-outline pricing-button">
+                            Start Free Trial
+                        </a>
+                    </article>
+
+
+                    <article class="pricing-card popular-plan">
+                        <span class="popular-label">MOST POPULAR</span>
+                        <span class="plan-name">PRO</span>
+                        <h3>$9 <small>/ month</small></h3>
+                        <p>For creators ready to grow.</p>
+
+                        <div class="plan-divider"></div>
+
+                        <ul>
+                            <li>âœ“ Up to 3 websites</li>
+                            <li>âœ“ No 1,000-credit website submission requirement</li>
+                            <li>âœ“ Feedback and rewards</li>
+                            <li>âœ“ Analytics and insights</li>
+                        </ul>
+
+                        <a href="/register" class="btn btn-primary pricing-button">
+                            Get Pro
+                        </a>
+                    </article>
+
+
+                    <article class="pricing-card">
+                        <span class="plan-name">BUSINESS</span>
+                        <h3>$24 <small>/ month</small></h3>
+                        <p>For businesses managing more websites.</p>
+
+                        <div class="plan-divider"></div>
+
+                        <ul>
+                            <li>âœ“ Unlimited websites</li>
+                            <li>âœ“ No 1,000-credit website submission requirement</li>
+                            <li>âœ“ Feedback and rewards</li>
+                            <li>âœ“ Advanced analytics and insights</li>
+                        </ul>
+
+                        <a href="/register" class="btn btn-outline pricing-button">
+                            Get Business
+                        </a>
+                    </article>
+
+                </div>
+
+                <p class="pricing-note">
+                    All plans are subject to the platform's feedback
+                    approval and fair-use policies.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- COMMUNITY CTA -->
+        <section class="community-section">
+
+            <div class="container community-content">
+
+                <div>
+                    <span class="section-label light-label">YOUR FEEDBACK HAS VALUE</span>
+                    <h2>Great Websites<br>Are Built <span>Together.</span></h2>
+                    <p>
+                        Join a community where your insights help others
+                        grow, and their feedback helps you improve.
+                    </p>
+                </div>
+
+                <a href="/register" class="btn btn-light btn-large">
+                    Join the Community <span>â†’</span>
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- TESTIMONIALS -->
+        <section class="section" id="testimonials">
+
+            <div class="container">
+
+                <div class="section-heading">
+                    <span class="section-label">COMMUNITY VOICES</span>
+                    <h2>Feedback That <span>Makes a Difference.</span></h2>
+                    <p>
+                        Meaningful feedback can help turn a good
+                        website into a great experience.
+                    </p>
+                </div>
+
+                <div class="testimonials-grid">
+
+                    <article class="testimonial-card">
+                        <div class="stars">â˜…â˜…â˜…â˜…â˜…</div>
+                        <p>
+                            "Getting different perspectives helped
+                            me notice things I had completely missed
+                            on my website."
+                        </p>
+                        <div class="testimonial-author">
+                            <span class="author-avatar">JD</span>
+                            <div>
+                                <strong>Jordan Davis</strong>
+                                <small>Website Creator</small>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="testimonial-card">
+                        <div class="stars">â˜…â˜…â˜…â˜…â˜…</div>
+                        <p>
+                            "I love the idea of giving feedback
+                            and receiving useful insights in return.
+                            It makes improvement collaborative."
+                        </p>
+                        <div class="testimonial-author">
+                            <span class="author-avatar coral-avatar">AM</span>
+                            <div>
+                                <strong>—</strong>
+                                <small>Digital Creator</small>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="testimonial-card">
+                        <div class="stars">â˜…â˜…â˜…â˜…â˜…</div>
+                        <p>
+                            "A community where thoughtful feedback
+                            matters is exactly what website creators
+                            need."
+                        </p>
+                        <div class="testimonial-author">
+                            <span class="author-avatar blue-avatar">SK</span>
+                            <div>
+                                <strong>Sam Kim</strong>
+                                <small>Product Designer</small>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+
+                <p class="-note">
+                     testimonials shown as design preview content.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- FAQ -->
+        <section class="section faq-section" id="faq">
+
+            <div class="container faq-layout">
+
+                <div class="faq-intro">
+                    <span class="section-label">NEED TO KNOW MORE?</span>
+                    <h2>Frequently Asked <span>Questions.</span></h2>
+                    <p>
+                        Find answers to common questions about
+                        the HUMAN FEEDBACK platform.
+                    </p>
+                    <a href="/contact" class="faq-contact">
+                        Still have questions? Contact us â†’
+                    </a>
+                </div>
+
+                <div class="faq-list">
+
+                    <details>
+                        <summary>What is HUMAN FEEDBACK?</summary>
+                        <p>
+                            HUMAN FEEDBACK is a community platform where
+                            website creators exchange honest feedback
+                            and earn credits for approved contributions.
+                        </p>
+                    </details>
+
+                    <details>
+                        <summary>How do I earn credits?</summary>
+                        <p>
+                            You earn 10 credits when your submitted
+                            feedback is reviewed and approved.
+                        </p>
+                    </details>
+
+                    <details>
+                        <summary>How does the free trial work?</summary>
+                        <p>
+                            The Free plan provides a one-time 30-day
+                            trial starting with your first successful login.
+                        </p>
+                    </details>
+
+                    <details>
+                        <summary>Do I need credits to submit a website?</summary>
+                        <p>
+                            Free trial users need at least 1,000 available
+                            credits for a website submission. Pro and
+                            Business subscribers do not have this requirement.
+                        </p>
+                    </details>
+
+                    <details>
+                        <summary>Can I upgrade my plan?</summary>
+                        <p>
+                            Pro and Business subscriptions are monthly
+                            plans. Subscription management will be
+                            available through the platform.
+                        </p>
+                    </details>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="footer-grid">
+
+                <div class="footer-brand">
+                    <a href="/" class="brand footer-logo">
+                        <span class="brand-icon">H</span>
+                        <span>HUMAN<span class="brand-highlight">FEEDBACK</span></span>
+                    </a>
+
+                    <p>
+                        Better websites begin with better feedback.
+                        Grow together with a community that values
+                        honest opinions and meaningful improvements.
+                    </p>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Platform</h4>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#features">Features</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="#testimonials">Community</a>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <a href="/about">About Us</a>
+                    <a href="/contact">Contact</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <a href="/privacy-policy">Privacy Policy</a>
+                    <a href="/terms">Terms of Service</a>
+                    <a href="/cookie-policy">Cookie Policy</a>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>Â© 2026 HUMAN FEEDBACK. All rights reserved.</p>
+                <p>Built for better website experiences.</p>
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>
