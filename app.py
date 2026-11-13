@@ -142,9 +142,7 @@ def create_app():
     def reset_password_page():
         return render_template("reset_password.html")
 
-    @app.get("/verify-email")
-    def verify_email_page():
-        return render_template("verify_email.html")
+
 
     @app.get("/terms")
     def terms_page():

@@ -1,4 +1,5 @@
-﻿from datetime import datetime, timedelta, timezone
+﻿
+from datetime import datetime, timedelta, timezone
 import hashlib
 import hmac
 
@@ -34,11 +35,6 @@ def utc_now():
 
 
 def password_fingerprint(user):
-    """
-    Create a fingerprint of the current password hash.
-    This allows password reset tokens to become invalid
-    immediately after the password changes.
-    """
     return hashlib.sha256(
         user.password_hash.encode("utf-8")
     ).hexdigest()
@@ -139,10 +135,8 @@ def load_user(user_id):
     """
     Session ID format:
         user_id:auth_version
-
-    Old sessions with an outdated auth_version
-    are automatically rejected.
     """
+
     try:
         user_id, session_version = user_id.split(":", 1)
 
@@ -169,6 +163,12 @@ def error_response(message, status=400):
         "message": message
     }), status
 
+
+# --------------------------------------------------
+# REGISTER
+# No email confirmation required
+# Public registration always creates a normal user
+# --------------------------------------------------
 
 @auth_bp.post("/register")
 @limiter.limit("5 per hour")
@@ -218,8 +218,13 @@ def register():
     user = User(
         name=name,
         email=email,
+
+        # Never accept a role from public signup.
         role="user",
-        is_email_verified=False,
+
+        # No email verification required.
+        is_email_verified=True,
+
         is_active=True,
         is_suspended=False,
         free_trial_used=False
@@ -229,45 +234,11 @@ def register():
 
     try:
         db.session.add(user)
-        db.session.flush()
-
-        token = generate_token(
-            user,
-            "email_verification"
-        )
-
-        verification_url = (
-            f"{current_app.config['APP_BASE_URL']}"
-            f"/api/auth/verify-email?token={token}"
-        )
-
-        email_sent = send_auth_email(
-            "Verify your HUMAN FEEDBACK account",
-            user.email,
-            (
-                f"Hello {user.name},\n\n"
-                "Please verify your email using this link:\n"
-                f"{verification_url}\n\n"
-                "This link expires in 24 hours."
-            )
-        )
-
-        if not email_sent:
-            db.session.rollback()
-
-            return error_response(
-                "Registration email could not be sent. Please try again later.",
-                503
-            )
-
         db.session.commit()
 
         return jsonify({
             "success": True,
-            "message": (
-                "Registration successful. "
-                "Please verify your email before logging in."
-            )
+            "message": "Registration successful. You can now log in."
         }), 201
 
     except Exception:
@@ -283,96 +254,10 @@ def register():
         )
 
 
-@auth_bp.get("/verify-email")
-def verify_email():
-    token = request.args.get("token", "")
-
-    user = verify_token(
-        token,
-        "email_verification",
-        86400
-    )
-
-    if not user:
-        return error_response(
-            "Verification link is invalid or expired."
-        )
-
-    if user.is_email_verified:
-        return jsonify({
-            "success": True,
-            "message": "Email is already verified."
-        })
-
-    user.is_email_verified = True
-    user.updated_at = utc_now()
-
-    try:
-        db.session.commit()
-
-    except Exception:
-        db.session.rollback()
-
-        current_app.logger.exception(
-            "Email verification update failed"
-        )
-
-        return error_response(
-            "Email verification could not be completed.",
-            500
-        )
-
-    return jsonify({
-        "success": True,
-        "message": (
-            "Email verified successfully. "
-            "You can now log in."
-        )
-    })
-
-
-@auth_bp.post("/resend-verification")
-@limiter.limit("3 per hour")
-def resend_verification():
-    data = request.get_json(silent=True) or {}
-
-    email = str(
-        data.get("email", "")
-    ).strip().lower()
-
-    if email:
-        user = User.query.filter(
-            func.lower(User.email) == email
-        ).first()
-
-        if user and not user.is_email_verified:
-            token = generate_token(
-                user,
-                "email_verification"
-            )
-
-            verification_url = (
-                f"{current_app.config['APP_BASE_URL']}"
-                f"/api/auth/verify-email?token={token}"
-            )
-
-            send_auth_email(
-                "Verify your HUMAN FEEDBACK account",
-                user.email,
-                (
-                    "Verify your email using this link:\n"
-                    f"{verification_url}"
-                )
-            )
-
-    return jsonify({
-        "success": True,
-        "message": (
-            "If the account requires verification, "
-            "an email will be sent."
-        )
-    })
-
+# --------------------------------------------------
+# LOGIN
+# No email confirmation required
+# --------------------------------------------------
 
 @auth_bp.post("/login")
 @limiter.limit("10 per hour")
@@ -404,12 +289,6 @@ def login():
         return error_response(
             "Invalid email or password.",
             401
-        )
-
-    if not user.is_email_verified:
-        return error_response(
-            "Please verify your email before logging in.",
-            403
         )
 
     if not user.is_active:
@@ -472,6 +351,10 @@ def login():
     })
 
 
+# --------------------------------------------------
+# LOGOUT
+# --------------------------------------------------
+
 @auth_bp.post("/logout")
 @login_required
 def logout():
@@ -482,6 +365,10 @@ def logout():
         "message": "Logout successful."
     })
 
+
+# --------------------------------------------------
+# CURRENT USER
+# --------------------------------------------------
 
 @auth_bp.get("/me")
 @login_required
@@ -509,6 +396,11 @@ def me():
     })
 
 
+# --------------------------------------------------
+# FORGOT PASSWORD
+# Password reset email remains enabled
+# --------------------------------------------------
+
 @auth_bp.post("/forgot-password")
 @limiter.limit("3 per hour")
 def forgot_password():
@@ -518,13 +410,12 @@ def forgot_password():
         data.get("email", "")
     ).strip().lower()
 
-    # Always return the same response to prevent account enumeration.
     if email:
         user = User.query.filter(
             func.lower(User.email) == email
         ).first()
 
-        if user and user.is_email_verified and user.is_active:
+        if user and user.is_active:
             token = generate_token(
                 user,
                 "password_reset"
@@ -557,6 +448,10 @@ def forgot_password():
         )
     })
 
+
+# --------------------------------------------------
+# RESET PASSWORD
+# --------------------------------------------------
 
 @auth_bp.post("/reset-password")
 @limiter.limit("5 per hour")

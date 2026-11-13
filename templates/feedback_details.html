@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback Details | HUMAN FEEDBACK</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --navy: #172554;
@@ -25,7 +27,11 @@
             --shadow: 0 8px 28px rgba(23,37,84,.055);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'DM Sans', sans-serif;
@@ -33,11 +39,20 @@
             color: var(--text);
         }
 
-        a { color: inherit; text-decoration: none; }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-        button { font: inherit; cursor: pointer; }
+        button {
+            font: inherit;
+            cursor: pointer;
+        }
 
-        .app { min-height: 100vh; display: flex; }
+        .app {
+            min-height: 100vh;
+            display: flex;
+        }
 
         .sidebar {
             width: 255px;
@@ -49,6 +64,7 @@
             flex-direction: column;
             padding: 27px 18px;
             z-index: 20;
+            transition: transform .25s;
         }
 
         .brand {
@@ -71,7 +87,9 @@
             font-size: 21px;
         }
 
-        .brand span { color: #FDBA74; }
+        .brand span {
+            color: #FDBA74;
+        }
 
         .nav-label {
             color: #8996B4;
@@ -81,7 +99,9 @@
             padding: 12px 12px 10px;
         }
 
-        .nav-list { list-style: none; }
+        .nav-list {
+            list-style: none;
+        }
 
         .nav-list a {
             display: flex;
@@ -165,10 +185,11 @@
             font-size: 17px;
         }
 
+        .topbar-left,
         .topbar-right {
             display: flex;
             align-items: center;
-            gap: 19px;
+            gap: 15px;
         }
 
         .credit-pill {
@@ -179,18 +200,6 @@
             padding: 8px 13px;
             font-size: 11px;
             font-weight: 800;
-        }
-
-        .top-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #E9EDFA;
-            color: var(--navy);
-            display: grid;
-            place-items: center;
-            font-weight: 800;
-            font-size: 12px;
         }
 
         .content {
@@ -209,9 +218,10 @@
             flex-wrap: wrap;
         }
 
-        .breadcrumb a { color: var(--navy); font-weight: 700; }
-
-        .breadcrumb span:last-child { color: var(--text); }
+        .breadcrumb a {
+            color: var(--navy);
+            font-weight: 700;
+        }
 
         .page-heading {
             display: flex;
@@ -235,12 +245,6 @@
             font-size: 13px;
         }
 
-        .heading-actions {
-            display: flex;
-            gap: 9px;
-            flex-wrap: wrap;
-        }
-
         .btn {
             border: 1px solid var(--border);
             background: white;
@@ -255,25 +259,25 @@
             gap: 7px;
         }
 
-        .btn-primary {
-            background: var(--orange);
-            border-color: var(--orange);
-            color: white;
+        .btn:hover {
+            background: #F8FAFC;
         }
 
-        .btn-primary:hover { background: var(--orange-dark); }
-
-        .-banner {
+        .notice {
             background: #EFF4FF;
             border: 1px solid #DCE6FF;
             border-radius: 10px;
-            padding: 12px 15px;
+            padding: 13px 15px;
             color: #34518C;
             font-size: 12px;
-            margin-bottom: 22px;
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .notice.error {
+            background: #FFF0F0;
+            border-color: #FECACA;
+            color: #B42318;
         }
 
         .layout {
@@ -283,7 +287,11 @@
             align-items: start;
         }
 
-        .column { display: grid; gap: 19px; min-width: 0; }
+        .column {
+            display: grid;
+            gap: 19px;
+            min-width: 0;
+        }
 
         .card {
             background: white;
@@ -291,6 +299,7 @@
             border-radius: 13px;
             box-shadow: var(--shadow);
             padding: 22px;
+            min-width: 0;
         }
 
         .card-heading {
@@ -324,11 +333,20 @@
             font-weight: 800;
         }
 
-        .status-approved { background: #EAF7F0; color: var(--green); }
+        .status-approved {
+            background: #EAF7F0;
+            color: var(--green);
+        }
 
-        .status-pending { background: #FFF5E8; color: #B76B10; }
+        .status-pending {
+            background: #FFF5E8;
+            color: #B76B10;
+        }
 
-        .status-rejected { background: #FFF0F0; color: var(--red); }
+        .status-rejected {
+            background: #FFF0F0;
+            color: var(--red);
+        }
 
         .feedback-top {
             display: flex;
@@ -433,7 +451,10 @@
             margin-bottom: 13px;
         }
 
-        .rating-list { display: grid; gap: 13px; }
+        .rating-list {
+            display: grid;
+            gap: 13px;
+        }
 
         .rating-row {
             display: grid;
@@ -465,8 +486,10 @@
 
         .rating-fill {
             height: 100%;
+            width: 0;
             background: var(--orange);
             border-radius: 20px;
+            transition: width .3s;
         }
 
         .comment-box {
@@ -477,6 +500,8 @@
             color: #46546A;
             font-size: 13px;
             line-height: 1.8;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
         }
 
         .comment-meta {
@@ -496,7 +521,7 @@
         }
 
         .screenshot-preview {
-            min-height: 145px;
+            min-height: 125px;
             border-radius: 8px;
             background: linear-gradient(135deg, #E8EDF8, #F9E9DD);
             display: flex;
@@ -506,13 +531,22 @@
             gap: 8px;
             color: var(--navy);
             text-align: center;
+            padding: 15px;
         }
 
-        .screenshot-preview strong { font-size: 12px; }
+        .screenshot-preview strong {
+            font-size: 12px;
+        }
 
-        .screenshot-preview small { color: var(--muted); font-size: 10px; }
+        .screenshot-preview small {
+            color: var(--muted);
+            font-size: 10px;
+        }
 
-        .timeline { display: grid; gap: 0; }
+        .timeline {
+            display: grid;
+            gap: 0;
+        }
 
         .timeline-item {
             display: flex;
@@ -521,7 +555,9 @@
             padding-bottom: 21px;
         }
 
-        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
 
         .timeline-item:not(:last-child)::before {
             content: "";
@@ -577,7 +613,7 @@
             box-shadow: var(--shadow);
         }
 
-        .reward-card .reward-label {
+        .reward-label {
             color: #CBD5E9;
             font-size: 11px;
             font-weight: 600;
@@ -607,38 +643,10 @@
             font-weight: 800;
         }
 
-        .reply-card {
-            border: 1px solid #FED7AA;
-            background: #FFFBF6;
-            border-radius: 10px;
-            padding: 16px;
+        .info-list {
+            display: grid;
+            gap: 14px;
         }
-
-        .reply-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 11px;
-        }
-
-        .reply-header strong {
-            color: var(--navy);
-            font-size: 12px;
-        }
-
-        .reply-header small {
-            color: var(--muted);
-            font-size: 10px;
-        }
-
-        .reply-card p {
-            color: #566176;
-            font-size: 12px;
-            line-height: 1.8;
-        }
-
-        .info-list { display: grid; gap: 14px; }
 
         .info-row {
             display: flex;
@@ -647,21 +655,14 @@
             font-size: 11px;
         }
 
-        .info-row span:first-child { color: var(--muted); }
+        .info-row span:first-child {
+            color: var(--muted);
+        }
 
         .info-row strong {
             color: var(--navy);
             text-align: right;
-        }
-
-        .notice {
-            background: #FFF7ED;
-            border: 1px solid #FFEDD5;
-            padding: 13px;
-            border-radius: 9px;
-            font-size: 11px;
-            line-height: 1.7;
-            color: #8B4A16;
+            overflow-wrap: anywhere;
         }
 
         .footer-note {
@@ -679,66 +680,100 @@
             font-size: 23px;
         }
 
+        [hidden] {
+            display: none !important;
+        }
+
         @media(max-width: 1050px) {
-            .layout { grid-template-columns: 1fr; }
-            .content { padding: 25px; }
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 25px;
+            }
         }
 
         @media(max-width: 700px) {
             .sidebar {
                 transform: translateX(-100%);
-                transition: .25s;
             }
 
-            .sidebar.open { transform: translateX(0); }
+            .sidebar.open {
+                transform: translateX(0);
+            }
 
-            .main { margin-left: 0; }
+            .main {
+                margin-left: 0;
+            }
 
-            .topbar { padding: 0 17px; height: 65px; }
+            .topbar {
+                padding: 0 17px;
+                height: 65px;
+            }
 
-            .topbar h2 { font-size: 14px; }
+            .topbar h2 {
+                font-size: 14px;
+            }
 
-            .mobile-menu { display: block; }
+            .mobile-menu {
+                display: block;
+            }
 
             .topbar-left {
-                display: flex;
-                align-items: center;
                 gap: 12px;
             }
 
-            .topbar-right { gap: 9px; }
+            .topbar-right {
+                gap: 9px;
+            }
 
-            .credit-pill { font-size: 9px; padding: 7px 9px; }
+            .credit-pill {
+                font-size: 9px;
+                padding: 7px 9px;
+            }
 
-            .top-avatar { width: 32px; height: 32px; }
-
-            .content { padding: 21px 15px 35px; }
+            .content {
+                padding: 21px 15px 35px;
+            }
 
             .page-heading {
                 flex-direction: column;
                 align-items: stretch;
             }
 
-            .page-heading h1 { font-size: 23px; }
+            .page-heading h1 {
+                font-size: 23px;
+            }
 
-            .heading-actions .btn { flex: 1; }
+            .card {
+                padding: 17px;
+            }
 
-            .card { padding: 17px; }
+            .feedback-top {
+                flex-direction: column;
+            }
 
-            .feedback-top { flex-direction: column; }
+            .rating-summary {
+                padding: 12px;
+            }
 
-            .rating-summary { padding: 12px; }
+            .rating-number {
+                font-size: 27px;
+            }
 
-            .rating-number { font-size: 27px; }
+            .comment-meta {
+                flex-direction: column;
+            }
 
-            .comment-meta { flex-direction: column; }
-
-            .info-row { font-size: 10px; }
+            .info-row {
+                font-size: 10px;
+            }
         }
     </style>
 </head>
-<body>
 
+<body data-feedback-id="{{ feedback_id }}">
 <div class="app">
 
     <aside class="sidebar" id="sidebar">
@@ -748,6 +783,7 @@
         </a>
 
         <div class="nav-label">MAIN MENU</div>
+
         <ul class="nav-list">
             <li><a href="/dashboard"><span class="nav-icon">▦</span> Dashboard</a></li>
             <li><a href="/websites"><span class="nav-icon">◫</span> My Websites</a></li>
@@ -759,6 +795,7 @@
         </ul>
 
         <div class="nav-label">ACCOUNT</div>
+
         <ul class="nav-list">
             <li><a href="/profile"><span class="nav-icon">◎</span> My Profile</a></li>
             <li><a href="/settings"><span class="nav-icon">⚙</span> Settings</a></li>
@@ -766,21 +803,580 @@
 
         <div class="sidebar-bottom">
             <div class="profile-mini">
-                <div class="avatar">MW</div>
+                <div class="avatar">HF</div>
                 <div>
-                    <strong>Michael Wilson</strong>
-                    <small>Pro Member</small>
+                    <strong>Your Account</strong>
+                    <small>Account Profile</small>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
-</main>
+
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-menu" id="mobileMenu" type="button"
+                        aria-label="Open navigation menu"
+                        aria-expanded="false">☰</button>
+                <h2>Feedback Details</h2>
+            </div>
+
+            <div class="topbar-right">
+                <span class="credit-pill">Feedback Overview</span>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <div class="breadcrumb">
+                <a href="/dashboard">Dashboard</a>
+                <span>›</span>
+                <a href="/feedback">Feedback</a>
+                <span>›</span>
+                <span>Feedback Details</span>
+            </div>
+
+            <div class="page-heading">
+                <div>
+                    <h1>Feedback Details</h1>
+                    <p>View the complete information about this feedback submission.</p>
+                </div>
+
+                <a href="/feedback" class="btn">← Back to Feedback</a>
+            </div>
+
+            <div id="pageMessage" class="notice" role="status" aria-live="polite">
+                Loading feedback details...
+            </div>
+
+            <div id="feedbackContent" class="layout" hidden>
+
+                <div class="column">
+
+                    <section class="card">
+                        <div class="card-heading">
+                            <h3>Feedback Overview</h3>
+                            <span id="feedbackStatus" class="status status-pending">Pending</span>
+                        </div>
+
+                        <div class="feedback-top">
+                            <div class="website-info">
+                                <div class="website-icon">W</div>
+                                <div>
+                                    <h4 id="websiteName">—</h4>
+                                    <p id="feedbackDate">—</p>
+                                </div>
+                            </div>
+
+                            <span id="feedbackId" class="feedback-id"></span>
+                        </div>
+
+                        <div class="reviewer">
+                            <div class="avatar" id="reviewerAvatar">U</div>
+                            <div>
+                                <strong id="reviewerName">—</strong>
+                                <small>Feedback submitted by this user</small>
+                            </div>
+                        </div>
+
+                        <div class="rating-summary">
+                            <div class="rating-number" id="overallRating">—</div>
+                            <div>
+                                <div class="stars" id="overallStars">☆☆☆☆☆</div>
+                                <p>Overall rating out of 5</p>
+                            </div>
+                        </div>
+
+                        <h4 class="section-label">Rating Breakdown</h4>
+
+                        <div class="rating-list">
+                            <div class="rating-row">
+                                <span>Design</span>
+                                <span class="rating-value" id="designValue">—</span>
+                                <div class="rating-track"><div class="rating-fill" id="designBar"></div></div>
+                            </div>
+
+                            <div class="rating-row">
+                                <span>Speed</span>
+                                <span class="rating-value" id="speedValue">—</span>
+                                <div class="rating-track"><div class="rating-fill" id="speedBar"></div></div>
+                            </div>
+
+                            <div class="rating-row">
+                                <span>User Experience</span>
+                                <span class="rating-value" id="uxValue">—</span>
+                                <div class="rating-track"><div class="rating-fill" id="uxBar"></div></div>
+                            </div>
+
+                            <div class="rating-row">
+                                <span>Content</span>
+                                <span class="rating-value" id="contentValue">—</span>
+                                <div class="rating-track"><div class="rating-fill" id="contentBar"></div></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card">
+                        <div class="card-heading">
+                            <h3>Written Feedback</h3>
+                        </div>
+
+                        <div class="comment-box" id="feedbackComment">—</div>
+
+                        <div class="comment-meta">
+                            <span id="commentDate"></span>
+                            <span id="commentLength"></span>
+                        </div>
+                    </section>
+
+                    <section class="card" id="screenshotCard" hidden>
+                        <div class="card-heading">
+                            <h3>Screenshot Attachment</h3>
+                        </div>
+
+                        <div class="screenshot">
+                            <div class="screenshot-preview">
+                                <strong>Screenshot attached</strong>
+                                <small>
+                                    An attachment was submitted with this feedback.
+                                    Image preview is not currently available.
+                                </small>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card" id="rejectionCard" hidden>
+                        <div class="card-heading">
+                            <h3>Rejection Information</h3>
+                        </div>
+
+                        <div class="notice">
+                            <strong id="rejectionCategory"></strong>
+                            <p id="rejectionReason"></p>
+                        </div>
+                    </section>
+
+                </div>
+
+                <div class="column">
+
+                    <section class="reward-card">
+                        <div class="reward-label">Credits Earned</div>
+                        <div class="reward-amount" id="rewardAmount">0</div>
+                        <p id="rewardDescription">
+                            Credit reward information will appear here.
+                        </p>
+                        <span class="reward-tag" id="rewardTag">Not credited</span>
+                    </section>
+
+                    <section class="card">
+                        <div class="card-heading">
+                            <h3>Submission Timeline</h3>
+                        </div>
+                        <div class="timeline" id="feedbackTimeline"></div>
+                    </section>
+
+                    <section class="card">
+                        <div class="card-heading">
+                            <h3>Feedback Information</h3>
+                        </div>
+
+                        <div class="info-list">
+                            <div class="info-row">
+                                <span>Feedback ID</span>
+                                <strong id="infoFeedbackId">—</strong>
+                            </div>
+
+                            <div class="info-row">
+                                <span>Website</span>
+                                <strong id="infoWebsite">—</strong>
+                            </div>
+
+                            <div class="info-row">
+                                <span>Current Status</span>
+                                <strong id="infoStatus">—</strong>
+                            </div>
+
+                            <div class="info-row">
+                                <span>Submitted</span>
+                                <strong id="infoSubmitted">—</strong>
+                            </div>
+
+                            <div class="info-row">
+                                <span>Reviewed</span>
+                                <strong id="infoReviewed">—</strong>
+                            </div>
+
+                            <div class="info-row">
+                                <span>Screenshot</span>
+                                <strong id="infoScreenshot">—</strong>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="notice">
+                        Feedback rewards are shown only when the backend confirms
+                        that credits have actually been credited.
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="footer-note">
+                HUMAN FEEDBACK &middot; Feedback Details
+            </div>
+
+        </div>
+    </main>
 </div>
+
+<script>
+"use strict";
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const feedbackId = document.body.dataset.feedbackId;
+    const message = document.getElementById("pageMessage");
+    const content = document.getElementById("feedbackContent");
+
+    const el = (id) => document.getElementById(id);
+
+    function setText(id, value) {
+        const element = el(id);
+
+        if (!element) return;
+
+        element.textContent =
+            value === null || value === undefined || value === ""
+                ? "—"
+                : String(value);
+    }
+
+    function formatDate(value) {
+        if (!value) return "Not available";
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return "Not available";
+        }
+
+        return date.toLocaleString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    }
+
+    function validRating(value) {
+        if (value === null || value === undefined || value === "") {
+            return null;
+        }
+
+        const number = Number(value);
+
+        if (!Number.isFinite(number) || number < 1 || number > 5) {
+            return null;
+        }
+
+        return number;
+    }
+
+    function showRating(valueId, barId, value) {
+        const rating = validRating(value);
+
+        setText(
+            valueId,
+            rating === null ? "Not provided" : `${rating}/5`
+        );
+
+        const bar = el(barId);
+
+        if (bar) {
+            bar.style.width =
+                rating === null ? "0%" : `${rating * 20}%`;
+        }
+    }
+
+    function showMessage(text, isError = false) {
+        message.hidden = false;
+        message.textContent = text;
+        message.classList.toggle("error", isError);
+    }
+
+    function addTimelineItem(title, description, date, done) {
+        const item = document.createElement("div");
+        item.className = "timeline-item";
+
+        const dot = document.createElement("div");
+        dot.className = done ? "timeline-dot done" : "timeline-dot";
+
+        const text = document.createElement("div");
+        text.className = "timeline-text";
+
+        const heading = document.createElement("strong");
+        heading.textContent = title;
+
+        const paragraph = document.createElement("p");
+        paragraph.textContent = description;
+
+        const time = document.createElement("time");
+        time.textContent = formatDate(date);
+
+        text.append(heading, paragraph, time);
+        item.append(dot, text);
+
+        el("feedbackTimeline").appendChild(item);
+    }
+
+    function renderFeedback(feedback) {
+
+        if (!feedback || typeof feedback !== "object" || Array.isArray(feedback)) {
+            throw new Error("Feedback information could not be found.");
+        }
+
+        const status = String(feedback.status || "unknown").toLowerCase();
+
+        const statusElement = el("feedbackStatus");
+
+        statusElement.textContent =
+            status.charAt(0).toUpperCase() + status.slice(1);
+
+        statusElement.className = "status";
+
+        if (status === "approved") {
+            statusElement.classList.add("status-approved");
+        } else if (status === "rejected") {
+            statusElement.classList.add("status-rejected");
+        } else {
+            statusElement.classList.add("status-pending");
+        }
+
+        const website = feedback.website_name || "Website";
+        const reviewer = feedback.user_name || "User";
+        const submitted = feedback.created_at;
+        const reviewed = feedback.reviewed_at;
+
+        setText("websiteName", website);
+        setText("reviewerName", reviewer);
+        setText("feedbackId", `Feedback #${feedback.id}`);
+
+        setText("infoFeedbackId", feedback.id);
+        setText("infoWebsite", website);
+        setText("infoStatus", status);
+        setText("infoSubmitted", formatDate(submitted));
+        setText("infoReviewed", formatDate(reviewed));
+
+        setText("feedbackDate", `Submitted ${formatDate(submitted)}`);
+        setText("commentDate", `Submitted: ${formatDate(submitted)}`);
+
+        el("reviewerAvatar").textContent =
+            reviewer.trim().charAt(0).toUpperCase() || "U";
+
+        const comment = feedback.comment || "";
+
+        setText(
+            "feedbackComment",
+            comment || "No written comment provided."
+        );
+
+        setText("commentLength", `${comment.length} characters`);
+
+        const overall = validRating(feedback.overall_rating);
+
+        setText(
+            "overallRating",
+            overall === null ? "—" : overall.toFixed(1)
+        );
+
+        el("overallStars").textContent =
+            overall === null
+                ? "☆☆☆☆☆"
+                : "★".repeat(Math.round(overall)) +
+                  "☆".repeat(5 - Math.round(overall));
+
+        showRating("designValue", "designBar", feedback.design_rating);
+        showRating("speedValue", "speedBar", feedback.speed_rating);
+        showRating("uxValue", "uxBar", feedback.ux_rating);
+        showRating("contentValue", "contentBar", feedback.content_rating);
+
+        const hasScreenshot = feedback.has_screenshot === true;
+
+        el("screenshotCard").hidden = !hasScreenshot;
+
+        setText(
+            "infoScreenshot",
+            hasScreenshot ? "Attached" : "Not attached"
+        );
+
+        const rewardCredited = feedback.reward_credited === true;
+
+        setText("rewardAmount", rewardCredited ? "10" : "0");
+
+        setText(
+            "rewardDescription",
+            rewardCredited
+                ? "Credits have been successfully credited for this feedback."
+                : "No credits have been confirmed for this feedback yet."
+        );
+
+        setText(
+            "rewardTag",
+            rewardCredited ? "Credits credited" : "Not credited"
+        );
+
+        if (status === "rejected") {
+            el("rejectionCard").hidden = false;
+
+            setText(
+                "rejectionCategory",
+                feedback.rejection_category || "Rejection details"
+            );
+
+            setText(
+                "rejectionReason",
+                feedback.rejection_reason || "No rejection reason was provided."
+            );
+        } else {
+            el("rejectionCard").hidden = true;
+        }
+
+        const timeline = el("feedbackTimeline");
+        timeline.replaceChildren();
+
+        addTimelineItem(
+            "Feedback submitted",
+            "The feedback was submitted.",
+            submitted,
+            true
+        );
+
+        if (reviewed) {
+            addTimelineItem(
+                status === "approved"
+                    ? "Feedback approved"
+                    : status === "rejected"
+                        ? "Feedback rejected"
+                        : "Feedback reviewed",
+                status === "approved"
+                    ? "The feedback was approved."
+                    : status === "rejected"
+                        ? "The feedback was rejected."
+                        : "The feedback was reviewed.",
+                reviewed,
+                true
+            );
+        } else {
+            addTimelineItem(
+                "Awaiting review",
+                "The feedback has not yet received a review date.",
+                null,
+                false
+            );
+        }
+
+        content.hidden = false;
+        message.hidden = true;
+    }
+
+    async function loadFeedback() {
+
+        if (!feedbackId || !/^\d+$/.test(feedbackId)) {
+            showMessage("Invalid feedback ID.", true);
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `/api/feedback/${encodeURIComponent(feedbackId)}`,
+                {
+                    method: "GET",
+                    credentials: "same-origin",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                }
+            );
+
+            let result;
+
+            try {
+                result = await response.json();
+            } catch {
+                throw new Error("The server returned an invalid response.");
+            }
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error(
+                        "Please log in again to view this feedback."
+                    );
+                }
+
+                if (response.status === 403) {
+                    throw new Error(
+                        "You do not have permission to view this feedback."
+                    );
+                }
+
+                if (response.status === 404) {
+                    throw new Error(
+                        "This feedback could not be found."
+                    );
+                }
+
+                throw new Error(
+                    result.message ||
+                    result.error ||
+                    "Unable to load feedback details."
+                );
+            }
+
+            if (result.success === false) {
+                throw new Error(
+                    result.message ||
+                    result.error ||
+                    "Unable to load feedback details."
+                );
+            }
+
+            const feedback =
+                result.feedback ||
+                result.data ||
+                result;
+
+            renderFeedback(feedback);
+
+        } catch (error) {
+            console.error("Feedback details error:", error);
+
+            showMessage(
+                error.message ||
+                "Something went wrong while loading feedback.",
+                true
+            );
+        }
+    }
+
+    const mobileMenu = el("mobileMenu");
+
+    mobileMenu.addEventListener("click", () => {
+        const sidebar = el("sidebar");
+        const isOpen = sidebar.classList.toggle("open");
+
+        mobileMenu.setAttribute("aria-expanded", String(isOpen));
+        mobileMenu.setAttribute(
+            "aria-label",
+            isOpen ? "Close navigation menu" : "Open navigation menu"
+        );
+    });
+
+    loadFeedback();
+});
+</script>
+
 </body>
 </html>

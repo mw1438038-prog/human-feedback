@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscription | HUMAN FEEDBACK</title>
+
     <style>
         :root {
             --navy: #172554;
@@ -21,7 +22,11 @@
             --shadow: 0 8px 25px rgba(23,37,84,.06);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -29,10 +34,19 @@
             color: var(--text);
         }
 
-        a { text-decoration: none; color: inherit; }
-        button { font: inherit; }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-        .app { display: flex; min-height: 100vh; }
+        button {
+            font: inherit;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
 
         .sidebar {
             width: 250px;
@@ -50,7 +64,9 @@
             padding: 0 12px 30px;
         }
 
-        .brand span { color: var(--orange); }
+        .brand span {
+            color: var(--orange);
+        }
 
         .nav-label {
             color: #94A3B8;
@@ -71,12 +87,15 @@
             margin-bottom: 4px;
         }
 
-        .nav a:hover, .nav a.active {
+        .nav a:hover,
+        .nav a.active {
             background: rgba(249,115,22,.15);
             color: white;
         }
 
-        .nav a.active { border-left: 3px solid var(--orange); }
+        .nav a.active {
+            border-left: 3px solid var(--orange);
+        }
 
         .sidebar-bottom {
             margin-top: auto;
@@ -84,7 +103,11 @@
             padding: 20px 10px 0;
         }
 
-        .user { display: flex; align-items: center; gap: 10px; }
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
         .avatar {
             width: 38px;
@@ -96,10 +119,20 @@
             font-weight: 700;
         }
 
-        .user strong { display: block; font-size: 12px; }
-        .user small { color: #94A3B8; font-size: 11px; }
+        .user strong {
+            display: block;
+            font-size: 12px;
+        }
 
-        .main { flex: 1; min-width: 0; }
+        .user small {
+            color: #94A3B8;
+            font-size: 11px;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+        }
 
         .topbar {
             height: 75px;
@@ -111,7 +144,10 @@
             padding: 0 34px;
         }
 
-        .topbar h2 { color: var(--navy); font-size: 19px; }
+        .topbar h2 {
+            color: var(--navy);
+            font-size: 19px;
+        }
 
         .top-right {
             display: flex;
@@ -119,14 +155,9 @@
             gap: 16px;
         }
 
-        .top-right a { font-size: 13px; color: var(--muted); }
-
-        .top-right .upgrade {
-            background: var(--orange);
-            color: white;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-weight: 700;
+        .top-right a {
+            font-size: 13px;
+            color: var(--muted);
         }
 
         .content {
@@ -135,7 +166,9 @@
             padding: 32px;
         }
 
-        .page-heading { margin-bottom: 25px; }
+        .page-heading {
+            margin-bottom: 25px;
+        }
 
         .page-heading h1 {
             font-size: 27px;
@@ -168,8 +201,17 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .panel-heading h2 { color: var(--navy); font-size: 16px; }
-        .panel-heading p { color: var(--muted); font-size: 11px; margin-top: 6px; line-height: 1.6; }
+        .panel-heading h2 {
+            color: var(--navy);
+            font-size: 16px;
+        }
+
+        .panel-heading p {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 6px;
+            line-height: 1.6;
+        }
 
         .status {
             display: inline-flex;
@@ -192,6 +234,24 @@
             background: var(--orange);
         }
 
+        .status.active {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .status.active:before {
+            background: var(--green);
+        }
+
+        .status.expired {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .status.expired:before {
+            background: var(--red);
+        }
+
         .overview {
             display: grid;
             grid-template-columns: 1.4fr 1fr 1fr;
@@ -205,6 +265,7 @@
             border-radius: 12px;
             padding: 20px;
             box-shadow: var(--shadow);
+            min-width: 0;
         }
 
         .overview-card.highlight {
@@ -220,16 +281,21 @@
             margin-bottom: 12px;
         }
 
-        .overview-card.highlight small { color: #CBD5E1; }
+        .overview-card.highlight small {
+            color: #CBD5E1;
+        }
 
         .overview-card strong {
             display: block;
             font-size: 25px;
             color: var(--navy);
             margin-bottom: 7px;
+            overflow-wrap: anywhere;
         }
 
-        .overview-card.highlight strong { color: white; }
+        .overview-card.highlight strong {
+            color: white;
+        }
 
         .overview-card p {
             font-size: 10px;
@@ -237,7 +303,9 @@
             line-height: 1.5;
         }
 
-        .overview-card.highlight p { color: #CBD5E1; }
+        .overview-card.highlight p {
+            color: #CBD5E1;
+        }
 
         .plan-grid {
             display: grid;
@@ -253,11 +321,19 @@
             border-radius: 12px;
             padding: 22px 19px;
             box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
         }
 
-        .plan.current { border: 2px solid var(--orange); }
+        .plan.current {
+            border: 2px solid var(--orange);
+        }
 
-        .plan h3 { color: var(--navy); font-size: 16px; margin-bottom: 10px; }
+        .plan h3 {
+            color: var(--navy);
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
 
         .plan-price {
             font-size: 29px;
@@ -279,13 +355,18 @@
             margin: 10px 0 15px;
         }
 
-        .plan ul { list-style: none; margin: 15px 0 20px; }
+        .plan ul {
+            list-style: none;
+            margin: 15px 0 20px;
+            flex: 1;
+        }
 
         .plan li {
             font-size: 11px;
             color: var(--text);
             padding: 8px 0;
             border-bottom: 1px solid #F1F5F9;
+            line-height: 1.5;
         }
 
         .plan li:before {
@@ -299,25 +380,14 @@
             display: block;
             width: 100%;
             border: 1px solid var(--border);
-            background: white;
-            color: var(--navy);
+            background: #F8FAFC;
+            color: var(--muted);
             border-radius: 8px;
             padding: 11px;
             text-align: center;
             font-size: 11px;
             font-weight: 700;
-            cursor: pointer;
-        }
-
-        .plan-button.primary {
-            background: var(--orange);
-            border-color: var(--orange);
-            color: white;
-        }
-
-        .plan-button:disabled {
             cursor: default;
-            opacity: .7;
         }
 
         .current-label {
@@ -332,15 +402,18 @@
             font-weight: 700;
         }
 
-        .table-wrap { overflow-x: auto; }
+        .table-wrap {
+            overflow-x: auto;
+        }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 550px;
+            min-width: 600px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 14px 12px;
             border-bottom: 1px solid var(--border);
             text-align: left;
@@ -353,8 +426,13 @@
             background: #F8FAFC;
         }
 
-        td { color: var(--text); }
-        td strong { color: var(--navy); }
+        td {
+            color: var(--text);
+        }
+
+        td strong {
+            color: var(--navy);
+        }
 
         .empty-state {
             text-align: center;
@@ -372,8 +450,17 @@
             margin-bottom: 20px;
         }
 
-        .notice h3 { color: var(--navy); font-size: 13px; margin-bottom: 7px; }
-        .notice p { color: var(--muted); font-size: 11px; line-height: 1.7; }
+        .notice h3 {
+            color: var(--navy);
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .notice p {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.7;
+        }
 
         .message {
             display: none;
@@ -386,11 +473,25 @@
             line-height: 1.6;
         }
 
-        .-note {
+        .message.error {
+            display: block;
+            background: #FEF2F2;
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
+        .message.success {
+            display: block;
+            background: #F0FDF4;
+            color: #166534;
+            border: 1px solid #BBF7D0;
+        }
+
+        .loading {
             text-align: center;
-            padding: 15px 5px 5px;
+            padding: 25px 10px;
             color: var(--muted);
-            font-size: 11px;
+            font-size: 12px;
         }
 
         .mobile-menu {
@@ -402,15 +503,47 @@
             cursor: pointer;
         }
 
+        .refresh-button {
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--navy);
+            border-radius: 7px;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .refresh-button:hover {
+            background: #F8FAFC;
+        }
+
+        .muted-text {
+            color: var(--muted);
+        }
+
         @media(max-width: 1050px) {
-            .sidebar { width: 215px; }
-            .content { padding: 25px 20px; }
+            .sidebar {
+                width: 215px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
         }
 
         @media(max-width: 850px) {
-            .overview { grid-template-columns: repeat(2, 1fr); }
-            .overview-card:first-child { grid-column: span 2; }
-            .plan-grid { grid-template-columns: 1fr 1fr; }
+            .overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .overview-card:first-child {
+                grid-column: span 2;
+            }
+
+            .plan-grid {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         @media(max-width: 720px) {
@@ -424,28 +557,62 @@
                 transition: left .25s;
             }
 
-            .sidebar.show { left: 0; }
-            .mobile-menu { display: block; }
+            .sidebar.show {
+                left: 0;
+            }
 
-            .topbar { height: 65px; padding: 0 16px; }
-            .topbar h2 { font-size: 16px; }
-            .top-right { gap: 9px; }
-            .top-right a:first-child { display: none; }
-            .top-right .upgrade { font-size: 11px; padding: 9px 11px; }
+            .mobile-menu {
+                display: block;
+            }
 
-            .content { padding: 22px 14px; }
-            .page-heading h1 { font-size: 23px; }
-            .panel { padding: 18px 14px; }
+            .topbar {
+                height: 65px;
+                padding: 0 16px;
+            }
+
+            .topbar h2 {
+                font-size: 16px;
+            }
+
+            .top-right {
+                gap: 9px;
+            }
+
+            .content {
+                padding: 22px 14px;
+            }
+
+            .page-heading h1 {
+                font-size: 23px;
+            }
+
+            .panel {
+                padding: 18px 14px;
+            }
         }
 
         @media(max-width: 560px) {
-            .overview { grid-template-columns: 1fr; }
-            .overview-card:first-child { grid-column: auto; }
-            .plan-grid { grid-template-columns: 1fr; }
+            .overview {
+                grid-template-columns: 1fr;
+            }
+
+            .overview-card:first-child {
+                grid-column: auto;
+            }
+
+            .plan-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-heading {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
+
 <body>
+
 <div class="app">
 
     <aside class="sidebar" id="sidebar">
@@ -460,7 +627,7 @@
 
             <div class="nav-label">ACCOUNT</div>
             <a href="/credits">◈ My Credits</a>
-            <a href="/credit-history">◷ Credit History</a>
+            <a href="/credits/history">◷ Credit History</a>
             <a href="/analytics">▥ Analytics</a>
             <a href="/notifications">♢ Notifications</a>
             <a href="/reports">⚑ Reports</a>
@@ -476,18 +643,610 @@
                 <div class="avatar">HF</div>
                 <div>
                     <strong>Account</strong>
-                    <small>Pro Member</small>
+                    <small id="sidebarPlan">Loading plan...</small>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
-</main>
+
+        <header class="topbar">
+            <div style="display:flex;align-items:center;gap:13px;">
+                <button class="mobile-menu"
+                        type="button"
+                        onclick="toggleSidebar()"
+                        aria-label="Toggle navigation">☰</button>
+                <h2>Subscription</h2>
+            </div>
+
+            <div class="top-right">
+                <a href="/dashboard">Dashboard</a>
+                <button class="refresh-button"
+                        type="button"
+                        onclick="loadSubscriptionPage()">
+                    Refresh
+                </button>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <div class="page-heading">
+                <h1>Subscription & Plans</h1>
+                <p>
+                    View your current subscription, manage your trial status
+                    and explore available plans.
+                </p>
+            </div>
+
+            <div id="pageMessage" class="message" role="alert"></div>
+
+            <!-- CURRENT SUBSCRIPTION -->
+
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Current Subscription</h2>
+                        <p>Your current account access and subscription information.</p>
+                    </div>
+
+                    <span id="currentStatus" class="status">
+                        Loading
+                    </span>
+                </div>
+
+                <div class="overview">
+
+                    <div class="overview-card highlight">
+                        <small>Current Plan</small>
+                        <strong id="currentPlanName">Loading...</strong>
+                        <p id="currentPlanDescription">
+                            Retrieving your plan information.
+                        </p>
+                    </div>
+
+                    <div class="overview-card">
+                        <small>Subscription Expiry</small>
+                        <strong id="expiryDate">—</strong>
+                        <p id="expiryDescription">
+                            Subscription expiry information.
+                        </p>
+                    </div>
+
+                    <div class="overview-card">
+                        <small>Platform Access</small>
+                        <strong id="accessStatus">—</strong>
+                        <p id="accessDescription">
+                            Checking your account access.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div id="trialNotice" class="notice" style="display:none;">
+                    <h3 id="trialHeading">Free Trial</h3>
+                    <p id="trialDescription"></p>
+                </div>
+
+                <div id="noSubscriptionNotice"
+                     class="notice"
+                     style="display:none;">
+                    <h3>No Active Subscription</h3>
+                    <p>
+                        You do not currently have an active paid subscription
+                        or an active free trial. Your account data and history
+                        remain available.
+                    </p>
+                </div>
+            </section>
+
+            <!-- AVAILABLE PLANS -->
+
+            <section>
+                <div class="panel-heading" style="margin-bottom:15px;">
+                    <div>
+                        <h2>Available Plans</h2>
+                        <p>Plans and prices loaded directly from the database.</p>
+                    </div>
+                </div>
+
+                <div id="plansContainer" class="plan-grid">
+                    <div class="loading">Loading available plans...</div>
+                </div>
+            </section>
+
+            <!-- SUBSCRIPTION HISTORY -->
+
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Subscription History</h2>
+                        <p>Your previous and current subscription records.</p>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Plan</th>
+                                <th>Status</th>
+                                <th>Payment Provider</th>
+                                <th>Start Date</th>
+                                <th>Expiry Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="historyBody">
+                            <tr>
+                                <td colspan="5" class="empty-state">
+                                    Loading subscription history...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <div class="notice">
+                <h3>Website Submission Requirement</h3>
+                <p>
+                    Each website submission requires at least 1,000 available
+                    credits. Free plan users cannot add websites. Pro supports
+                    up to 3 websites, while Business supports unlimited websites,
+                    subject to the credit requirement.
+                </p>
+            </div>
+
+            <p class="muted-text"
+               style="text-align:center;font-size:11px;padding:10px;">
+                Subscription information is retrieved from your account.
+            </p>
+
+        </div>
+    </main>
 </div>
+
+<script>
+    const API = {
+        plans: "/api/subscriptions/plans",
+        current: "/api/subscriptions/current",
+        history: "/api/subscriptions/history"
+    };
+
+    let currentSubscriptionData = null;
+
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("show");
+    }
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, function(char) {
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            }[char];
+        });
+    }
+
+    function formatDate(value) {
+        if (!value) return "—";
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return "—";
+        }
+
+        return date.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        });
+    }
+
+    function getRemainingDays(expiryValue) {
+        if (!expiryValue) return null;
+
+        const expiry = new Date(expiryValue);
+
+        if (Number.isNaN(expiry.getTime())) {
+            return null;
+        }
+
+        const difference = expiry.getTime() - Date.now();
+
+        if (difference <= 0) return 0;
+
+        return Math.ceil(difference / (1000 * 60 * 60 * 24));
+    }
+
+    function showMessage(message, type = "error") {
+        const element = document.getElementById("pageMessage");
+
+        element.textContent = message;
+        element.className = "message " + type;
+    }
+
+    function clearMessage() {
+        const element = document.getElementById("pageMessage");
+
+        element.textContent = "";
+        element.className = "message";
+    }
+
+    async function apiRequest(url) {
+        const response = await fetch(url, {
+            method: "GET",
+            credentials: "same-origin",
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+
+        if (response.redirected) {
+            throw new Error("Your session has expired. Please log in again.");
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+
+        if (!contentType.includes("application/json")) {
+            throw new Error(
+                "The server did not return JSON. Please check your login session and API route."
+            );
+        }
+
+        const data = await response.json();
+
+        if (!response.ok || data.success === false) {
+            throw new Error(
+                data.message || "Unable to load subscription information."
+            );
+        }
+
+        return data;
+    }
+
+    function renderCurrentSubscription(data) {
+        currentSubscriptionData = data;
+
+        const subscription = data.subscription;
+        const trial = data.free_trial || {};
+
+        const trialActive = Boolean(trial.active);
+        const hasSubscription = Boolean(data.has_active_subscription);
+        const platformAccess = Boolean(data.platform_access);
+
+        const plan = subscription ? subscription.plan : null;
+
+        const planName = subscription
+            ? (plan?.name || "Paid Plan")
+            : (trialActive ? "Free Trial" : "No Active Plan");
+
+        const planDescription = subscription
+            ? (plan?.description || "Your active subscription.")
+            : (trialActive
+                ? "You are currently using the 30-day free trial."
+                : "You do not have an active subscription or free trial.");
+
+        document.getElementById("currentPlanName").textContent = planName;
+        document.getElementById("currentPlanDescription").textContent =
+            planDescription;
+
+        document.getElementById("sidebarPlan").textContent = planName;
+
+        const statusElement = document.getElementById("currentStatus");
+
+        if (hasSubscription) {
+            statusElement.textContent = subscription.status;
+            statusElement.className = "status active";
+        } else if (trialActive) {
+            statusElement.textContent = "Free Trial Active";
+            statusElement.className = "status active";
+        } else if (trial.used) {
+            statusElement.textContent = "Trial Expired";
+            statusElement.className = "status expired";
+        } else {
+            statusElement.textContent = "No Active Plan";
+            statusElement.className = "status";
+        }
+
+        let expiry = null;
+
+        if (hasSubscription) {
+            expiry = subscription.expires_at;
+        } else if (trialActive || trial.used) {
+            expiry = trial.expires_at;
+        }
+
+        document.getElementById("expiryDate").textContent =
+            formatDate(expiry);
+
+        const remainingDays = getRemainingDays(expiry);
+
+        document.getElementById("expiryDescription").textContent =
+            remainingDays === null
+                ? "No expiry date available."
+                : remainingDays > 0
+                    ? remainingDays + " day(s) remaining."
+                    : "This period has expired.";
+
+        document.getElementById("accessStatus").textContent =
+            platformAccess ? "Available" : "Restricted";
+
+        document.getElementById("accessDescription").textContent =
+            platformAccess
+                ? "Your account currently has platform access."
+                : "Platform features are currently locked.";
+
+        const trialNotice = document.getElementById("trialNotice");
+        const noSubscriptionNotice =
+            document.getElementById("noSubscriptionNotice");
+
+        trialNotice.style.display = "none";
+        noSubscriptionNotice.style.display = "none";
+
+        if (trialActive) {
+            trialNotice.style.display = "block";
+
+            document.getElementById("trialHeading").textContent =
+                "Your Free Trial Is Active";
+
+            const days = getRemainingDays(trial.expires_at);
+
+            document.getElementById("trialDescription").textContent =
+                "Started: " + formatDate(trial.started_at) +
+                ". Expires: " + formatDate(trial.expires_at) +
+                ". " + (days === null
+                    ? ""
+                    : days + " day(s) remaining.");
+        } else if (!hasSubscription) {
+            noSubscriptionNotice.style.display = "block";
+
+            if (trial.used && trial.expires_at) {
+                document.getElementById("noSubscriptionNotice")
+                    .querySelector("p").textContent =
+                    "Your free trial expired on " +
+                    formatDate(trial.expires_at) +
+                    ". You can still log in, but platform features require an active paid subscription. Your existing account data and history remain available.";
+            } else {
+                document.getElementById("noSubscriptionNotice")
+                    .querySelector("p").textContent =
+                    "You do not currently have an active paid subscription or an active free trial. Your account data and history remain available.";
+            }
+        }
+    }
+
+    function renderPlans(plans) {
+        const container = document.getElementById("plansContainer");
+
+        if (!Array.isArray(plans) || plans.length === 0) {
+            container.innerHTML =
+                '<div class="empty-state">No active plans are currently available.</div>';
+            return;
+        }
+
+        const subscription = currentSubscriptionData?.subscription;
+        const trial = currentSubscriptionData?.free_trial;
+
+        let currentCode = null;
+
+        if (subscription?.plan?.code) {
+            currentCode = subscription.plan.code;
+        } else if (trial?.active) {
+            currentCode = "free";
+        }
+
+        container.innerHTML = plans.map(function(plan) {
+            const code = String(plan.code || "").toLowerCase();
+            const isCurrent = code === currentCode;
+
+            const price = Number(plan.monthly_price || 0);
+
+            const priceHTML = price === 0
+                ? '$0 <span>/ trial</span>'
+                : '$' + escapeHTML(price.toFixed(2)) +
+                    ' <span>/ month</span>';
+
+            let websiteText = "Website limit not specified.";
+
+            if (plan.website_limit === null) {
+                websiteText = "Unlimited websites";
+            } else if (Number(plan.website_limit) === 1) {
+                websiteText = "1 website maximum";
+            } else if (plan.website_limit !== undefined) {
+                websiteText = escapeHTML(plan.website_limit) +
+                    " websites maximum";
+            }
+
+            const durationText = plan.duration_days
+                ? escapeHTML(plan.duration_days) + " days"
+                : "Duration not specified";
+
+            const features = [
+                websiteText,
+                durationText,
+                plan.is_trial
+                    ? "30-day free trial"
+                    : "Monthly subscription",
+                "1,000 available credits required per website submission"
+            ];
+
+            return `
+                <article class="plan ${isCurrent ? "current" : ""}">
+                    ${isCurrent
+                        ? '<span class="current-label">CURRENT PLAN</span>'
+                        : ''
+                    }
+
+                    <h3>${escapeHTML(plan.name)}</h3>
+
+                    <div class="plan-price">
+                        ${priceHTML}
+                    </div>
+
+                    <p class="plan-description">
+                        ${escapeHTML(plan.description || "Plan details are not available.")}
+                    </p>
+
+                    <ul>
+                        ${features.map(function(feature) {
+                            return `<li>${feature}</li>`;
+                        }).join("")}
+                    </ul>
+
+                    <div class="plan-button">
+                        ${isCurrent
+                            ? "Your Current Plan"
+                            : "Plan Information"}
+                    </div>
+                </article>
+            `;
+        }).join("");
+    }
+
+    function renderHistory(data) {
+        const body = document.getElementById("historyBody");
+
+        const subscriptions = Array.isArray(data.subscriptions)
+            ? data.subscriptions
+            : [];
+
+        if (subscriptions.length === 0) {
+            body.innerHTML = `
+                <tr>
+                    <td colspan="5" class="empty-state">
+                        No subscription history found.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        body.innerHTML = subscriptions.map(function(item) {
+            const planName = item.plan?.name || "Unknown Plan";
+
+            const status = String(item.status || "unknown");
+
+            let statusClass = "status";
+
+            if (status.toLowerCase() === "active") {
+                statusClass += " active";
+            } else if (
+                status.toLowerCase() === "expired" ||
+                status.toLowerCase() === "canceled" ||
+                status.toLowerCase() === "cancelled"
+            ) {
+                statusClass += " expired";
+            }
+
+            return `
+                <tr>
+                    <td><strong>${escapeHTML(planName)}</strong></td>
+                    <td>
+                        <span class="${statusClass}">
+                            ${escapeHTML(status)}
+                        </span>
+                    </td>
+                    <td>${escapeHTML(item.payment_provider || "—")}</td>
+                    <td>${formatDate(item.started_at)}</td>
+                    <td>${formatDate(item.expires_at)}</td>
+                </tr>
+            `;
+        }).join("");
+    }
+
+    async function loadSubscriptionPage() {
+        clearMessage();
+
+        document.getElementById("plansContainer").innerHTML =
+            '<div class="loading">Loading available plans...</div>';
+
+        document.getElementById("historyBody").innerHTML =
+            '<tr><td colspan="5" class="loading">Loading subscription history...</td></tr>';
+
+        try {
+            const plansPromise = apiRequest(API.plans);
+            const currentPromise = apiRequest(API.current);
+            const historyPromise = apiRequest(API.history);
+
+            const results = await Promise.allSettled([
+                plansPromise,
+                currentPromise,
+                historyPromise
+            ]);
+
+            const plansResult = results[0];
+            const currentResult = results[1];
+            const historyResult = results[2];
+
+            if (currentResult.status === "fulfilled") {
+                renderCurrentSubscription(currentResult.value);
+            } else {
+                document.getElementById("currentPlanName").textContent =
+                    "Unable to load";
+
+                document.getElementById("currentPlanDescription").textContent =
+                    currentResult.reason.message;
+
+                document.getElementById("sidebarPlan").textContent =
+                    "Unavailable";
+
+                showMessage(
+                    "Current subscription: " +
+                    currentResult.reason.message
+                );
+            }
+
+            if (plansResult.status === "fulfilled") {
+                renderPlans(plansResult.value.plans);
+            } else {
+                document.getElementById("plansContainer").innerHTML =
+                    '<div class="empty-state">Unable to load available plans: ' +
+                    escapeHTML(plansResult.reason.message) + '</div>';
+
+                showMessage(
+                    "Plans: " + plansResult.reason.message
+                );
+            }
+
+            if (historyResult.status === "fulfilled") {
+                renderHistory(historyResult.value);
+            } else {
+                document.getElementById("historyBody").innerHTML =
+                    '<tr><td colspan="5" class="empty-state">' +
+                    escapeHTML(historyResult.reason.message) +
+                    '</td></tr>';
+
+                showMessage(
+                    "Subscription history: " +
+                    historyResult.reason.message
+                );
+            }
+
+            if (
+                results.every(function(result) {
+                    return result.status === "fulfilled";
+                })
+            ) {
+                clearMessage();
+            }
+
+        } catch (error) {
+            showMessage(
+                error.message || "Unable to load subscription information."
+            );
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        loadSubscriptionPage();
+    });
+</script>
+
 </body>
 </html>

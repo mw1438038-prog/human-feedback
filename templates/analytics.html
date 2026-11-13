@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics | HUMAN FEEDBACK</title>
+
     <style>
         :root {
             --navy: #172554;
@@ -170,6 +170,7 @@
             color: var(--text);
             font-size: 12px;
             outline: none;
+            min-width: 130px;
         }
 
         .stats {
@@ -221,6 +222,7 @@
             padding: 23px;
             box-shadow: var(--shadow);
             margin-bottom: 22px;
+            min-width: 0;
         }
 
         .panel-heading {
@@ -263,8 +265,15 @@
 
         .legend-dot.blue { background: var(--navy); }
 
+        .chart-scroll {
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
         .chart {
             height: 250px;
+            min-width: 520px;
             display: flex;
             align-items: flex-end;
             justify-content: space-around;
@@ -287,13 +296,13 @@
             justify-content: center;
             gap: 5px;
             flex: 1;
+            min-width: 12px;
             position: relative;
         }
 
         .bar {
             width: min(25px, 40%);
             border-radius: 5px 5px 0 0;
-            min-height: 4px;
             transition: height .3s;
         }
 
@@ -305,6 +314,7 @@
             justify-content: space-around;
             gap: 12px;
             padding-top: 12px;
+            min-width: 520px;
         }
 
         .chart-labels span {
@@ -345,8 +355,10 @@
         .progress span {
             display: block;
             height: 100%;
+            width: 0;
             background: var(--orange);
             border-radius: 20px;
+            transition: width .3s;
         }
 
         .metric-value {
@@ -371,8 +383,17 @@
             color: var(--navy);
         }
 
-        .rating-stars { color: var(--orange); font-size: 17px; letter-spacing: 2px; }
-        .rating-summary p { color: var(--muted); font-size: 11px; margin-top: 5px; }
+        .rating-stars {
+            color: var(--orange);
+            font-size: 17px;
+            letter-spacing: 2px;
+        }
+
+        .rating-summary p {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 5px;
+        }
 
         .website-list { display: flex; flex-direction: column; }
 
@@ -387,11 +408,62 @@
 
         .website-item:last-child { border-bottom: 0; }
 
-        .website-info strong { display: block; font-size: 12px; margin-bottom: 5px; }
-        .website-info small { color: var(--muted); font-size: 10px; }
-        .website-value { text-align: right; }
-        .website-value strong { display: block; color: var(--navy); font-size: 15px; }
-        .website-value small { color: var(--muted); font-size: 10px; }
+        .website-info { min-width: 0; }
+
+        .website-info strong {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px;
+            overflow-wrap: anywhere;
+        }
+
+        .website-info small {
+            color: var(--muted);
+            font-size: 10px;
+            overflow-wrap: anywhere;
+        }
+
+        .website-value { text-align: right; flex-shrink: 0; }
+
+        .website-value strong {
+            display: block;
+            color: var(--navy);
+            font-size: 13px;
+        }
+
+        .website-value small {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        .status.active, .status.approved {
+            color: var(--green);
+            background: #DCFCE7;
+        }
+
+        .status.pending {
+            color: #B45309;
+            background: #FEF3C7;
+        }
+
+        .status.rejected, .status.suspended {
+            color: var(--red);
+            background: #FEE2E2;
+        }
+
+        .status.other {
+            color: var(--muted);
+            background: #F1F5F9;
+        }
 
         .info-banner {
             background: var(--soft);
@@ -401,14 +473,54 @@
             padding: 17px 19px;
         }
 
-        .info-banner h3 { color: var(--navy); font-size: 13px; margin-bottom: 7px; }
-        .info-banner p { color: var(--muted); font-size: 12px; line-height: 1.7; }
+        .info-banner h3 {
+            color: var(--navy);
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
 
-        .-note {
+        .info-banner p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .note {
             text-align: center;
             padding: 20px 5px 5px;
             color: var(--muted);
             font-size: 11px;
+        }
+
+        .empty-message {
+            color: var(--muted);
+            font-size: 13px;
+            text-align: center;
+            padding: 28px 12px;
+            line-height: 1.7;
+        }
+
+        .message {
+            display: none;
+            padding: 13px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .message.error {
+            display: block;
+            color: #991B1B;
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+        }
+
+        .message.info {
+            display: block;
+            color: #1E40AF;
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
         }
 
         .mobile-menu {
@@ -419,6 +531,8 @@
             color: var(--navy);
             cursor: pointer;
         }
+
+        .loading { opacity: .65; }
 
         @media(max-width: 1100px) {
             .sidebar { width: 215px; }
@@ -457,10 +571,12 @@
             .stat-card { padding: 15px; }
             .stat-card h3 { font-size: 23px; }
             .panel { padding: 17px 14px; }
-            .chart { height: 190px; gap: 5px; padding-left: 0; padding-right: 0; }
+            .chart { height: 190px; }
             .chart-labels { gap: 5px; }
             .chart-labels span { font-size: 9px; }
             .metric-name { width: 95px; font-size: 11px; }
+            .filters { width: 100%; }
+            .filters select { flex: 1; }
         }
 
         @media(max-width: 380px) {
@@ -468,6 +584,7 @@
         }
     </style>
 </head>
+
 <body>
 <div class="app">
 
@@ -483,7 +600,7 @@
 
             <div class="nav-label">ACCOUNT</div>
             <a href="/credits">◈ My Credits</a>
-            <a href="/credit-history">◷ Credit History</a>
+            <a href="/credits/history">◷ Credit History</a>
             <a href="/analytics" class="active">▥ Analytics</a>
             <a href="/notifications">♢ Notifications</a>
             <a href="/reports">⚑ Reports</a>
@@ -499,18 +616,822 @@
                 <div class="avatar">HF</div>
                 <div>
                     <strong>Account</strong>
-                    <small>Pro Member</small>
+                    <small>HUMAN FEEDBACK</small>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
-</main>
+
+        <header class="topbar">
+            <div class="top-right">
+                <button class="mobile-menu" id="mobileMenu"
+                        type="button" aria-label="Open navigation menu">☰</button>
+                <h2>Analytics</h2>
+            </div>
+
+            <div class="top-right">
+                <a href="/profile">My Account</a>
+                <a href="/subscription" class="upgrade">View Plans</a>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <section class="page-heading">
+                <div>
+                    <h1>Analytics Overview</h1>
+                    <p>Track your website feedback, ratings and credit activity.</p>
+                </div>
+
+                <div class="filters">
+                    <select id="periodFilter" aria-label="Select analytics period">
+                        <option value="7">Last 7 days</option>
+                        <option value="30" selected>Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                    </select>
+
+                    <select id="websiteFilter" aria-label="Select website">
+                        <option value="">Loading websites...</option>
+                    </select>
+                </div>
+            </section>
+
+            <div id="pageMessage" class="message" role="alert"></div>
+
+            <section class="stats">
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Feedback Received</span>
+                        <div class="stat-icon">✉</div>
+                    </div>
+                    <h3 id="receivedFeedback">—</h3>
+                    <p>Approved feedback received during this period</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Feedback Submitted</span>
+                        <div class="stat-icon">↗</div>
+                    </div>
+                    <h3 id="submittedFeedback">—</h3>
+                    <p>Your feedback submissions during this period</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Average Rating</span>
+                        <div class="stat-icon">★</div>
+                    </div>
+                    <h3 id="averageRating">—</h3>
+                    <p>Average rating received during this period</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Available Credits</span>
+                        <div class="stat-icon">◈</div>
+                    </div>
+                    <h3 id="creditsBalance">—</h3>
+                    <p>Your current credit balance</p>
+                </article>
+            </section>
+
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Feedback Trends</h2>
+                        <p id="trendSubtitle">Select a website to view its feedback trends.</p>
+                    </div>
+                </div>
+
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <span class="legend-dot"></span>
+                        Approved feedback
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot blue"></span>
+                        Average rating
+                    </div>
+                </div>
+
+                <div id="trendEmpty" class="empty-message">
+                    Select one of your websites to view its feedback trends.
+                </div>
+
+                <div id="trendChartContainer" style="display:none;">
+                    <div class="chart-scroll">
+                        <div class="chart" id="trendChart"></div>
+                        <div class="chart-labels" id="trendLabels"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid-two">
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Rating Breakdown</h2>
+                            <p>Average ratings for the selected website</p>
+                        </div>
+                    </div>
+
+                    <div id="ratingEmpty" class="empty-message">
+                        Select a website to view its rating breakdown.
+                    </div>
+
+                    <div id="ratingContent" style="display:none;">
+                        <div class="rating-summary">
+                            <div class="rating-big" id="overallRating">—</div>
+                            <div>
+                                <div class="rating-stars" id="overallStars">☆☆☆☆☆</div>
+                                <p id="ratingCount">Based on available ratings</p>
+                            </div>
+                        </div>
+
+                        <div class="metric-list" id="ratingMetrics"></div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>My Feedback Activity</h2>
+                            <p>Your submitted feedback status during this period</p>
+                        </div>
+                    </div>
+
+                    <div class="metric-list" id="myFeedbackMetrics">
+                        <div class="empty-message">Loading feedback statistics...</div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="grid-two">
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>My Websites</h2>
+                            <p>Your registered websites and their current status</p>
+                        </div>
+                    </div>
+
+                    <div class="website-list" id="websiteList">
+                        <div class="empty-message">Loading your websites...</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Credit Activity</h2>
+                            <p>Credits earned and spent during this period</p>
+                        </div>
+                    </div>
+
+                    <div class="metric-list" id="creditMetrics">
+                        <div class="empty-message">Loading credit activity...</div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="info-banner">
+                <h3>About Your Analytics</h3>
+                <p>
+                    Analytics are calculated from your actual HUMAN FEEDBACK
+                    account records. Feedback received counts approved feedback
+                    for your websites. Submitted feedback counts feedback you
+                    have sent to other websites. Ratings and trends are based
+                    on approved feedback within the selected period.
+                </p>
+            </section>
+
+            <div class="note">
+                HUMAN FEEDBACK Analytics · Data is loaded from your account.
+            </div>
+
+        </div>
+    </main>
 </div>
+
+<script>
+(function () {
+    "use strict";
+
+    const API = {
+        overview: "/api/analytics/overview",
+        websites: "/api/websites/",
+        websiteAnalytics: (id) => `/api/analytics/website/${id}`,
+        websiteTrends: (id) => `/api/analytics/website/${id}/trends`,
+        myFeedback: "/api/analytics/my-feedback"
+    };
+
+    const state = {
+        days: 30,
+        websites: [],
+        selectedWebsiteId: "",
+        overviewRequest: 0,
+        websiteRequest: 0
+    };
+
+    const elements = {
+        sidebar: document.getElementById("sidebar"),
+        mobileMenu: document.getElementById("mobileMenu"),
+        periodFilter: document.getElementById("periodFilter"),
+        websiteFilter: document.getElementById("websiteFilter"),
+        pageMessage: document.getElementById("pageMessage"),
+
+        receivedFeedback: document.getElementById("receivedFeedback"),
+        submittedFeedback: document.getElementById("submittedFeedback"),
+        averageRating: document.getElementById("averageRating"),
+        creditsBalance: document.getElementById("creditsBalance"),
+
+        trendSubtitle: document.getElementById("trendSubtitle"),
+        trendEmpty: document.getElementById("trendEmpty"),
+        trendChartContainer: document.getElementById("trendChartContainer"),
+        trendChart: document.getElementById("trendChart"),
+        trendLabels: document.getElementById("trendLabels"),
+
+        ratingEmpty: document.getElementById("ratingEmpty"),
+        ratingContent: document.getElementById("ratingContent"),
+        overallRating: document.getElementById("overallRating"),
+        overallStars: document.getElementById("overallStars"),
+        ratingCount: document.getElementById("ratingCount"),
+        ratingMetrics: document.getElementById("ratingMetrics"),
+
+        myFeedbackMetrics: document.getElementById("myFeedbackMetrics"),
+        websiteList: document.getElementById("websiteList"),
+        creditMetrics: document.getElementById("creditMetrics")
+    };
+
+    function number(value) {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function formatNumber(value) {
+        return number(value).toLocaleString();
+    }
+
+    function formatRating(value) {
+        return number(value).toFixed(1);
+    }
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, function (char) {
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            }[char];
+        });
+    }
+
+    async function apiGet(url) {
+        const response = await fetch(url, {
+            method: "GET",
+            credentials: "same-origin",
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+
+        let data;
+
+        try {
+            data = await response.json();
+        } catch {
+            throw new Error("The server returned an invalid response.");
+        }
+
+        if (!response.ok || data.success === false) {
+            throw new Error(
+                data.message || `Request failed (${response.status}).`
+            );
+        }
+
+        return data;
+    }
+
+    function showMessage(message, type = "error") {
+        elements.pageMessage.textContent = message;
+        elements.pageMessage.className = `message ${type}`;
+    }
+
+    function clearMessage() {
+        elements.pageMessage.textContent = "";
+        elements.pageMessage.className = "message";
+    }
+
+    function setText(element, value) {
+        element.textContent = value;
+    }
+
+    function setOverviewLoading() {
+        [
+            elements.receivedFeedback,
+            elements.submittedFeedback,
+            elements.averageRating,
+            elements.creditsBalance
+        ].forEach(element => setText(element, "Loading..."));
+    }
+
+    function renderOverview(overview) {
+        setText(
+            elements.receivedFeedback,
+            formatNumber(overview.received_feedback_in_period)
+        );
+
+        setText(
+            elements.submittedFeedback,
+            formatNumber(overview.submitted_feedback)
+        );
+
+        setText(
+            elements.averageRating,
+            formatRating(overview.average_received_rating)
+        );
+
+        setText(
+            elements.creditsBalance,
+            formatNumber(overview.credits_balance)
+        );
+    }
+
+    function statusClass(status) {
+        const value = String(status || "").toLowerCase();
+
+        if (["active", "approved"].includes(value)) return value;
+        if (["pending", "rejected", "suspended"].includes(value)) return value;
+
+        return "other";
+    }
+
+    function renderWebsites(websites) {
+        if (!websites.length) {
+            elements.websiteList.innerHTML = `
+                <div class="empty-message">
+                    You have not added any websites yet.
+                    Your website records will appear here after submission.
+                </div>
+            `;
+            return;
+        }
+
+        elements.websiteList.innerHTML = websites.map(website => {
+            const status = String(website.status || "unknown");
+
+            return `
+                <div class="website-item">
+                    <div class="website-info">
+                        <strong>${escapeHTML(website.name)}</strong>
+                        <small>${escapeHTML(website.url)}</small>
+                    </div>
+                    <div class="website-value">
+                        <span class="status ${statusClass(status)}">
+                            ${escapeHTML(status)}
+                        </span>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function populateWebsiteFilter(websites) {
+        elements.websiteFilter.innerHTML = "";
+
+        if (!websites.length) {
+            elements.websiteFilter.innerHTML =
+                '<option value="">No websites available</option>';
+            elements.websiteFilter.disabled = true;
+            state.selectedWebsiteId = "";
+            return;
+        }
+
+        elements.websiteFilter.disabled = false;
+
+        elements.websiteFilter.innerHTML =
+            '<option value="">Select a website</option>' +
+            websites.map(website => `
+                <option value="${Number(website.id)}">
+                    ${escapeHTML(website.name)}
+                </option>
+            `).join("");
+
+        const existing = websites.some(
+            website => String(website.id) === String(state.selectedWebsiteId)
+        );
+
+        if (existing) {
+            elements.websiteFilter.value = state.selectedWebsiteId;
+        } else {
+            state.selectedWebsiteId = "";
+            elements.websiteFilter.value = "";
+        }
+    }
+
+    function resetWebsiteAnalytics(message) {
+        elements.trendChartContainer.style.display = "none";
+        elements.trendEmpty.style.display = "block";
+        elements.trendEmpty.textContent = message;
+
+        elements.ratingContent.style.display = "none";
+        elements.ratingEmpty.style.display = "block";
+        elements.ratingEmpty.textContent = message;
+
+        elements.trendSubtitle.textContent =
+            "Select a website to view its feedback trends.";
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return "";
+
+        const parts = String(dateString).split("-");
+        if (parts.length !== 3) return String(dateString);
+
+        const date = new Date(
+            Number(parts[0]),
+            Number(parts[1]) - 1,
+            Number(parts[2])
+        );
+
+        if (Number.isNaN(date.getTime())) return String(dateString);
+
+        return date.toLocaleDateString("en", {
+            day: "numeric",
+            month: "short"
+        });
+    }
+
+    function renderTrends(trends) {
+        if (!Array.isArray(trends) || trends.length === 0) {
+            elements.trendChartContainer.style.display = "none";
+            elements.trendEmpty.style.display = "block";
+            elements.trendEmpty.textContent =
+                "No approved feedback trend records are available for this period.";
+            return;
+        }
+
+        const maxFeedback = Math.max(
+            1,
+            ...trends.map(item => number(item.feedback_count))
+        );
+
+        elements.trendChart.innerHTML = trends.map(item => {
+            const count = number(item.feedback_count);
+            const rating = Math.max(
+                0,
+                Math.min(5, number(item.average_rating))
+            );
+
+            const feedbackHeight = count > 0
+                ? Math.max(3, (count / maxFeedback) * 100)
+                : 0;
+
+            const ratingHeight = rating > 0
+                ? (rating / 5) * 100
+                : 0;
+
+            return `
+                <div class="chart-group"
+                     title="${escapeHTML(item.date)}: ${count} feedback, rating ${formatRating(rating)}">
+                    <div class="bar orange"
+                         style="height:${feedbackHeight}%"
+                         aria-label="${count} approved feedback"></div>
+                    <div class="bar navy"
+                         style="height:${ratingHeight}%"
+                         aria-label="Average rating ${formatRating(rating)}"></div>
+                </div>
+            `;
+        }).join("");
+
+        elements.trendLabels.innerHTML = trends.map((item, index) => {
+            const shouldShow =
+                trends.length <= 14 ||
+                index === 0 ||
+                index === trends.length - 1 ||
+                index % Math.ceil(trends.length / 7) === 0;
+
+            return `
+                <span>${shouldShow ? escapeHTML(formatDate(item.date)) : ""}</span>
+            `;
+        }).join("");
+
+        elements.trendEmpty.style.display = "none";
+        elements.trendChartContainer.style.display = "block";
+    }
+
+    function renderMetricRows(container, metrics) {
+        container.innerHTML = metrics.map(metric => {
+            const value = number(metric.value);
+            const percent = Math.max(0, Math.min(100, number(metric.percent)));
+
+            return `
+                <div class="metric-row">
+                    <div class="metric-name">${escapeHTML(metric.label)}</div>
+                    <div class="progress">
+                        <span style="width:${percent}%"></span>
+                    </div>
+                    <div class="metric-value">${escapeHTML(metric.display)}</div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function renderRatingAnalytics(analytics) {
+        const ratings = analytics.ratings || {};
+        const overall = number(ratings.overall);
+
+        setText(elements.overallRating, formatRating(overall));
+
+        const fullStars = Math.max(0, Math.min(5, Math.round(overall)));
+        setText(
+            elements.overallStars,
+            "★".repeat(fullStars) + "☆".repeat(5 - fullStars)
+        );
+
+        setText(
+            elements.ratingCount,
+            `${formatNumber(analytics.approved_feedback_in_period)} approved feedback in this period`
+        );
+
+        const ratingItems = [
+            { label: "Design", value: ratings.design },
+            { label: "Speed", value: ratings.speed },
+            { label: "User Experience", value: ratings.ux },
+            { label: "Content", value: ratings.content }
+        ];
+
+        renderMetricRows(
+            elements.ratingMetrics,
+            ratingItems.map(item => ({
+                label: item.label,
+                value: item.value,
+                percent: (number(item.value) / 5) * 100,
+                display: formatRating(item.value)
+            }))
+        );
+
+        elements.ratingEmpty.style.display = "none";
+        elements.ratingContent.style.display = "block";
+    }
+
+    function renderMyFeedback(data) {
+        const stats = data.feedback_statistics || {};
+
+        const total = number(stats.total);
+        const approved = number(stats.approved);
+        const pending = number(stats.pending);
+        const rejected = number(stats.rejected);
+
+        const percent = value => total > 0 ? (value / total) * 100 : 0;
+
+        renderMetricRows(elements.myFeedbackMetrics, [
+            {
+                label: "Total",
+                value: total,
+                percent: percent(total),
+                display: formatNumber(total)
+            },
+            {
+                label: "Approved",
+                value: approved,
+                percent: percent(approved),
+                display: formatNumber(approved)
+            },
+            {
+                label: "Pending",
+                value: pending,
+                percent: percent(pending),
+                display: formatNumber(pending)
+            },
+            {
+                label: "Rejected",
+                value: rejected,
+                percent: percent(rejected),
+                display: formatNumber(rejected)
+            }
+        ]);
+    }
+
+    function renderCreditActivity(overview) {
+        const earned = number(overview.credits_earned_in_period);
+        const spent = number(overview.credits_spent_in_period);
+
+        const maximum = Math.max(earned, spent, 1);
+
+        renderMetricRows(elements.creditMetrics, [
+            {
+                label: "Credits Earned",
+                value: earned,
+                percent: (earned / maximum) * 100,
+                display: formatNumber(earned)
+            },
+            {
+                label: "Credits Spent",
+                value: spent,
+                percent: (spent / maximum) * 100,
+                display: formatNumber(spent)
+            }
+        ]);
+    }
+
+    async function loadOverview() {
+        const requestId = ++state.overviewRequest;
+
+        setOverviewLoading();
+
+        try {
+            const [overviewData, feedbackData] = await Promise.all([
+                apiGet(`${API.overview}?days=${state.days}`),
+                apiGet(`${API.myFeedback}?days=${state.days}`)
+            ]);
+
+            if (requestId !== state.overviewRequest) return;
+
+            const overview = overviewData.overview || {};
+
+            renderOverview(overview);
+            renderMyFeedback(feedbackData);
+            renderCreditActivity(overview);
+
+        } catch (error) {
+            if (requestId !== state.overviewRequest) return;
+
+            showMessage(
+                `Could not load analytics overview: ${error.message}`
+            );
+
+            [
+                elements.receivedFeedback,
+                elements.submittedFeedback,
+                elements.averageRating,
+                elements.creditsBalance
+            ].forEach(element => setText(element, "—"));
+
+            elements.myFeedbackMetrics.innerHTML =
+                '<div class="empty-message">Feedback statistics could not be loaded.</div>';
+
+            elements.creditMetrics.innerHTML =
+                '<div class="empty-message">Credit activity could not be loaded.</div>';
+        }
+    }
+
+    async function loadSelectedWebsite() {
+        const websiteId = state.selectedWebsiteId;
+        const requestId = ++state.websiteRequest;
+
+        if (!websiteId) {
+            resetWebsiteAnalytics(
+                "Select one of your websites to view its analytics."
+            );
+            return;
+        }
+
+        elements.trendEmpty.style.display = "block";
+        elements.trendChartContainer.style.display = "none";
+        elements.trendEmpty.textContent = "Loading website trends...";
+
+        elements.ratingEmpty.style.display = "block";
+        elements.ratingContent.style.display = "none";
+        elements.ratingEmpty.textContent = "Loading rating breakdown...";
+
+        try {
+            const [analyticsData, trendsData] = await Promise.all([
+                apiGet(`${API.websiteAnalytics(websiteId)}?days=${state.days}`),
+                apiGet(`${API.websiteTrends(websiteId)}?days=${state.days}`)
+            ]);
+
+            if (requestId !== state.websiteRequest) return;
+
+            renderRatingAnalytics(analyticsData.analytics || {});
+            renderTrends(trendsData.trends || []);
+
+            const website = analyticsData.website || {};
+            elements.trendSubtitle.textContent =
+                `${website.name || "Selected website"} · Last ${state.days} days`;
+
+        } catch (error) {
+            if (requestId !== state.websiteRequest) return;
+
+            elements.trendChartContainer.style.display = "none";
+            elements.trendEmpty.style.display = "block";
+            elements.trendEmpty.textContent =
+                `Website trends could not be loaded: ${error.message}`;
+
+            elements.ratingContent.style.display = "none";
+            elements.ratingEmpty.style.display = "block";
+            elements.ratingEmpty.textContent =
+                `Rating data could not be loaded: ${error.message}`;
+
+            showMessage(
+                `Could not load selected website analytics: ${error.message}`
+            );
+        }
+    }
+
+    async function loadWebsites() {
+        elements.websiteList.innerHTML =
+            '<div class="empty-message">Loading your websites...</div>';
+
+        try {
+            const data = await apiGet(API.websites);
+
+            state.websites = Array.isArray(data.websites)
+                ? data.websites
+                : [];
+
+            renderWebsites(state.websites);
+            populateWebsiteFilter(state.websites);
+
+            if (state.selectedWebsiteId) {
+                loadSelectedWebsite();
+            } else {
+                resetWebsiteAnalytics(
+                    state.websites.length
+                        ? "Select a website above to view its analytics."
+                        : "You have not added any websites yet."
+                );
+            }
+
+        } catch (error) {
+            elements.websiteList.innerHTML = `
+                <div class="empty-message">
+                    Could not load your websites.<br>
+                    ${escapeHTML(error.message)}
+                </div>
+            `;
+
+            elements.websiteFilter.innerHTML =
+                '<option value="">Websites unavailable</option>';
+            elements.websiteFilter.disabled = true;
+
+            resetWebsiteAnalytics(
+                "Website analytics are unavailable because the website list could not be loaded."
+            );
+
+            showMessage(
+                `Could not load your websites: ${error.message}`
+            );
+        }
+    }
+
+    async function refreshAnalytics() {
+        clearMessage();
+        state.days = Number(elements.periodFilter.value) || 30;
+
+        await loadOverview();
+
+        if (state.selectedWebsiteId) {
+            await loadSelectedWebsite();
+        }
+    }
+
+    elements.mobileMenu.addEventListener("click", function () {
+        elements.sidebar.classList.toggle("show");
+    });
+
+    elements.periodFilter.addEventListener("change", function () {
+        refreshAnalytics();
+    });
+
+    elements.websiteFilter.addEventListener("change", function () {
+        state.selectedWebsiteId = elements.websiteFilter.value;
+        clearMessage();
+        loadSelectedWebsite();
+    });
+
+    document.addEventListener("click", function (event) {
+        if (
+            window.innerWidth <= 720 &&
+            elements.sidebar.classList.contains("show") &&
+            !elements.sidebar.contains(event.target) &&
+            !elements.mobileMenu.contains(event.target)
+        ) {
+            elements.sidebar.classList.remove("show");
+        }
+    });
+
+    async function initialize() {
+        setOverviewLoading();
+
+        await Promise.all([
+            loadOverview(),
+            loadWebsites()
+        ]);
+    }
+
+    initialize();
+})();
+</script>
+
 </body>
 </html>

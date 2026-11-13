@@ -5,12 +5,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Credit Management | HUMAN FEEDBACK Admin</title>
+
 <style>
-:root{--navy:#172554;--dark:#101B40;--orange:#F97316;--orange-dark:#EA580C;--bg:#F8FAFC;--soft:#FFF7ED;--text:#263247;--muted:#64748B;--border:#E2E8F0}
+:root {
+    --navy:#172554;
+    --dark:#101B40;
+    --orange:#F97316;
+    --orange-dark:#EA580C;
+    --bg:#F8FAFC;
+    --soft:#FFF7ED;
+    --text:#263247;
+    --muted:#64748B;
+    --border:#E2E8F0;
+    --green:#15803D;
+    --red:#B91C1C;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
 a{text-decoration:none;color:inherit}
 button,input,select,textarea{font:inherit}
+button{cursor:pointer}
 .app{display:flex;min-height:100vh}
 .sidebar{width:250px;flex-shrink:0;background:var(--dark);color:white;padding:26px 18px;display:flex;flex-direction:column}
 .brand{font-size:20px;font-weight:800;padding:0 12px 25px;line-height:1.4}
@@ -23,24 +37,37 @@ button,input,select,textarea{font:inherit}
 .sidebar-bottom{margin-top:auto;border-top:1px solid rgba(255,255,255,.12);padding:20px 10px 0}
 .user{display:flex;align-items:center;gap:10px}
 .avatar{width:38px;height:38px;border-radius:50%;background:var(--orange);display:grid;place-items:center;font-weight:700}
-.user strong{display:block;font-size:12px}.user small{color:#94A3B8;font-size:10px}
+.user strong{display:block;font-size:12px}
+.user small{color:#94A3B8;font-size:10px}
 .main{flex:1;min-width:0}
 .topbar{height:75px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+.topbar-left{display:flex;align-items:center;gap:12px}
 .topbar h2{color:var(--navy);font-size:19px}
 .top-right a{color:var(--orange-dark);font-size:11px;font-weight:700}
+.mobile-menu{display:none;border:0;background:none;color:var(--navy);font-size:23px}
 .content{max-width:1350px;margin:auto;padding:30px}
 .breadcrumb{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:11px;margin-bottom:20px}
 .breadcrumb a{color:var(--orange-dark);font-weight:700}
 .heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
 .heading h1{color:var(--navy);font-size:25px;margin-bottom:7px}
 .heading p{color:var(--muted);font-size:12px;line-height:1.6}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:7px;border:1px solid var(--border);background:white;color:var(--text);border-radius:8px;padding:10px 14px;font-size:11px;font-weight:700}
+.btn.primary{background:var(--orange);color:white;border-color:var(--orange)}
+.btn.danger{background:#FEF2F2;color:var(--red);border-color:#FECACA}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn:hover:not(:disabled){filter:brightness(.97)}
 .notice{background:var(--soft);border:1px solid #FED7AA;border-left:4px solid var(--orange);border-radius:9px;padding:13px 16px;margin-bottom:20px}
 .notice strong{display:block;color:var(--navy);font-size:12px;margin-bottom:5px}
 .notice p{color:var(--muted);font-size:11px;line-height:1.6}
+.message{display:none;padding:12px 14px;border-radius:8px;font-size:11px;line-height:1.6;margin-bottom:16px}
+.message.success{display:block;background:#F0FDF4;color:#166534;border:1px solid #BBF7D0}
+.message.error{display:block;background:#FEF2F2;color:#991B1B;border:1px solid #FECACA}
+.message.info{display:block;background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
-.stat-card{background:white;border:1px solid var(--border);border-radius:11px;padding:17px}
+.stat-card{background:white;border:1px solid var(--border);border-radius:11px;padding:17px;min-width:0}
 .stat-card span{display:block;color:var(--muted);font-size:10px;margin-bottom:11px}
-.stat-card strong{display:block;color:var(--navy);font-size:24px}
+.stat-card strong{display:block;color:var(--navy);font-size:24px;overflow-wrap:anywhere}
+.stat-card small{display:block;color:var(--muted);font-size:9px;margin-top:6px}
 .panel{background:white;border:1px solid var(--border);border-radius:12px;padding:21px;margin-bottom:20px;min-width:0}
 .panel-heading{margin-bottom:17px;padding-bottom:13px;border-bottom:1px solid var(--border)}
 .panel-heading h2{color:var(--navy);font-size:15px}
@@ -50,9 +77,9 @@ button,input,select,textarea{font:inherit}
 .filters input{flex:1;min-width:180px}
 .filters input:focus,.filters select:focus{border-color:var(--orange)}
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:800px}
+table{width:100%;border-collapse:collapse;min-width:650px}
 th,td{padding:13px 11px;border-bottom:1px solid var(--border);text-align:left;font-size:10px}
-th{background:#F8FAFC;color:var(--muted);font-weight:700}
+th{background:#F8FAFC;color:var(--muted);font-weight:700;white-space:nowrap}
 td{color:var(--text)}
 td strong{color:var(--navy)}
 .subtext{display:block;color:var(--muted);font-size:9px;margin-top:4px}
@@ -61,61 +88,883 @@ td strong{color:var(--navy)}
 .badge.adjustment{background:#EFF6FF;color:#1D4ED8}
 .badge.pending{background:#FFF7ED;color:#C2410C}
 .badge.reversed{background:#FEF2F2;color:#B91C1C}
-.action-link{color:var(--orange-dark);font-size:10px;font-weight:700}
-.empty-state{text-align:center;padding:28px;color:var(--muted);font-size:11px}
+.badge.neutral{background:#F1F5F9;color:#475569}
+.action-link{color:var(--orange-dark);font-size:10px;font-weight:700;border:0;background:none}
+.empty-state{text-align:center;padding:28px;color:var(--muted);font-size:11px;line-height:1.7}
+.loading{text-align:center;padding:24px;color:var(--muted);font-size:11px}
+.pagination{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px;color:var(--muted);font-size:10px}
+.pagination-actions{display:flex;gap:7px}
+.selected-user{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;background:#F8FAFC;border:1px solid var(--border);border-radius:9px;padding:15px;margin-bottom:17px}
+.selected-user h3{color:var(--navy);font-size:14px}
+.selected-user p{color:var(--muted);font-size:10px;margin-top:5px}
+.selected-user .balance{font-size:22px;color:var(--orange-dark);font-weight:800}
 .field{margin-bottom:15px}
 .field label{display:block;font-size:10px;color:var(--muted);font-weight:700;margin-bottom:7px}
 .field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:8px;color:var(--text);background:white;font-size:11px;outline:none}
 .field textarea{min-height:90px;resize:vertical}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--orange)}
+.field input:disabled,.field textarea:disabled{background:#F8FAFC}
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.btn{display:inline-flex;justify-content:center;align-items:center;border:1px solid var(--border);background:white;color:var(--text);border-radius:8px;padding:10px 14px;font-size:10px;font-weight:700;cursor:pointer}
-.btn.primary{background:var(--orange);color:white;border-color:var(--orange)}
-.btn:hover{filter:brightness(.97)}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
-.message{display:none;padding:12px 14px;border-radius:8px;background:#FFF7ED;color:#9A3412;font-size:11px;line-height:1.6;margin-bottom:16px}
+.adjustment-options{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.adjustment-option{display:flex;align-items:center;gap:7px;padding:10px 13px;border:1px solid var(--border);border-radius:8px;font-size:11px;cursor:pointer}
+.adjustment-option input{accent-color:var(--orange)}
 .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
 .rules strong{font-size:12px;color:var(--navy)}
 .rules p{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px}
-.mobile-menu{display:none;border:0;background:none;color:var(--navy);font-size:23px;cursor:pointer}
 .footer-note{text-align:center;padding:20px 5px 5px;color:var(--muted);font-size:10px}
+.hidden{display:none!important}
 @media(max-width:1100px){.sidebar{width:220px}.content{padding:24px 20px}.stats{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){.sidebar{position:fixed;z-index:20;top:0;bottom:0;left:-260px;width:250px;transition:left .25s}.sidebar.show{left:0}.mobile-menu{display:block}.topbar{height:65px;padding:0 15px}.topbar h2{font-size:16px}.content{padding:20px 14px}.heading{flex-direction:column}.heading h1{font-size:22px}.panel{padding:16px 13px}}
-@media(max-width:450px){.stats{gap:9px}.stat-card{padding:13px}.stat-card strong{font-size:21px}.form-grid{grid-template-columns:1fr}.actions .btn{width:100%}}
+@media(max-width:720px){
+    .sidebar{position:fixed;z-index:20;top:0;bottom:0;left:-260px;width:250px;transition:left .25s}
+    .sidebar.show{left:0}
+    .mobile-menu{display:block}
+    .topbar{height:65px;padding:0 15px}
+    .topbar h2{font-size:16px}
+    .content{padding:20px 14px}
+    .heading{flex-direction:column}
+    .heading h1{font-size:22px}
+    .panel{padding:16px 13px}
+}
+@media(max-width:450px){
+    .stats{gap:9px}
+    .stat-card{padding:13px}
+    .stat-card strong{font-size:21px}
+    .form-grid{grid-template-columns:1fr}
+    .pagination{align-items:flex-start;flex-direction:column}
+    .pagination-actions{width:100%}
+    .pagination-actions .btn{flex:1}
+}
 </style>
 </head>
+
 <body>
 <div class="app">
+
 <aside class="sidebar" id="sidebar">
     <div class="brand">HUMAN <span>FEEDBACK</span></div>
     <span class="admin-tag">ADMINISTRATION</span>
+
     <nav class="nav">
         <div class="nav-label">OVERVIEW</div>
         <a href="/admin">▦ Admin Dashboard</a>
+
         <div class="nav-label">USER MANAGEMENT</div>
         <a href="/admin/users">♙ All Users</a>
         <a href="/admin/credit-management" class="active">◈ Credit Management</a>
+
         <div class="nav-label">WEBSITE MANAGEMENT</div>
         <a href="/admin/website-approvals">▣ Website Approvals</a>
         <a href="/admin/website-suspensions">⊘ Suspensions</a>
+
         <div class="nav-label">MODERATION</div>
         <a href="/admin/feedback-moderation">✉ Feedback Moderation</a>
         <a href="/admin/reports">⚑ User Reports</a>
+
         <div class="nav-label">SYSTEM</div>
         <a href="/admin/audit-logs">◷ Audit Logs</a>
         <a href="/admin/profile">⚙ Admin Profile</a>
     </nav>
+
     <div class="sidebar-bottom">
-        <div class="user"><div class="avatar">AD</div><div><strong>Admin User</strong><small>Administrator</small></div></div>
+        <div class="user">
+            <div class="avatar">AD</div>
+            <div>
+                <strong>Admin User</strong>
+                <small>Administrator</small>
+            </div>
+        </div>
     </div>
 </aside>
 
 <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
+
+<header class="topbar">
+    <div class="topbar-left">
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Open menu">☰</button>
+        <h2>Credit Management</h2>
+    </div>
+    <div class="top-right">
+        <a href="/admin">Admin Dashboard</a>
+    </div>
+</header>
+
+<div class="content">
+
+    <div class="breadcrumb">
+        <a href="/admin">Dashboard</a>
+        <span>›</span>
+        <span>Credit Management</span>
+    </div>
+
+    <div class="heading">
+        <div>
+            <h1>Credit Management</h1>
+            <p>Manage user credit balances, review transactions, and make manual adjustments.</p>
+        </div>
+        <button class="btn" id="refreshAllBtn" type="button">↻ Refresh</button>
+    </div>
+
+    <div id="globalMessage" class="message" role="alert"></div>
+
+    <div class="notice">
+        <strong>Important: Manual Credit Adjustments</strong>
+        <p>Every manual credit adjustment requires a reason. Adding credits increases the user's balance, while deducting credits decreases it. A deduction cannot make the user's balance negative.</p>
+    </div>
+
+    <!-- Selected user statistics -->
+    <section class="stats" aria-label="Selected user credit statistics">
+        <div class="stat-card">
+            <span>Current Credit Balance</span>
+            <strong id="statBalance">—</strong>
+            <small>Selected user's current balance</small>
+        </div>
+        <div class="stat-card">
+            <span>Transactions Loaded</span>
+            <strong id="statTransactions">—</strong>
+            <small>Latest transactions available</small>
+        </div>
+        <div class="stat-card">
+            <span>Credits Added</span>
+            <strong id="statAdded">—</strong>
+            <small>Based on loaded transaction history</small>
+        </div>
+        <div class="stat-card">
+            <span>Credits Deducted</span>
+            <strong id="statDeducted">—</strong>
+            <small>Based on loaded transaction history</small>
+        </div>
+    </section>
+
+    <!-- User search -->
+    <section class="panel">
+        <div class="panel-heading">
+            <h2>Find a User</h2>
+            <p>Search regular user accounts by name or email address. Administrators are excluded by the API.</p>
+        </div>
+
+        <div class="filters">
+            <input
+                type="search"
+                id="userSearch"
+                placeholder="Search by user name or email..."
+                autocomplete="off"
+                aria-label="Search users"
+            >
+            <button class="btn" type="button" id="searchBtn">Search</button>
+            <button class="btn" type="button" id="clearSearchBtn">Clear</button>
+        </div>
+
+        <div id="usersLoading" class="loading hidden">Loading users...</div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Account Status</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr>
+                        <td colspan="5" class="empty-state">Loading users...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <span id="usersPageInfo">Page 1</span>
+            <div class="pagination-actions">
+                <button class="btn" id="prevPageBtn" type="button" disabled>Previous</button>
+                <button class="btn" id="nextPageBtn" type="button" disabled>Next</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Selected user and adjustment -->
+    <section class="panel" id="selectedUserPanel">
+        <div class="panel-heading">
+            <h2>Selected User</h2>
+            <p>Select a user above to view their balance and manage credits.</p>
+        </div>
+
+        <div id="noUserSelected" class="empty-state">
+            No user selected yet. Select a regular user from the list above.
+        </div>
+
+        <div id="selectedUserContent" class="hidden">
+
+            <div class="selected-user">
+                <div>
+                    <h3 id="selectedUserName">—</h3>
+                    <p id="selectedUserEmail">—</p>
+                    <p id="selectedUserId">User ID: —</p>
+                </div>
+                <div>
+                    <span class="subtext">CURRENT BALANCE</span>
+                    <div class="balance" id="selectedBalance">0 credits</div>
+                </div>
+            </div>
+
+            <div class="panel-heading">
+                <h2>Adjust Credits</h2>
+                <p>Choose whether to add or deduct credits. Enter a positive whole number and provide a reason.</p>
+            </div>
+
+            <form id="adjustmentForm">
+                <div class="adjustment-options">
+                    <label class="adjustment-option">
+                        <input type="radio" name="adjustmentType" value="add" checked>
+                        <span>Add Credits</span>
+                    </label>
+                    <label class="adjustment-option">
+                        <input type="radio" name="adjustmentType" value="deduct">
+                        <span>Deduct Credits</span>
+                    </label>
+                </div>
+
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="adjustmentAmount">Credit Amount *</label>
+                        <input
+                            type="number"
+                            id="adjustmentAmount"
+                            min="1"
+                            max="1000000"
+                            step="1"
+                            placeholder="Enter amount"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="adjustmentPreview">Adjustment Preview</label>
+                        <input type="text" id="adjustmentPreview" value="Select an amount" disabled>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="adjustmentReason">Reason for Adjustment *</label>
+                    <textarea
+                        id="adjustmentReason"
+                        maxlength="2000"
+                        placeholder="Explain why these credits are being added or deducted..."
+                        required
+                    ></textarea>
+                    <small class="subtext">Maximum 2,000 characters. This reason will be saved in the transaction and audit log.</small>
+                </div>
+
+                <div class="actions">
+                    <button class="btn primary" id="submitAdjustmentBtn" type="submit">Apply Adjustment</button>
+                    <button class="btn" id="resetAdjustmentBtn" type="reset">Reset Form</button>
+                </div>
+            </form>
+
+            <div id="adjustmentMessage" class="message" role="status"></div>
+        </div>
+    </section>
+
+    <!-- Transaction history -->
+    <section class="panel">
+        <div class="panel-heading">
+            <h2>Transaction History</h2>
+            <p id="historyDescription">Select a user to view their latest credit transactions.</p>
+        </div>
+
+        <div id="historyLoading" class="loading hidden">Loading transaction history...</div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Description / Reason</th>
+                        <th>Reference</th>
+                        <th>Balance After</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionsTableBody">
+                    <tr>
+                        <td colspan="7" class="empty-state">Select a user to view transactions.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="subtext" style="margin-top:12px">
+            The API provides the latest 100 transactions for the selected user.
+        </p>
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <h2>Credit Management Guidelines</h2>
+            <p>Important rules for administrator adjustments.</p>
+        </div>
+
+        <div class="rules">
+            <div>
+                <strong>Manual Additions</strong>
+                <p>Positive adjustments add credits to the selected user's account.</p>
+            </div>
+            <div>
+                <strong>Manual Deductions</strong>
+                <p>Negative adjustments deduct credits. The balance cannot go below zero.</p>
+            </div>
+            <div>
+                <strong>Reason Required</strong>
+                <p>Every manual adjustment must include a reason, which is saved with the transaction.</p>
+            </div>
+            <div>
+                <strong>Transaction Records</strong>
+                <p>Successful adjustments are recorded in the credit transaction history and admin audit log.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer-note">HUMAN FEEDBACK Admin Panel · Credit Management</div>
+
+</div>
 </main>
 </div>
+
+<script>
+(() => {
+    "use strict";
+
+    const API = {
+        users: "/api/admin/users",
+        userCredits: (id) => `/api/credits/user/${encodeURIComponent(id)}`,
+        adjust: "/api/admin/credits/adjust"
+    };
+
+    const state = {
+        users: [],
+        selectedUser: null,
+        page: 1,
+        pages: 1,
+        perPage: 20,
+        search: "",
+        loadingUsers: false,
+        loadingCredits: false,
+        submitting: false
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        })[char]);
+    }
+
+    function formatNumber(value) {
+        const number = Number(value);
+        return Number.isFinite(number) ? number.toLocaleString() : "0";
+    }
+
+    function formatDate(value) {
+        if (!value) return "—";
+
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "—";
+
+        return date.toLocaleString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    }
+
+    async function apiRequest(url, options = {}) {
+        const response = await fetch(url, {
+            credentials: "same-origin",
+            ...options,
+            headers: {
+                ...(options.headers || {})
+            }
+        });
+
+        let data;
+
+        try {
+            data = await response.json();
+        } catch {
+            throw new Error(`Server returned an invalid response (HTTP ${response.status}).`);
+        }
+
+        if (!response.ok || data.success === false) {
+            if (response.status === 401) {
+                throw new Error("Your session has expired. Please log in again.");
+            }
+
+            if (response.status === 403) {
+                throw new Error("Access denied. Administrator permission is required.");
+            }
+
+            throw new Error(data.message || data.error || `Request failed (HTTP ${response.status}).`);
+        }
+
+        return data;
+    }
+
+    function showMessage(element, message, type = "info") {
+        element.textContent = message;
+        element.className = `message ${type}`;
+    }
+
+    function hideMessage(element) {
+        element.textContent = "";
+        element.className = "message";
+    }
+
+    function showGlobalError(message) {
+        showMessage($("globalMessage"), message, "error");
+    }
+
+    function resetStats() {
+        $("statBalance").textContent = "—";
+        $("statTransactions").textContent = "—";
+        $("statAdded").textContent = "—";
+        $("statDeducted").textContent = "—";
+    }
+
+    async function loadUsers() {
+        if (state.loadingUsers) return;
+
+        state.loadingUsers = true;
+        $("usersLoading").classList.remove("hidden");
+        $("usersTableBody").innerHTML = `
+            <tr><td colspan="5" class="empty-state">Loading users...</td></tr>
+        `;
+
+        $("prevPageBtn").disabled = true;
+        $("nextPageBtn").disabled = true;
+
+        try {
+            const params = new URLSearchParams({
+                page: String(state.page),
+                per_page: String(state.perPage)
+            });
+
+            if (state.search) {
+                params.set("search", state.search);
+            }
+
+            const data = await apiRequest(`${API.users}?${params.toString()}`);
+
+            state.users = Array.isArray(data.users) ? data.users : [];
+            state.page = Number(data.page) || 1;
+            state.pages = Math.max(1, Number(data.pages) || 1);
+
+            renderUsers(data.total);
+            hideMessage($("globalMessage"));
+
+        } catch (error) {
+            $("usersTableBody").innerHTML = `
+                <tr><td colspan="5" class="empty-state">${escapeHTML(error.message)}</td></tr>
+            `;
+            showGlobalError(error.message);
+        } finally {
+            state.loadingUsers = false;
+            $("usersLoading").classList.add("hidden");
+            $("prevPageBtn").disabled = state.page <= 1;
+            $("nextPageBtn").disabled = state.page >= state.pages;
+        }
+    }
+
+    function renderUsers(total) {
+        const body = $("usersTableBody");
+
+        if (!state.users.length) {
+            body.innerHTML = `
+                <tr>
+                    <td colspan="5" class="empty-state">
+                        No users found${state.search ? " for this search." : "."}
+                    </td>
+                </tr>
+            `;
+        } else {
+            body.innerHTML = state.users.map(user => {
+                const isSelected = state.selectedUser &&
+                    String(state.selectedUser.id) === String(user.id);
+
+                const status = user.is_suspended
+                    ? '<span class="badge reversed">Suspended</span>'
+                    : user.is_active
+                        ? '<span class="badge earned">Active</span>'
+                        : '<span class="badge neutral">Inactive</span>';
+
+                return `
+                    <tr>
+                        <td>
+                            <strong>${escapeHTML(user.name || "Unnamed user")}</strong>
+                            <span class="subtext">ID: ${escapeHTML(user.id)}</span>
+                        </td>
+                        <td>${escapeHTML(user.email || "—")}</td>
+                        <td>${status}</td>
+                        <td><span class="badge neutral">${escapeHTML(user.role || "user")}</span></td>
+                        <td>
+                            <button
+                                type="button"
+                                class="action-link select-user-btn"
+                                data-user-id="${escapeHTML(user.id)}"
+                            >${isSelected ? "Selected ✓" : "Manage Credits →"}</button>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        const totalText = Number.isFinite(Number(total))
+            ? `${formatNumber(total)} user(s)`
+            : `${state.users.length} user(s) on this page`;
+
+        $("usersPageInfo").textContent =
+            `${totalText} · Page ${state.page} of ${state.pages}`;
+
+        $("prevPageBtn").disabled = state.page <= 1;
+        $("nextPageBtn").disabled = state.page >= state.pages;
+    }
+
+    async function selectUser(userId) {
+        const user = state.users.find(item => String(item.id) === String(userId));
+
+        if (!user) {
+            showGlobalError("The selected user could not be found in the current results.");
+            return;
+        }
+
+        state.selectedUser = user;
+
+        $("noUserSelected").classList.add("hidden");
+        $("selectedUserContent").classList.remove("hidden");
+
+        $("selectedUserName").textContent = user.name || "Unnamed user";
+        $("selectedUserEmail").textContent = user.email || "No email available";
+        $("selectedUserId").textContent = `User ID: ${user.id}`;
+
+        hideMessage($("adjustmentMessage"));
+        renderUsers();
+
+        await loadUserCredits();
+        $("selectedUserPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    async function loadUserCredits() {
+        if (!state.selectedUser || state.loadingCredits) return;
+
+        state.loadingCredits = true;
+        $("historyLoading").classList.remove("hidden");
+        $("transactionsTableBody").innerHTML = `
+            <tr><td colspan="7" class="empty-state">Loading transactions...</td></tr>
+        `;
+
+        try {
+            const userId = state.selectedUser.id;
+            const data = await apiRequest(API.userCredits(userId));
+
+            const balance = Number(data.balance) || 0;
+            const transactions = Array.isArray(data.transactions)
+                ? data.transactions
+                : [];
+
+            $("selectedBalance").textContent = `${formatNumber(balance)} credits`;
+            $("statBalance").textContent = formatNumber(balance);
+            $("statTransactions").textContent = formatNumber(transactions.length);
+
+            let added = 0;
+            let deducted = 0;
+
+            transactions.forEach(transaction => {
+                const amount = Number(transaction.amount) || 0;
+                if (amount > 0) added += amount;
+                if (amount < 0) deducted += Math.abs(amount);
+            });
+
+            $("statAdded").textContent = formatNumber(added);
+            $("statDeducted").textContent = formatNumber(deducted);
+
+            $("historyDescription").textContent =
+                `Latest transactions for ${data.user_name || state.selectedUser.name || "selected user"}.`;
+
+            renderTransactions(transactions);
+
+        } catch (error) {
+            $("transactionsTableBody").innerHTML = `
+                <tr><td colspan="7" class="empty-state">${escapeHTML(error.message)}</td></tr>
+            `;
+            showMessage($("adjustmentMessage"), error.message, "error");
+            resetStats();
+        } finally {
+            state.loadingCredits = false;
+            $("historyLoading").classList.add("hidden");
+        }
+    }
+
+    function transactionBadge(type) {
+        const value = String(type || "").toLowerCase();
+
+        if (value === "feedback_reward") {
+            return '<span class="badge earned">Feedback Reward</span>';
+        }
+
+        if (value === "admin_adjustment") {
+            return '<span class="badge adjustment">Admin Adjustment</span>';
+        }
+
+        if (value.includes("revers")) {
+            return '<span class="badge reversed">Reversal</span>';
+        }
+
+        return `<span class="badge neutral">${escapeHTML(type || "Other")}</span>`;
+    }
+
+    function renderTransactions(transactions) {
+        const body = $("transactionsTableBody");
+
+        if (!transactions.length) {
+            body.innerHTML = `
+                <tr>
+                    <td colspan="7" class="empty-state">
+                        No credit transactions found for this user.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        body.innerHTML = transactions.map(transaction => {
+            const amount = Number(transaction.amount) || 0;
+            const amountClass = amount > 0 ? "earned" : amount < 0 ? "reversed" : "neutral";
+            const amountText = amount > 0
+                ? `+${formatNumber(amount)}`
+                : formatNumber(amount);
+
+            const reference = transaction.reference_type
+                ? `${escapeHTML(transaction.reference_type)}${transaction.reference_id ? ` #${escapeHTML(transaction.reference_id)}` : ""}`
+                : "—";
+
+            return `
+                <tr>
+                    <td><strong>#${escapeHTML(transaction.id)}</strong></td>
+                    <td>${transactionBadge(transaction.transaction_type)}</td>
+                    <td><span class="badge ${amountClass}">${amountText}</span></td>
+                    <td>${escapeHTML(transaction.description || "—")}</td>
+                    <td>${reference}</td>
+                    <td><strong>${formatNumber(transaction.balance_after)}</strong></td>
+                    <td>${escapeHTML(formatDate(transaction.created_at))}</td>
+                </tr>
+            `;
+        }).join("");
+    }
+
+    function updateAdjustmentPreview() {
+        const amount = Number($("adjustmentAmount").value);
+        const type = document.querySelector('input[name="adjustmentType"]:checked')?.value;
+        const preview = $("adjustmentPreview");
+
+        if (!Number.isInteger(amount) || amount < 1) {
+            preview.value = "Enter a valid whole number";
+            return;
+        }
+
+        if (amount > 1000000) {
+            preview.value = "Maximum 1,000,000 credits";
+            return;
+        }
+
+        preview.value = type === "deduct"
+            ? `-${formatNumber(amount)} credits`
+            : `+${formatNumber(amount)} credits`;
+    }
+
+    async function submitAdjustment(event) {
+        event.preventDefault();
+
+        if (!state.selectedUser) {
+            showMessage($("adjustmentMessage"), "Please select a user first.", "error");
+            return;
+        }
+
+        if (state.submitting) return;
+
+        const amount = Number($("adjustmentAmount").value);
+        const reason = $("adjustmentReason").value.trim();
+        const type = document.querySelector('input[name="adjustmentType"]:checked')?.value;
+
+        if (!Number.isInteger(amount) || amount < 1 || amount > 1000000) {
+            showMessage(
+                $("adjustmentMessage"),
+                "Enter a whole number between 1 and 1,000,000.",
+                "error"
+            );
+            return;
+        }
+
+        if (!reason) {
+            showMessage($("adjustmentMessage"), "Adjustment reason is mandatory.", "error");
+            $("adjustmentReason").focus();
+            return;
+        }
+
+        if (reason.length > 2000) {
+            showMessage($("adjustmentMessage"), "Reason cannot exceed 2,000 characters.", "error");
+            return;
+        }
+
+        const signedAmount = type === "deduct" ? -amount : amount;
+        const actionText = type === "deduct" ? "deduct" : "add";
+
+        const confirmed = window.confirm(
+            `Are you sure you want to ${actionText} ${formatNumber(amount)} credits ${type === "deduct" ? "from" : "to"} ${state.selectedUser.name || "this user"}?`
+        );
+
+        if (!confirmed) return;
+
+        state.submitting = true;
+        $("submitAdjustmentBtn").disabled = true;
+        $("submitAdjustmentBtn").textContent = "Processing...";
+
+        hideMessage($("adjustmentMessage"));
+
+        try {
+            const data = await apiRequest(API.adjust, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id: Number(state.selectedUser.id),
+                    amount: signedAmount,
+                    reason: reason
+                })
+            });
+
+            showMessage(
+                $("adjustmentMessage"),
+                `${data.message || "Credits adjusted successfully."} New balance: ${formatNumber(data.balance)} credits.`,
+                "success"
+            );
+
+            $("adjustmentForm").reset();
+            updateAdjustmentPreview();
+
+            await loadUserCredits();
+
+        } catch (error) {
+            showMessage($("adjustmentMessage"), error.message, "error");
+        } finally {
+            state.submitting = false;
+            $("submitAdjustmentBtn").disabled = false;
+            $("submitAdjustmentBtn").textContent = "Apply Adjustment";
+        }
+    }
+
+    // Search users
+    let searchTimeout;
+
+    $("userSearch").addEventListener("input", () => {
+        clearTimeout(searchTimeout);
+
+        searchTimeout = setTimeout(() => {
+            state.search = $("userSearch").value.trim();
+            state.page = 1;
+            loadUsers();
+        }, 350);
+    });
+
+    $("searchBtn").addEventListener("click", () => {
+        state.search = $("userSearch").value.trim();
+        state.page = 1;
+        loadUsers();
+    });
+
+    $("userSearch").addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            state.search = $("userSearch").value.trim();
+            state.page = 1;
+            loadUsers();
+        }
+    });
+
+    $("clearSearchBtn").addEventListener("click", () => {
+        $("userSearch").value = "";
+        state.search = "";
+        state.page = 1;
+        loadUsers();
+    });
+
+    // User selection
+    $("usersTableBody").addEventListener("click", event => {
+        const button = event.target.closest(".select-user-btn");
+        if (!button) return;
+
+        selectUser(button.dataset.userId);
+    });
+
+    // Pagination
+    $("prevPageBtn").addEventListener("click", () => {
+        if (state.page > 1) {
+            state.page--;
+            loadUsers();
+        }
+    });
+
+    $("nextPageBtn").addEventListener("click", () => {
+        if (state.page < state.pages) {
+            state.page++;
+            loadUsers();
+        }
+    });
+
+    // Credit adjustment
+    $("adjustmentForm").addEventListener("submit", submitAdjustment);
+    $("adjustmentForm").addEventListener("reset", () => {
+        setTimeout(updateAdjustmentPreview, 0);
+    });
+
+    $("adjustmentAmount").addEventListener("input", updateAdjustmentPreview);
+
+    document.querySelectorAll('input[name="adjustmentType"]').forEach(input => {
+        input.addEventListener("change", updateAdjustmentPreview);
+    });
+
+    // Refresh
+    $("refreshAllBtn").addEventListener("click", async () => {
+        hideMessage($("globalMessage"));
+        await loadUsers();
+
+        if (state.selectedUser) {
+            await loadUserCredits();
+        }
+    });
+
+    // Mobile menu
+    $("mobileMenu").addEventListener("click", () => {
+        $("sidebar").classList.toggle("show");
+    });
+
+    // Initial state
+    resetStats();
+    updateAdjustmentPreview();
+    loadUsers();
+
+})();
+</script>
+
 </body>
 </html>

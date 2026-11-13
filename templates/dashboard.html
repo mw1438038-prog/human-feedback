@@ -206,23 +206,6 @@
             gap: 20px;
         }
 
-        .notification-button {
-            position: relative;
-            color: var(--dash-navy);
-            text-decoration: none;
-            font-size: 21px;
-        }
-
-        .notification-dot {
-            position: absolute;
-            top: 0;
-            right: -3px;
-            width: 7px;
-            height: 7px;
-            background: var(--dash-orange);
-            border-radius: 50%;
-        }
-
         .topbar-profile {
             display: flex;
             align-items: center;
@@ -280,21 +263,6 @@
 
         .primary-action:hover {
             background: var(--dash-orange-dark);
-        }
-
-        .-notice {
-            background: #FFF7ED;
-            border: 1px solid #FED7AA;
-            border-radius: 10px;
-            color: #9A3412;
-            padding: 12px 15px;
-            font-size: 12px;
-            line-height: 1.6;
-            margin-bottom: 23px;
-        }
-
-        .-notice strong {
-            color: #7C2D12;
         }
 
         .stats-grid {
@@ -550,13 +518,6 @@
             font-size: 10px;
         }
 
-        .activity-amount {
-            color: #15803D;
-            font-size: 11px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
         .website-item {
             display: flex;
             align-items: center;
@@ -597,30 +558,6 @@
             font-size: 10px;
         }
 
-        .status {
-            display: inline-block;
-            padding: 5px 8px;
-            border-radius: 20px;
-            font-size: 9px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .status-approved {
-            background: #DCFCE7;
-            color: #166534;
-        }
-
-        .status-pending {
-            background: #FEF3C7;
-            color: #92400E;
-        }
-
-        .status-rejected {
-            background: #FEE2E2;
-            color: #991B1B;
-        }
-
         .dashboard-footer {
             text-align: center;
             color: #94A3B8;
@@ -632,6 +569,7 @@
             .stats-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
+
             .dashboard-sidebar {
                 width: 225px;
             }
@@ -648,19 +586,24 @@
                 transition: left 0.25s ease;
                 overflow-y: auto;
             }
+
             .dashboard-sidebar.open {
                 left: 0;
             }
+
             .mobile-menu {
                 display: block;
             }
+
             .content-grid,
             .bottom-grid {
                 grid-template-columns: 1fr;
             }
+
             .dashboard-content {
                 padding: 25px 20px 40px;
             }
+
             .dashboard-topbar {
                 padding: 0 20px;
             }
@@ -671,28 +614,36 @@
                 height: 65px;
                 padding: 0 14px;
             }
+
             .topbar-profile > span:last-child {
                 display: none;
             }
+
             .dashboard-content {
                 padding: 22px 14px 35px;
             }
+
             .welcome-row {
                 align-items: flex-start;
                 flex-direction: column;
             }
+
             .welcome-row h2 {
                 font-size: 22px;
             }
+
             .stats-grid {
                 gap: 11px;
             }
+
             .stat-card {
                 padding: 15px;
             }
+
             .stat-value {
                 font-size: 23px;
             }
+
             .panel {
                 padding: 17px;
             }
@@ -706,7 +657,7 @@
 
     <aside class="dashboard-sidebar" id="dashboardSidebar">
 
-        <a href="/" class="dashboard-brand">
+        <a href="{{ url_for('dashboard_page') }}" class="dashboard-brand">
             HUMAN <span>FEEDBACK</span>
         </a>
 
@@ -718,22 +669,22 @@
                 Dashboard
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('my_websites_page') }}">
                 <span class="nav-icon">◎</span>
                 My Websites
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('add_website_page') }}">
                 <span class="nav-icon">＋</span>
                 Add Website
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('feedback_page') }}">
                 <span class="nav-icon">◉</span>
                 Feedback
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('replies_page') }}">
                 <span class="nav-icon">↩</span>
                 Replies
             </a>
@@ -742,32 +693,32 @@
         <div class="sidebar-label" style="margin-top: 20px;">Account</div>
 
         <nav class="sidebar-nav">
-            <a href="#">
+            <a href="{{ url_for('credits_page') }}">
                 <span class="nav-icon">◈</span>
                 Credits
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('credit_history_page') }}">
                 <span class="nav-icon">▤</span>
                 Credit History
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('analytics_page') }}">
                 <span class="nav-icon">▥</span>
                 Analytics
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('notifications_page') }}">
                 <span class="nav-icon">♧</span>
                 Notifications
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('reports_page') }}">
                 <span class="nav-icon">⚑</span>
                 Reports
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('settings_page') }}">
                 <span class="nav-icon">⚙</span>
                 Profile & Settings
             </a>
@@ -778,14 +729,14 @@
             <div class="sidebar-plan">
                 <small>CURRENT PLAN</small>
                 <strong>Free Trial</strong>
-                <a href="#">Explore Plans →</a>
+                <a href="{{ url_for('pricing_page') }}">Explore Plans →</a>
             </div>
 
             <div class="sidebar-user">
                 <div class="user-avatar">HF</div>
                 <div>
-                    <strong>Account</strong>
-                    <small></small>
+                    <strong>{{ current_user.name }}</strong>
+                    <small>Account</small>
                 </div>
             </div>
 
@@ -794,12 +745,238 @@
     </aside>
 
     <main class="dashboard-main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
-</main>
+
+        <header class="dashboard-topbar">
+            <div class="topbar-left">
+                <button
+                    class="mobile-menu"
+                    id="mobileMenuButton"
+                    type="button"
+                    aria-label="Toggle navigation menu"
+                    aria-expanded="false">
+                    ☰
+                </button>
+
+                <h1>Dashboard Overview</h1>
+            </div>
+
+            <div class="topbar-right">
+                <div class="topbar-profile">
+                    <div class="user-avatar">HF</div>
+                    <span>{{ current_user.name }}</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+
+            <section class="welcome-row">
+                <div>
+                    <h2>Welcome back, {{ current_user.name }}!</h2>
+                    <p>Here is an overview of your HUMAN FEEDBACK account.</p>
+                </div>
+
+                <a href="{{ url_for('add_website_page') }}" class="primary-action">
+                    + Add Website
+                </a>
+            </section>
+
+            <section class="stats-grid">
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">My Websites</span>
+                        <span class="stat-icon">🌐</span>
+                    </div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-description">Total registered websites</div>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Total Feedback</span>
+                        <span class="stat-icon">💬</span>
+                    </div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-description">Feedback received</div>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Available Credits</span>
+                        <span class="stat-icon">◈</span>
+                    </div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-description">Your current credit balance</div>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Pending Feedback</span>
+                        <span class="stat-icon">⏳</span>
+                    </div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-description">Awaiting admin approval</div>
+                </article>
+
+            </section>
+
+            <section class="content-grid">
+
+                <article class="panel">
+                    <div class="panel-header">
+                        <h3>Feedback Overview</h3>
+                        <span>This Month</span>
+                    </div>
+
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <span class="legend-dot"></span>
+                            Feedback
+                        </div>
+
+                        <div class="legend-item">
+                            <span class="legend-dot navy"></span>
+                            Approved
+                        </div>
+                    </div>
+
+                    <div class="chart-area">
+                        <svg
+                            viewBox="0 0 700 220"
+                            preserveAspectRatio="none"
+                            role="img"
+                            aria-label="No feedback activity yet">
+
+                            <line
+                                x1="0"
+                                y1="210"
+                                x2="700"
+                                y2="210"
+                                stroke="#CBD5E1"
+                                stroke-width="2"/>
+
+                            <text
+                                x="350"
+                                y="105"
+                                text-anchor="middle"
+                                fill="#94A3B8"
+                                font-size="14">
+                                No activity yet
+                            </text>
+                        </svg>
+                    </div>
+
+                    <div class="chart-months">
+                        <span>Week 1</span>
+                        <span>Week 2</span>
+                        <span>Week 3</span>
+                        <span>Week 4</span>
+                    </div>
+                </article>
+
+                <aside>
+                    <div class="plan-card">
+                        <span class="plan-label">CURRENT PLAN</span>
+                        <h3>Free Trial</h3>
+
+                        <p>
+                            Explore HUMAN FEEDBACK and discover how
+                            feedback can help improve your website.
+                        </p>
+
+                        <a href="{{ url_for('pricing_page') }}">
+                            Explore Plans →
+                        </a>
+                    </div>
+
+                    <div class="credit-summary">
+                        <h4>Credit Summary</h4>
+                        <div class="credit-number">0 Credits</div>
+                        <p>Your available credits will appear here.</p>
+                    </div>
+                </aside>
+
+            </section>
+
+            <section class="bottom-grid">
+
+                <article class="panel">
+                    <div class="panel-header">
+                        <h3>Recent Activity</h3>
+                    </div>
+
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">📋</div>
+
+                            <div class="activity-details">
+                                <strong>No recent activity</strong>
+                                <small>
+                                    Your latest account activity will appear here.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <div class="panel-header">
+                        <h3>My Websites</h3>
+
+                        <a href="{{ url_for('my_websites_page') }}">
+                            View All
+                        </a>
+                    </div>
+
+                    <div class="website-item">
+                        <div class="website-icon">🌐</div>
+
+                        <div class="website-info">
+                            <strong>No websites added</strong>
+                            <small>
+                                Add your first website to get started.
+                            </small>
+                        </div>
+                    </div>
+                </article>
+
+            </section>
+
+            <footer class="dashboard-footer">
+                © 2026 HUMAN FEEDBACK. All rights reserved.
+            </footer>
+
+        </div>
+    </main>
 
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const menuButton = document.getElementById("mobileMenuButton");
+        const sidebar = document.getElementById("dashboardSidebar");
+
+        if (menuButton && sidebar) {
+            menuButton.addEventListener("click", function () {
+                const isOpen = sidebar.classList.toggle("open");
+                menuButton.setAttribute("aria-expanded", String(isOpen));
+            });
+
+            document.addEventListener("click", function (event) {
+                if (
+                    window.innerWidth <= 850 &&
+                    sidebar.classList.contains("open") &&
+                    !sidebar.contains(event.target) &&
+                    !menuButton.contains(event.target)
+                ) {
+                    sidebar.classList.remove("open");
+                    menuButton.setAttribute("aria-expanded", "false");
+                }
+            });
+        }
+    });
+</script>
+
 </body>
 </html>

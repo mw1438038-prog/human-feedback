@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Website - HUMAN FEEDBACK</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
     <style>
         :root {
             --navy: #172554;
@@ -158,7 +159,12 @@
             letter-spacing: -.7px;
         }
 
-        .page-heading p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+        .page-heading p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
 
         .back-link {
             color: var(--navy);
@@ -297,9 +303,14 @@
             display: inline-block;
         }
 
+        .btn:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
         .btn-secondary { background: #F1F5F9; color: #475569; }
         .btn-primary { background: var(--orange); color: white; }
-        .btn-primary:hover { background: var(--orange-dark); }
+        .btn-primary:hover:not(:disabled) { background: var(--orange-dark); }
 
         .info-panel { padding: 21px; }
 
@@ -380,15 +391,13 @@
         .review-card strong { color: #1E40AF; font-size: 11px; }
         .review-card p { color: #526783; font-size: 10px; line-height: 1.6; margin: 7px 0 0; }
 
-        .-notice {
-            background: #FFF7ED;
-            border: 1px solid #FED7AA;
-            color: #9A3412;
-            border-radius: 9px;
-            padding: 12px 15px;
-            font-size: 11px;
-            margin-bottom: 20px;
-            line-height: 1.5;
+        #submissionMessage {
+            display: none;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.6;
         }
 
         @media (max-width: 1050px) {
@@ -411,6 +420,7 @@
         }
     </style>
 </head>
+
 <body>
 
 <div class="app-layout">
@@ -437,13 +447,14 @@
                 <div class="avatar">JD</div>
                 <div>
                     <div class="user-name">Account</div>
-                    <div class="user-plan">Free Trial ·  Account</div>
+                    <div class="user-plan">Free Trial · Account</div>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main-content">
+
         <header class="topbar">
             <div class="breadcrumb">My Websites / <strong>Add Website</strong></div>
             <div class="topbar-right">
@@ -465,47 +476,85 @@
             <div class="layout-grid">
 
                 <section>
+
                     <div class="panel">
                         <h2>Website Information</h2>
-                        <p class="panel-description">Provide accurate information about the website you want to submit.</p>
+                        <p class="panel-description">
+                            Provide accurate information about the website you want to submit.
+                        </p>
 
                         <form id="addWebsiteForm">
+
                             <div class="form-grid">
 
                                 <div class="form-group">
-                                    <label for="websiteName">Website Name <span class="required">*</span></label>
-                                    <input class="form-control" type="text" id="websiteName" name="website_name" placeholder="e.g. My Business Website" required>
+                                    <label for="websiteName">
+                                        Website Name <span class="required">*</span>
+                                    </label>
+
+                                    <input
+                                        class="form-control"
+                                        type="text"
+                                        id="websiteName"
+                                        name="name"
+                                        maxlength="150"
+                                        placeholder="e.g. My Business Website"
+                                        required
+                                    >
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="websiteUrl">Website URL <span class="required">*</span></label>
-                                    <input class="form-control" type="url" id="websiteUrl" name="website_url" placeholder="https://example.com" required>
-                                    <div class="field-hint">Enter the complete website address, including https://</div>
+                                    <label for="websiteUrl">
+                                        Website URL <span class="required">*</span>
+                                    </label>
+
+                                    <input
+                                        class="form-control"
+                                        type="url"
+                                        id="websiteUrl"
+                                        name="url"
+                                        maxlength="2048"
+                                        placeholder="https://example.com"
+                                        required
+                                    >
+
+                                    <div class="field-hint">
+                                        Enter the complete website address, including https://
+                                    </div>
                                 </div>
 
                                 <div class="form-group full">
-                                    <label for="websiteCategory">Website Category <span class="required">*</span></label>
-                                    <select class="form-control" id="websiteCategory" name="category" required>
-                                        <option value="">Select a category</option>
-                                        <option>Business & Corporate</option>
-                                        <option>E-commerce & Shopping</option>
-                                        <option>Education & Learning</option>
-                                        <option>Technology & Software</option>
-                                        <option>Health & Wellness</option>
-                                        <option>Food & Restaurant</option>
-                                        <option>Travel & Tourism</option>
-                                        <option>Finance & Banking</option>
-                                        <option>Entertainment & Media</option>
-                                        <option>Blog & Personal</option>
-                                        <option>Portfolio & Creative</option>
-                                        <option>Other</option>
+                                    <label for="websiteCategory">
+                                        Website Category <span class="required">*</span>
+                                    </label>
+
+                                    <select
+                                        class="form-control"
+                                        id="websiteCategory"
+                                        name="category_id"
+                                        required
+                                    >
+                                        <option value="">Loading categories...</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group full">
-                                    <label for="websiteDescription">Website Description <span class="required">*</span></label>
-                                    <textarea class="form-control" id="websiteDescription" name="description" maxlength="1000" placeholder="Briefly explain what your website offers, who it serves, and what visitors can do on it..." required></textarea>
-                                    <div class="field-hint">Maximum 1,000 characters. Keep the description clear and informative.</div>
+                                    <label for="websiteDescription">
+                                        Website Description <span class="required">*</span>
+                                    </label>
+
+                                    <textarea
+                                        class="form-control"
+                                        id="websiteDescription"
+                                        name="description"
+                                        maxlength="1000"
+                                        placeholder="Briefly explain what your website offers, who it serves, and what visitors can do on it..."
+                                        required
+                                    ></textarea>
+
+                                    <div class="field-hint">
+                                        Maximum 1,000 characters. Keep the description clear and informative.
+                                    </div>
                                 </div>
 
                             </div>
@@ -513,38 +562,74 @@
                     </div>
 
                     <div class="panel">
+
                         <h2>Ownership Verification</h2>
-                        <p class="panel-description">Upload proof that you own or are authorized to submit this website.</p>
+
+                        <p class="panel-description">
+                            Upload proof that you own or are authorized to submit this website.
+                        </p>
 
                         <div class="upload-box">
                             <div class="upload-icon">📄</div>
-                            <strong>Upload Ownership Proof <span class="required">*</span></strong>
-                            <p>Choose a document or screenshot that supports your ownership or authorization.</p>
-                            <input type="file" id="ownershipProof" name="ownership_proof" accept=".pdf,.png,.jpg,.jpeg" required>
-                            <div class="field-hint">Accepted formats: PDF, PNG, JPG, JPEG. Upload limits will be enforced when connected.</div>
+
+                            <strong>
+                                Upload Ownership Proof <span class="required">*</span>
+                            </strong>
+
+                            <p>
+                                Choose a document or screenshot that supports your ownership or authorization.
+                            </p>
+
+                            <input
+                                type="file"
+                                id="ownershipProof"
+                                name="proof"
+                                accept=".pdf,.png,.jpg,.jpeg,.webp"
+                                required
+                            >
+
+                            <div class="field-hint">
+                                Accepted formats: PDF, PNG, JPG, JPEG, WEBP. Maximum size: 5 MB.
+                            </div>
                         </div>
 
                         <div class="proof-note">
-                            <strong>Important:</strong> Submissions require ownership or authorization proof. An administrator will manually review your submission before approval.
+                            <strong>Important:</strong>
+                            Submissions require ownership or authorization proof.
+                            An administrator will manually review your submission before approval.
                         </div>
 
                         <div class="checkbox-row">
                             <input type="checkbox" id="authorization" required>
+
                             <label for="authorization">
-                                I confirm that I own this website or have permission from its owner to submit it to HUMAN FEEDBACK. I confirm that the information provided is accurate.
+                                I confirm that I own this website or have permission from its owner
+                                to submit it to HUMAN FEEDBACK. I confirm that the information provided is accurate.
                             </label>
                         </div>
 
+                        <div id="submissionMessage" role="status" aria-live="polite"></div>
+
                         <div class="form-actions">
                             <a href="/websites" class="btn btn-secondary">Cancel</a>
-                            <button type="button" class="btn btn-primary" id="submitWebsiteBtn">Submit Website for Review →</button>
+
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                id="submitWebsiteBtn"
+                            >
+                                Submit Website for Review →
+                            </button>
                         </div>
+
                     </div>
+
                 </section>
 
                 <aside class="side-info">
 
                     <div class="panel info-panel">
+
                         <h3>Website Limits by Plan</h3>
 
                         <div class="plan-card">
@@ -552,6 +637,7 @@
                                 <span class="plan-name">Free Trial</span>
                                 <span class="plan-price">$0</span>
                             </div>
+
                             <p class="plan-detail">
                                 Maximum 1 website.<br>
                                 Requires at least 1,000 available credits to submit.<br>
@@ -564,7 +650,9 @@
                                 <span class="plan-name">Pro</span>
                                 <span class="plan-badge">POPULAR</span>
                             </div>
+
                             <div class="plan-price">$9 <small>/ month</small></div>
+
                             <p class="plan-detail">
                                 Up to 3 websites.<br>
                                 No minimum credit balance required for website submission.
@@ -576,6 +664,7 @@
                                 <span class="plan-name">Business</span>
                                 <span class="plan-price">$24 <small>/ month</small></span>
                             </div>
+
                             <p class="plan-detail">
                                 Unlimited websites.<br>
                                 No minimum credit balance required for website submission.
@@ -584,53 +673,285 @@
 
                         <div class="requirements">
                             <h4>Before You Submit</h4>
-                            <div class="requirement"><span>✓</span> Provide a valid and accessible website URL.</div>
-                            <div class="requirement"><span>✓</span> Select the correct website category.</div>
-                            <div class="requirement"><span>✓</span> Upload ownership or authorization proof.</div>
-                            <div class="requirement"><span>✓</span> Make sure your website follows platform rules.</div>
+
+                            <div class="requirement">
+                                <span>✓</span> Provide a valid and accessible website URL.
+                            </div>
+
+                            <div class="requirement">
+                                <span>✓</span> Select the correct website category.
+                            </div>
+
+                            <div class="requirement">
+                                <span>✓</span> Upload ownership or authorization proof.
+                            </div>
+
+                            <div class="requirement">
+                                <span>✓</span> Make sure your website follows platform rules.
+                            </div>
                         </div>
+
                     </div>
 
                     <div class="panel info-panel">
+
                         <h3>What Happens Next?</h3>
-                        <div class="requirement"><span>01</span> Submit your website information and proof.</div>
-                        <div class="requirement"><span>02</span> Our admin team manually reviews your submission.</div>
-                        <div class="requirement"><span>03</span> You receive an approval or rejection decision.</div>
-                        <div class="requirement"><span>04</span> Once approved, your website can participate in the community.</div>
+
+                        <div class="requirement">
+                            <span>01</span> Submit your website information and proof.
+                        </div>
+
+                        <div class="requirement">
+                            <span>02</span> Our admin team manually reviews your submission.
+                        </div>
+
+                        <div class="requirement">
+                            <span>03</span> You receive an approval or rejection decision.
+                        </div>
+
+                        <div class="requirement">
+                            <span>04</span> Once approved, your website can participate in the community.
+                        </div>
 
                         <div class="review-card">
                             <strong>Credit Refund Policy</strong>
-                            <p>If a website submission is rejected, the submission credits are refunded once according to platform rules.</p>
+                            <p>
+                                If a website submission is rejected, the submission credits
+                                are refunded once according to platform rules.
+                            </p>
                         </div>
+
                     </div>
 
                 </aside>
+
             </div>
         </div>
+
     </main>
 </div>
 
 <script>
-    // Frontend preview only. No website submission is performed.
-    document.getElementById("submitWebsiteBtn").addEventListener("click", function () {
-        const form = document.getElementById("addWebsiteForm");
-        const proof = document.getElementById("ownershipProof");
-        const authorization = document.getElementById("authorization");
+document.addEventListener("DOMContentLoaded", function () {
 
-        if (!form.reportValidity()) return;
+    const form = document.getElementById("addWebsiteForm");
+    const submitBtn = document.getElementById("submitWebsiteBtn");
+    const proofInput = document.getElementById("ownershipProof");
+    const authorization = document.getElementById("authorization");
+    const categorySelect = document.getElementById("websiteCategory");
+    const messageBox = document.getElementById("submissionMessage");
 
-        if (!proof.files || proof.files.length === 0) {
-            alert("Please select your ownership proof document.");
+    let csrfToken = null;
+    let categoriesLoaded = false;
+
+    function showMessage(message, type = "error") {
+        messageBox.textContent = message;
+        messageBox.style.display = "block";
+
+        if (type === "success") {
+            messageBox.style.background = "#DCFCE7";
+            messageBox.style.color = "#166534";
+            messageBox.style.border = "1px solid #BBF7D0";
+        } else {
+            messageBox.style.background = "#FEE2E2";
+            messageBox.style.color = "#991B1B";
+            messageBox.style.border = "1px solid #FECACA";
+        }
+    }
+
+    async function initializeForm() {
+
+        try {
+
+            const [csrfResponse, categoryResponse] = await Promise.all([
+
+                fetch("/api/csrf-token", {
+                    method: "GET",
+                    credentials: "same-origin"
+                }),
+
+                fetch("/api/categories/", {
+                    method: "GET",
+                    credentials: "same-origin"
+                })
+
+            ]);
+
+            const csrfData = await csrfResponse.json();
+            const categoryData = await categoryResponse.json();
+
+            if (!csrfResponse.ok || !csrfData.csrf_token) {
+                throw new Error("Could not initialize security token. Please refresh the page.");
+            }
+
+            if (!categoryResponse.ok || !categoryData.success) {
+                throw new Error(
+                    categoryData.message || "Could not load website categories."
+                );
+            }
+
+            if (!Array.isArray(categoryData.categories)) {
+                throw new Error("Invalid category response from server.");
+            }
+
+            csrfToken = csrfData.csrf_token;
+
+            categorySelect.innerHTML = "";
+
+            const placeholder = document.createElement("option");
+            placeholder.value = "";
+            placeholder.textContent = "Select a category";
+            categorySelect.appendChild(placeholder);
+
+            categoryData.categories.forEach(function (category) {
+
+                const option = document.createElement("option");
+
+                option.value = category.id;
+                option.textContent = category.name;
+
+                categorySelect.appendChild(option);
+
+            });
+
+            if (categoryData.categories.length === 0) {
+
+                categorySelect.innerHTML =
+                    '<option value="">No categories available</option>';
+
+                throw new Error("No active website categories are available.");
+
+            }
+
+            categoriesLoaded = true;
+
+        } catch (error) {
+
+            categoriesLoaded = false;
+
+            categorySelect.innerHTML =
+                '<option value="">Categories unavailable</option>';
+
+            showMessage(error.message || "Could not initialize the form.");
+
+        }
+
+    }
+
+    submitBtn.addEventListener("click", async function () {
+
+        messageBox.style.display = "none";
+
+        if (!form.reportValidity()) {
+            return;
+        }
+
+        if (!categoriesLoaded || !csrfToken) {
+            showMessage("Form is not ready. Please refresh the page and try again.");
+            return;
+        }
+
+        if (!proofInput.files || proofInput.files.length === 0) {
+            showMessage("Please select your ownership proof document.");
             return;
         }
 
         if (!authorization.checked) {
-            alert("Please confirm that you own or are authorized to submit this website.");
+            showMessage(
+                "Please confirm that you own or are authorized to submit this website."
+            );
             return;
         }
 
-        alert("This is a frontend preview. Website submission will be enabled after backend integration.");
+        const proofFile = proofInput.files[0];
+
+        const allowedExtensions = /\.(pdf|png|jpe?g|webp)$/i;
+
+        if (!allowedExtensions.test(proofFile.name)) {
+            showMessage("Please upload a PDF, PNG, JPG, JPEG or WEBP file.");
+            return;
+        }
+
+        if (proofFile.size > 5 * 1024 * 1024) {
+            showMessage("Ownership proof file must not exceed 5 MB.");
+            return;
+        }
+
+        if (proofFile.size === 0) {
+            showMessage("The selected ownership proof file is empty.");
+            return;
+        }
+
+        const formData = new FormData(form);
+
+        // Backend expects the uploaded proof under the key "proof".
+        formData.append("proof", proofFile);
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
+
+        try {
+
+            const response = await fetch("/api/websites/", {
+
+                method: "POST",
+
+                credentials: "same-origin",
+
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+
+                body: formData
+
+            });
+
+            let result;
+
+            try {
+                result = await response.json();
+            } catch {
+                throw new Error("Server returned an invalid response. Please try again.");
+            }
+
+            if (!response.ok || !result.success) {
+
+                throw new Error(
+                    result.message || "Website submission failed. Please try again."
+                );
+
+            }
+
+            showMessage(
+                result.message || "Your website has been submitted successfully.",
+                "success"
+            );
+
+            submitBtn.textContent = "Submitted successfully";
+
+            // Prevent accidental duplicate submissions.
+            submitBtn.disabled = true;
+
+            setTimeout(function () {
+                window.location.href = "/websites";
+            }, 1800);
+
+        } catch (error) {
+
+            showMessage(
+                error.message || "Something went wrong. Please try again."
+            );
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit Website for Review →";
+
+        }
+
     });
+
+    initializeForm();
+
+});
 </script>
 
 </body>

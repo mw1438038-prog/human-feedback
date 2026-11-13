@@ -60,9 +60,6 @@ def account_can_use_platform(user):
     if not user.is_active or user.is_suspended:
         return False
 
-    if not user.is_email_verified:
-        return False
-
     now = utc_now()
 
     # Active Free trial

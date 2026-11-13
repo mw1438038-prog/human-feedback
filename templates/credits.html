@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="View your HUMAN FEEDBACK credit balance, rewards and credit earning rules.">
+    <meta name="description" content="View your HUMAN FEEDBACK credit balance, rewards and transaction history.">
     <title>My Credits | HUMAN FEEDBACK</title>
+
     <style>
         :root {
             --navy: #172554;
@@ -89,11 +90,7 @@
             padding: 20px 10px 0;
         }
 
-        .user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .user { display: flex; align-items: center; gap: 10px; }
 
         .avatar {
             width: 38px;
@@ -123,16 +120,9 @@
 
         .topbar h2 { font-size: 19px; color: var(--navy); }
 
-        .top-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
+        .top-right { display: flex; align-items: center; gap: 16px; }
 
-        .top-right a {
-            font-size: 13px;
-            color: var(--muted);
-        }
+        .top-right a { font-size: 13px; color: var(--muted); }
 
         .top-right .upgrade {
             background: var(--orange);
@@ -319,10 +309,7 @@
             margin-bottom: 20px;
         }
 
-        .panel-heading h2 {
-            color: var(--navy);
-            font-size: 17px;
-        }
+        .panel-heading h2 { color: var(--navy); font-size: 17px; }
 
         .panel-heading a {
             color: var(--orange-dark);
@@ -397,9 +384,12 @@
 
         .activity-panel { margin-bottom: 25px; }
 
+        .table-wrap { width: 100%; overflow-x: auto; }
+
         .activity-table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 650px;
         }
 
         .activity-table th {
@@ -426,10 +416,7 @@
             margin-bottom: 4px;
         }
 
-        .activity-name small {
-            color: var(--muted);
-            font-size: 10px;
-        }
+        .activity-name small { color: var(--muted); font-size: 10px; }
 
         .amount-positive { color: var(--green); font-weight: 800; }
         .amount-negative { color: var(--red); font-weight: 800; }
@@ -444,15 +431,8 @@
             color: var(--green);
         }
 
-        .status.pending {
-            background: #FEF3C7;
-            color: #92400E;
-        }
-
-        .status.used {
-            background: #DBEAFE;
-            color: var(--blue);
-        }
+        .status.pending { background: #FEF3C7; color: #92400E; }
+        .status.used { background: #DBEAFE; color: var(--blue); }
 
         .info-banner {
             background: white;
@@ -473,6 +453,51 @@
             color: var(--muted);
             font-size: 12px;
             line-height: 1.7;
+        }
+
+        .message {
+            padding: 16px;
+            border-radius: 9px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .message.error {
+            background: #FEF2F2;
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
+        .message.empty {
+            text-align: center;
+            color: var(--muted);
+            background: #F8FAFC;
+            border: 1px dashed var(--border);
+            padding: 30px 15px;
+        }
+
+        .loading {
+            color: var(--muted);
+            font-size: 13px;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .pagination span { font-size: 12px; color: var(--muted); }
+
+        .pagination button:disabled {
+            opacity: .45;
+            cursor: not-allowed;
         }
 
         .-note {
@@ -509,7 +534,6 @@
             }
 
             .sidebar.show { left: 0; }
-
             .mobile-menu { display: block; }
 
             .topbar { padding: 0 17px; height: 65px; }
@@ -527,12 +551,10 @@
             .stat-card { padding: 17px; }
             .stat-card h3 { font-size: 24px; }
             .panel { padding: 18px 15px; }
-
-            .table-wrap { overflow-x: auto; }
-            .activity-table { min-width: 620px; }
         }
     </style>
 </head>
+
 <body>
 <div class="app">
 
@@ -541,41 +563,472 @@
 
         <div class="nav">
             <div class="nav-label">MAIN MENU</div>
-            <a href="/dashboard">▦ Dashboard</a>
-            <a href="/my-websites">▣ My Websites</a>
-            <a href="/feedback">✉ Feedback</a>
-            <a href="/replies">▤ Replies</a>
+            <a href="{{ url_for('dashboard_page') }}">▦ Dashboard</a>
+            <a href="{{ url_for('my_websites_page') }}">▣ My Websites</a>
+            <a href="{{ url_for('feedback_page') }}">✉ Feedback</a>
+            <a href="{{ url_for('replies_page') }}">▤ Replies</a>
 
             <div class="nav-label">ACCOUNT</div>
-            <a href="/credits" class="active">◈ My Credits</a>
-            <a href="/credit-history">◷ Credit History</a>
-            <a href="/analytics">▥ Analytics</a>
-            <a href="/notifications">♢ Notifications</a>
-            <a href="/reports">⚑ Reports</a>
+            <a href="{{ url_for('credits_page') }}" class="active">◈ My Credits</a>
+            <a href="{{ url_for('credit_history_page') }}">◷ Credit History</a>
+            <a href="{{ url_for('analytics_page') }}">▥ Analytics</a>
+            <a href="{{ url_for('notifications_page') }}">♢ Notifications</a>
+            <a href="{{ url_for('reports_page') }}">⚑ Reports</a>
 
             <div class="nav-label">SETTINGS</div>
-            <a href="/profile">♙ My Profile</a>
-            <a href="/settings">⚙ Settings</a>
-            <a href="/subscription">◇ Subscription</a>
+            <a href="{{ url_for('profile_page') }}">♙ My Profile</a>
+            <a href="{{ url_for('settings_page') }}">⚙ Settings</a>
+            <a href="{{ url_for('pricing_page') }}">◇ Subscription</a>
         </div>
 
         <div class="sidebar-bottom">
             <div class="user">
                 <div class="avatar">HF</div>
                 <div>
-                    <strong>Account</strong>
-                    <small>Pro Member</small>
+                    <strong>{{ current_user.name }}</strong>
+                    <small>Account</small>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
-</main>
+        <header class="topbar">
+            <div style="display:flex;align-items:center;gap:14px;">
+                <button class="mobile-menu" id="mobileMenu" type="button"
+                        aria-label="Open navigation menu">☰</button>
+                <h2>My Credits</h2>
+            </div>
+
+            <div class="top-right">
+                <a href="{{ url_for('credit_history_page') }}">Credit History</a>
+                <a href="{{ url_for('pricing_page') }}" class="upgrade">View Plans</a>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <div class="page-heading">
+                <div>
+                    <h1>My Credits</h1>
+                    <p>Track your available credits, rewards and credit transactions.</p>
+                </div>
+
+                <a href="{{ url_for('credit_history_page') }}" class="btn">
+                    View Full History
+                </a>
+            </div>
+
+            <div id="pageError" class="message error" role="alert" hidden></div>
+
+            <section class="balance-card">
+                <div class="balance-inner">
+                    <div class="balance-label">Available Credit Balance</div>
+                    <div class="balance-number">
+                        <span id="balanceValue">—</span>
+                        <span>Credits</span>
+                    </div>
+                    <p class="balance-note">
+                        Your current available credit balance.
+                        Your balance updates when a credit transaction is recorded.
+                    </p>
+
+                    <div class="balance-actions">
+                        <a href="{{ url_for('credit_history_page') }}" class="btn">
+                            View Transactions
+                        </a>
+                        <a href="{{ url_for('pricing_page') }}" class="btn btn-primary">
+                            View Plans
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="stats">
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <p>Total Earned</p>
+                        <div class="stat-icon">↗</div>
+                    </div>
+                    <h3 id="earnedValue">—</h3>
+                    <p>Total credits received</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <p>Total Spent</p>
+                        <div class="stat-icon">↘</div>
+                    </div>
+                    <h3 id="spentValue">—</h3>
+                    <p>Total credits used</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <p>Transactions</p>
+                        <div class="stat-icon">▤</div>
+                    </div>
+                    <h3 id="transactionCount">—</h3>
+                    <p>Total recorded transactions</p>
+                </article>
+            </section>
+
+            <section class="grid-two">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h2>Ways to Earn Credits</h2>
+                    </div>
+
+                    <div class="earning-item">
+                        <div class="earning-icon">✍</div>
+                        <div class="earning-info">
+                            <strong>Submit Website Feedback</strong>
+                            <p>Submit genuine feedback. Credits are awarded only after admin approval.</p>
+                        </div>
+                        <div class="earning-value">+10</div>
+                    </div>
+
+                    <div class="earning-item">
+                        <div class="earning-icon">✓</div>
+                        <div class="earning-info">
+                            <strong>Admin Approval</strong>
+                            <p>Your feedback reward is added to your balance after approval.</p>
+                        </div>
+                        <div class="earning-value">+10</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h2>Credit Rules</h2>
+                    </div>
+
+                    <div class="rule-card">
+                        <h3>Feedback Reward</h3>
+                        <p>
+                            You receive <strong>10 credits</strong> for each feedback
+                            approved by the admin.
+                        </p>
+                    </div>
+
+                    <div class="rule-card">
+                        <h3>Website Requirement</h3>
+                        <p>
+                            Adding a website requires at least
+                            <strong>1,000 available credits</strong> for each website.
+                        </p>
+                    </div>
+
+                    <div class="rule-card">
+                        <h3>Transaction Records</h3>
+                        <p>
+                            Your credit balance and history are based on recorded
+                            transactions in your account.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel activity-panel">
+                <div class="panel-heading">
+                    <h2>Recent Credit Transactions</h2>
+                    <a href="{{ url_for('credit_history_page') }}">Full History →</a>
+                </div>
+
+                <div id="historyLoading" class="loading">
+                    Loading your credit transactions...
+                </div>
+
+                <div id="historyEmpty" class="message empty" hidden>
+                    <strong>No credit transactions yet.</strong>
+                    <p>Your credit activity will appear here when transactions are recorded.</p>
+                </div>
+
+                <div id="historyError" class="message error" role="alert" hidden></div>
+
+                <div class="table-wrap" id="historyTableWrap" hidden>
+                    <table class="activity-table">
+                        <thead>
+                            <tr>
+                                <th>TRANSACTION</th>
+                                <th>TYPE</th>
+                                <th>DATE</th>
+                                <th>AMOUNT</th>
+                                <th>BALANCE AFTER</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionRows"></tbody>
+                    </table>
+                </div>
+
+                <div class="pagination" id="pagination" hidden>
+                    <span id="pageInfo"></span>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn" id="previousPage" type="button">Previous</button>
+                        <button class="btn btn-primary" id="nextPage" type="button">Next</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="info-banner">
+                <h3>Need more credits?</h3>
+                <p>
+                    Continue submitting genuine feedback to earn credits after admin
+                    approval. You can also review your complete credit transaction history.
+                </p>
+            </div>
+
+            <div class="-note">
+                HUMAN FEEDBACK — Credit information is loaded from your account.
+            </div>
+
+        </div>
+    </main>
 </div>
+
+<script>
+    const API_BASE = "/api/credits";
+    const PAGE_SIZE = 10;
+
+    let currentPage = 1;
+    let totalPages = 0;
+
+    const balanceValue = document.getElementById("balanceValue");
+    const earnedValue = document.getElementById("earnedValue");
+    const spentValue = document.getElementById("spentValue");
+    const transactionCount = document.getElementById("transactionCount");
+
+    const pageError = document.getElementById("pageError");
+    const historyLoading = document.getElementById("historyLoading");
+    const historyEmpty = document.getElementById("historyEmpty");
+    const historyError = document.getElementById("historyError");
+    const historyTableWrap = document.getElementById("historyTableWrap");
+    const transactionRows = document.getElementById("transactionRows");
+    const pagination = document.getElementById("pagination");
+
+    function formatNumber(value) {
+        const number = Number(value);
+        return Number.isFinite(number)
+            ? number.toLocaleString()
+            : "0";
+    }
+
+    function formatDate(value) {
+        if (!value) return "—";
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) return "—";
+
+        return date.toLocaleString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    }
+
+    async function apiRequest(url) {
+        const response = await fetch(url, {
+            method: "GET",
+            credentials: "same-origin",
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+
+        let data;
+
+        try {
+            data = await response.json();
+        } catch {
+            throw new Error("Server returned an invalid response.");
+        }
+
+        if (!response.ok || data.success === false) {
+            throw new Error(
+                data.message || `Request failed (${response.status}).`
+            );
+        }
+
+        return data;
+    }
+
+    function showPageError(message) {
+        pageError.textContent = message;
+        pageError.hidden = false;
+    }
+
+    async function loadOverview() {
+        try {
+            const data = await apiRequest(`${API_BASE}/`);
+
+            balanceValue.textContent = formatNumber(data.balance);
+            earnedValue.textContent = formatNumber(data.total_earned);
+            spentValue.textContent = formatNumber(data.total_spent);
+
+        } catch (error) {
+            showPageError(error.message);
+            balanceValue.textContent = "—";
+            earnedValue.textContent = "—";
+            spentValue.textContent = "—";
+        }
+    }
+
+    function createCell(text, className = "") {
+        const cell = document.createElement("td");
+        cell.textContent = text;
+
+        if (className) {
+            cell.className = className;
+        }
+
+        return cell;
+    }
+
+    function createTransactionRow(item) {
+        const row = document.createElement("tr");
+
+        const nameCell = document.createElement("td");
+        nameCell.className = "activity-name";
+
+        const title = document.createElement("strong");
+        title.textContent = item.description || "Credit transaction";
+
+        const reference = document.createElement("small");
+        reference.textContent = item.reference_type
+            ? `Reference: ${item.reference_type}${item.reference_id ? " #" + item.reference_id : ""}`
+            : `Transaction #${item.id}`;
+
+        nameCell.append(title, reference);
+
+        const type = String(item.transaction_type || "transaction")
+            .replaceAll("_", " ")
+            .replace(/\b\w/g, char => char.toUpperCase());
+
+        const typeCell = createCell(type);
+
+        const dateCell = createCell(formatDate(item.created_at));
+
+        const amount = Number(item.amount || 0);
+        const amountText = `${amount > 0 ? "+" : ""}${formatNumber(amount)}`;
+
+        const amountCell = createCell(
+            amountText,
+            amount > 0 ? "amount-positive" :
+            amount < 0 ? "amount-negative" : ""
+        );
+
+        const balanceCell = createCell(
+            formatNumber(item.balance_after)
+        );
+
+        row.append(
+            nameCell,
+            typeCell,
+            dateCell,
+            amountCell,
+            balanceCell
+        );
+
+        return row;
+    }
+
+    async function loadHistory(page = 1) {
+        currentPage = page;
+
+        historyLoading.hidden = false;
+        historyEmpty.hidden = true;
+        historyError.hidden = true;
+        historyTableWrap.hidden = true;
+        pagination.hidden = true;
+        transactionRows.replaceChildren();
+
+        try {
+            const data = await apiRequest(
+                `${API_BASE}/history?page=${currentPage}&per_page=${PAGE_SIZE}`
+            );
+
+            historyLoading.hidden = true;
+
+            transactionCount.textContent = formatNumber(data.total);
+            totalPages = Number(data.pages || 0);
+
+            if (!Array.isArray(data.transactions)) {
+                throw new Error("Transaction data format is invalid.");
+            }
+
+            if (data.transactions.length === 0) {
+                historyEmpty.hidden = false;
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+
+            data.transactions.forEach(item => {
+                fragment.appendChild(createTransactionRow(item));
+            });
+
+            transactionRows.appendChild(fragment);
+            historyTableWrap.hidden = false;
+
+            pagination.hidden = false;
+
+            document.getElementById("pageInfo").textContent =
+                `Page ${data.page} of ${data.pages} · ${formatNumber(data.total)} transactions`;
+
+            document.getElementById("previousPage").disabled =
+                data.page <= 1;
+
+            document.getElementById("nextPage").disabled =
+                data.page >= data.pages;
+
+        } catch (error) {
+            historyLoading.hidden = true;
+            historyError.textContent = error.message;
+            historyError.hidden = false;
+        }
+    }
+
+    document.getElementById("previousPage").addEventListener("click", () => {
+        if (currentPage > 1) {
+            loadHistory(currentPage - 1);
+        }
+    });
+
+    document.getElementById("nextPage").addEventListener("click", () => {
+        if (currentPage < totalPages) {
+            loadHistory(currentPage + 1);
+        }
+    });
+
+    document.getElementById("mobileMenu").addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("show");
+    });
+
+    document.addEventListener("click", event => {
+        const sidebar = document.getElementById("sidebar");
+        const menu = document.getElementById("mobileMenu");
+
+        if (
+            window.innerWidth <= 720 &&
+            sidebar.classList.contains("show") &&
+            !sidebar.contains(event.target) &&
+            !menu.contains(event.target)
+        ) {
+            sidebar.classList.remove("show");
+        }
+    });
+
+    async function initializeCreditsPage() {
+        await Promise.all([
+            loadOverview(),
+            loadHistory(1)
+        ]);
+    }
+
+    initializeCreditsPage();
+</script>
 </body>
 </html>

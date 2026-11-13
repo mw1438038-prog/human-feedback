@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Details - HUMAN FEEDBACK</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
     <style>
         :root {
             --navy: #172554;
@@ -90,6 +91,7 @@
         }
 
         .user-box { display: flex; align-items: center; gap: 10px; padding: 10px; }
+
         .avatar {
             width: 36px;
             height: 36px;
@@ -165,6 +167,8 @@
             display: inline-block;
         }
 
+        .btn:disabled { opacity: .55; cursor: not-allowed; }
+
         .btn-secondary { background: white; border: 1px solid var(--border); color: #475569; }
         .btn-primary { background: var(--orange); color: white; }
         .btn-primary:hover { background: var(--orange-dark); }
@@ -179,6 +183,8 @@
             margin-bottom: 20px;
             line-height: 1.5;
         }
+
+        .-notice[hidden] { display: none; }
 
         .website-hero {
             background: white;
@@ -225,6 +231,7 @@
 
         .hero-status { text-align: right; flex-shrink: 0; }
         .hero-status small { display: block; color: var(--muted); font-size: 10px; margin-bottom: 7px; }
+
         .status-approved {
             display: inline-block;
             background: #ECFDF5;
@@ -295,20 +302,8 @@
 
         .rating-big { color: var(--navy); font-size: 39px; font-weight: 800; line-height: 1; }
         .stars { color: #F59E0B; letter-spacing: 2px; font-size: 14px; }
+
         .rating-count { color: var(--muted); font-size: 10px; margin-top: 5px; }
-
-        .rating-row {
-            display: grid;
-            grid-template-columns: 35px 1fr 30px;
-            align-items: center;
-            gap: 9px;
-            margin: 10px 0;
-            color: #64748B;
-            font-size: 10px;
-        }
-
-        .rating-track { height: 7px; background: #EDF1F5; border-radius: 10px; overflow: hidden; }
-        .rating-fill { height: 100%; background: #F59E0B; border-radius: 10px; }
 
         .feedback-item {
             padding: 15px 0;
@@ -321,9 +316,10 @@
         .feedback-user { color: var(--navy); font-size: 11px; font-weight: 800; }
         .feedback-date { color: #94A3B8; font-size: 9px; }
         .feedback-item .stars { font-size: 11px; margin-top: 6px; }
-        .feedback-text { color: #64748B; font-size: 11px; line-height: 1.7; margin: 8px 0 0; }
+        .feedback-text { color: #64748B; font-size: 11px; line-height: 1.7; margin: 8px 0 0; overflow-wrap: anywhere; }
 
         .detail-list { margin: 0; }
+
         .detail-row {
             display: flex;
             justify-content: space-between;
@@ -337,22 +333,6 @@
         .detail-row dt { color: var(--muted); }
         .detail-row dd { margin: 0; color: var(--navy); font-weight: 700; text-align: right; overflow-wrap: anywhere; }
 
-        .owner-card { display: flex; align-items: center; gap: 11px; }
-        .owner-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #EDE9FE;
-            color: #6D28D9;
-            display: grid;
-            place-items: center;
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .owner-name { color: var(--navy); font-size: 11px; font-weight: 800; }
-        .owner-label { color: var(--muted); font-size: 9px; margin-top: 4px; }
-
         .info-note {
             padding: 13px;
             border-radius: 8px;
@@ -361,6 +341,84 @@
             font-size: 10px;
             line-height: 1.6;
             margin-top: 15px;
+        }
+
+        .rating-field {
+            border: 0;
+            padding: 0;
+            margin: 0 0 19px;
+        }
+
+        .rating-field legend {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 9px;
+            color: var(--navy);
+        }
+
+        .star-options { display: flex; gap: 7px; }
+
+        .star-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: #F59E0B;
+            font-size: 21px;
+        }
+
+        .star-option input {
+            accent-color: var(--orange);
+            width: 14px;
+            height: 14px;
+        }
+
+        .star-option span { font-size: 11px; color: #64748B; }
+
+        .form-label {
+            display: block;
+            color: var(--navy);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font: inherit;
+            font-size: 12px;
+            color: var(--text);
+            outline: none;
+        }
+
+        .form-control:focus { border-color: var(--orange); }
+
+        .form-help {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 7px;
+        }
+
+        .form-group { margin-top: 18px; }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        .visit-status { font-size: 10px; color: var(--muted); }
+
+        .empty-feedback {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.7;
         }
 
         @media (max-width: 1050px) {
@@ -381,10 +439,15 @@
             .panel { padding: 17px; }
             .heading-actions { width: 100%; }
         }
+
+        @media (max-width: 420px) {
+            .star-options { gap: 3px; }
+            .star-option { font-size: 18px; }
+        }
     </style>
 </head>
-<body>
 
+<body data-website-id="{{ website_id }}">
 <div class="app-layout">
 
     <aside class="sidebar">
@@ -409,19 +472,630 @@
                 <div class="avatar">HF</div>
                 <div>
                     <div class="user-name">Account</div>
-                    <div class="user-plan">Free Trial ·  Account</div>
+                    <div class="user-plan">Account</div>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main-content">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
-</main>
+
+        <header class="topbar">
+            <div class="breadcrumb">
+                <a href="/websites">My Websites</a> / <strong>Website Details</strong>
+            </div>
+
+            <div class="topbar-right">
+                <a href="/notifications" class="top-icon">♧</a>
+                <div class="top-avatar">HF</div>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <div class="page-heading">
+                <div>
+                    <h1 id="pageTitle">Loading website...</h1>
+                    <p>Website information and feedback submission.</p>
+                </div>
+
+                <div class="heading-actions">
+                    <a href="/websites" class="btn btn-secondary">Back to Websites</a>
+                    <button type="button" class="btn btn-primary" id="visitWebsiteBtn" disabled>
+                        Visit Website
+                    </button>
+                </div>
+            </div>
+
+            <div class="-notice" id="pageMessage" role="alert" hidden></div>
+
+            <section class="website-hero">
+                <div class="website-identity">
+                    <div class="website-logo">◎</div>
+                    <div>
+                        <h2 class="website-name" id="heroWebsiteName">Loading...</h2>
+                        <a class="website-url" id="heroWebsiteUrl" href="#" target="_blank" rel="noopener noreferrer">—</a>
+
+                        <div class="website-meta">
+                            <span class="tag tag-approved" id="websiteStatus">Loading</span>
+                            <span class="tag tag-category" id="websiteCategory">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-status">
+                    <small>Website status</small>
+                    <span class="status-approved" id="heroStatus">Loading</span>
+                </div>
+            </section>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Approved Feedback</div>
+                    <div class="stat-value" id="feedbackCount">0</div>
+                    <div class="stat-note">Published feedback</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Average Rating</div>
+                    <div class="stat-value" id="averageRating">—</div>
+                    <div class="stat-note">Out of 5 stars</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Approved Date</div>
+                    <div class="stat-value" id="approvedDate" style="font-size:15px">—</div>
+                    <div class="stat-note">Website approval</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Website ID</div>
+                    <div class="stat-value" id="websiteId" style="font-size:20px">—</div>
+                    <div class="stat-note">Registered website</div>
+                </div>
+            </div>
+
+            <div class="main-grid">
+
+                <div>
+
+                    <section class="panel">
+                        <div class="panel-header">
+                            <h2>Website Description</h2>
+                        </div>
+                        <p class="description" id="websiteDescription">Loading website details...</p>
+                    </section>
+
+                    <section class="panel" id="submissionPanel">
+                        <div class="panel-header">
+                            <h2>Submit Your Feedback</h2>
+                        </div>
+
+                        <p class="description" style="margin-bottom:20px">
+                            Visit this website first, then share your honest experience.
+                            Feedback is reviewed by an administrator. Approved feedback
+                            earns 10 credits.
+                        </p>
+
+                        <form id="feedbackForm" enctype="multipart/form-data">
+
+                            <input type="hidden" name="website_id" id="formWebsiteId">
+
+                            <div id="ratingFields"></div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="feedbackComment">
+                                    Written Feedback <span style="color:#DC2626">*</span>
+                                </label>
+
+                                <textarea
+                                    class="form-control"
+                                    id="feedbackComment"
+                                    name="comment"
+                                    rows="6"
+                                    maxlength="10000"
+                                    required
+                                    placeholder="Share your honest experience with this website..."
+                                ></textarea>
+
+                                <small class="form-help">
+                                    Maximum 10,000 characters.
+                                </small>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="feedbackScreenshot">
+                                    Screenshot (Optional)
+                                </label>
+
+                                <input
+                                    class="form-control"
+                                    type="file"
+                                    id="feedbackScreenshot"
+                                    name="screenshot"
+                                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                                >
+
+                                <small class="form-help">
+                                    JPG, JPEG, PNG or WEBP. Maximum size 5 MB.
+                                </small>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary" id="submitFeedbackBtn">
+                                    Submit Feedback
+                                </button>
+
+                                <span class="visit-status" id="visitStatus">
+                                    Please visit the website before submitting feedback.
+                                </span>
+                            </div>
+                        </form>
+                    </section>
+
+                    <section class="panel">
+                        <div class="panel-header">
+                            <h2>Approved Feedback</h2>
+                            <a href="/feedback">My Feedback</a>
+                        </div>
+
+                        <div id="approvedFeedbackList">
+                            <p class="empty-feedback">Loading feedback...</p>
+                        </div>
+                    </section>
+
+                </div>
+
+                <div>
+
+                    <section class="panel">
+                        <div class="panel-header">
+                            <h2>Website Information</h2>
+                        </div>
+
+                        <dl class="detail-list">
+                            <div class="detail-row">
+                                <dt>Website Name</dt>
+                                <dd id="detailName">—</dd>
+                            </div>
+
+                            <div class="detail-row">
+                                <dt>Website URL</dt>
+                                <dd id="detailUrl">—</dd>
+                            </div>
+
+                            <div class="detail-row">
+                                <dt>Category</dt>
+                                <dd id="detailCategory">—</dd>
+                            </div>
+
+                            <div class="detail-row">
+                                <dt>Created</dt>
+                                <dd id="detailCreated">—</dd>
+                            </div>
+
+                            <div class="detail-row">
+                                <dt>Last Updated</dt>
+                                <dd id="detailUpdated">—</dd>
+                            </div>
+                        </dl>
+                    </section>
+
+                    <section class="panel">
+                        <div class="panel-header">
+                            <h2>Feedback Guidelines</h2>
+                        </div>
+
+                        <p class="description">
+                            Provide genuine and constructive feedback. Rate all five
+                            categories honestly. Your feedback will remain pending
+                            until an administrator reviews it.
+                        </p>
+
+                        <div class="info-note">
+                            <strong>Reward:</strong> You receive 10 credits after
+                            your feedback is approved by an administrator.
+                        </div>
+
+                        <div class="info-note">
+                            <strong>Important:</strong> You must visit the website
+                            before submitting feedback.
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
 </div>
+
+<script>
+    const websiteId = Number(document.body.dataset.websiteId);
+
+if (!Number.isInteger(websiteId) || websiteId <= 0) {
+    throw new Error("Invalid website ID.");
+}
+
+    let csrfToken = "";
+    let currentWebsite = null;
+
+    const ratingOptions = [
+        ["overall_rating", "Overall Rating"],
+        ["design_rating", "Design Rating"],
+        ["speed_rating", "Speed Rating"],
+        ["ux_rating", "User Experience Rating"],
+        ["content_rating", "Content Rating"]
+    ];
+
+    function safeWebsiteURL(value) {
+        if (!value) return null;
+
+        try {
+            let url = String(value).trim();
+
+            if (!/^https?:\/\//i.test(url)) {
+                url = "https://" + url;
+            }
+
+            const parsed = new URL(url);
+
+            if (!["http:", "https:"].includes(parsed.protocol)) {
+                return null;
+            }
+
+            return parsed.href;
+        } catch {
+            return null;
+        }
+    }
+
+    function formatDate(value) {
+        if (!value) return "—";
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) return "—";
+
+        return date.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        });
+    }
+
+    function showMessage(message, success = false) {
+        const box = document.getElementById("pageMessage");
+
+        box.hidden = false;
+        box.textContent = message;
+
+        box.style.background = success ? "#ECFDF5" : "#FFF7ED";
+        box.style.borderColor = success ? "#A7F3D0" : "#FED7AA";
+        box.style.color = success ? "#047857" : "#9A3412";
+    }
+
+    async function requestJSON(url, options = {}) {
+        const response = await fetch(url, {
+            credentials: "same-origin",
+            ...options
+        });
+
+        const data = await response.json().catch(() => null);
+
+        if (!response.ok || !data || data.success !== true) {
+            throw new Error(
+                data?.message ||
+                data?.error ||
+                `Request failed (${response.status})`
+            );
+        }
+
+        return data;
+    }
+
+    function createRatingFields() {
+        const container = document.getElementById("ratingFields");
+
+        container.innerHTML = ratingOptions.map(([name, label]) => `
+            <fieldset class="rating-field">
+                <legend>
+                    ${label} <span style="color:#DC2626">*</span>
+                </legend>
+
+                <div class="star-options">
+                    ${[1, 2, 3, 4, 5].map(value => `
+                        <label class="star-option">
+                            <input
+                                type="radio"
+                                name="${name}"
+                                value="${value}"
+                                required
+                            >
+                            ★ <span>${value}</span>
+                        </label>
+                    `).join("")}
+                </div>
+            </fieldset>
+        `).join("");
+    }
+
+    function renderWebsite(website) {
+        currentWebsite = website;
+
+        const name = website.name || "Unnamed Website";
+        const url = safeWebsiteURL(website.url);
+        const category = website.category?.name || "Not specified";
+
+        const approved = ["active", "approved"].includes(
+            String(website.status || "").toLowerCase()
+        );
+
+        document.title = name + " - HUMAN FEEDBACK";
+
+        document.getElementById("pageTitle").textContent = name;
+        document.getElementById("heroWebsiteName").textContent = name;
+
+        const websiteLink = document.getElementById("heroWebsiteUrl");
+
+        websiteLink.textContent = website.url || "URL unavailable";
+        websiteLink.href = url || "#";
+        websiteLink.style.pointerEvents = url ? "auto" : "none";
+
+        document.getElementById("websiteStatus").textContent =
+            approved ? "Approved" : website.status || "Unknown";
+
+        document.getElementById("heroStatus").textContent =
+            approved ? "Approved" : website.status || "Unknown";
+
+        document.getElementById("websiteCategory").textContent = category;
+
+        document.getElementById("websiteDescription").textContent =
+            website.description || "No description provided.";
+
+        document.getElementById("websiteId").textContent = website.id;
+
+        document.getElementById("formWebsiteId").value = website.id;
+
+        document.getElementById("approvedDate").textContent =
+            formatDate(website.approved_at);
+
+        document.getElementById("detailName").textContent = name;
+        document.getElementById("detailUrl").textContent = website.url || "—";
+        document.getElementById("detailCategory").textContent = category;
+
+        document.getElementById("detailCreated").textContent =
+            formatDate(website.created_at);
+
+        document.getElementById("detailUpdated").textContent =
+            formatDate(website.updated_at);
+
+        const visitButton = document.getElementById("visitWebsiteBtn");
+
+        visitButton.disabled = !approved || !url;
+        visitButton.dataset.url = url || "";
+
+        if (!approved) {
+            document.getElementById("submissionPanel").hidden = true;
+            showMessage("Feedback can only be submitted for approved websites.");
+        }
+    }
+
+    async function loadWebsite() {
+        const data = await requestJSON(`/api/websites/${websiteId}`);
+
+        if (!data.website) {
+            throw new Error("Website information was not returned.");
+        }
+
+        renderWebsite(data.website);
+    }
+
+    async function loadApprovedFeedback() {
+        const data = await requestJSON(
+            `/api/feedback/website/${websiteId}`
+        );
+
+        const feedback = Array.isArray(data.feedback)
+            ? data.feedback
+            : [];
+
+        document.getElementById("feedbackCount").textContent =
+            feedback.length;
+
+        const average = feedback.length
+            ? feedback.reduce(
+                (sum, item) => sum + Number(item.overall_rating || 0),
+                0
+            ) / feedback.length
+            : 0;
+
+        document.getElementById("averageRating").textContent =
+            feedback.length ? average.toFixed(1) : "—";
+
+        const container = document.getElementById("approvedFeedbackList");
+
+        if (!feedback.length) {
+            container.innerHTML =
+                '<p class="empty-feedback">No approved feedback is available yet.</p>';
+            return;
+        }
+
+        container.innerHTML = feedback.map(item => {
+            const rating = Math.max(
+                0,
+                Math.min(5, Number(item.overall_rating) || 0)
+            );
+
+            return `
+                <article class="feedback-item">
+                    <div class="feedback-top">
+                        <span class="feedback-user"></span>
+                        <span class="feedback-date"></span>
+                    </div>
+                    <div class="stars">
+                        ${"★".repeat(rating)}${"☆".repeat(5 - rating)}
+                    </div>
+                    <p class="feedback-text"></p>
+                </article>
+            `;
+        }).join("");
+
+        const cards = container.querySelectorAll(".feedback-item");
+
+        feedback.forEach((item, index) => {
+            const card = cards[index];
+
+            card.querySelector(".feedback-user").textContent =
+                item.user_name || "User";
+
+            card.querySelector(".feedback-date").textContent =
+                formatDate(item.created_at);
+
+            card.querySelector(".feedback-text").textContent =
+                item.comment || "";
+        });
+    }
+
+    async function recordVisit() {
+        const button = document.getElementById("visitWebsiteBtn");
+        const url = button.dataset.url;
+
+        if (!url) return;
+
+        // Open the tab immediately to reduce popup-blocking.
+        const newTab = window.open("about:blank", "_blank");
+
+        button.disabled = true;
+        button.textContent = "Recording Visit...";
+
+        try {
+            await requestJSON(`/api/feedback/visit/${websiteId}`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "Accept": "application/json"
+                }
+            });
+
+            document.getElementById("visitStatus").textContent =
+                "Website visit recorded. You can now submit feedback.";
+
+            if (newTab) {
+                newTab.location.href = url;
+            } else {
+                window.location.href = url;
+            }
+
+        } catch (error) {
+            if (newTab) newTab.close();
+
+            showMessage(error.message);
+
+            button.disabled = false;
+            button.textContent = "Visit Website";
+        }
+    }
+
+    async function submitFeedback(event) {
+        event.preventDefault();
+
+        const form = document.getElementById("feedbackForm");
+        const button = document.getElementById("submitFeedbackBtn");
+
+        if (!form.reportValidity()) return;
+
+        const file = document.getElementById("feedbackScreenshot").files[0];
+
+        if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                showMessage("Screenshot must not exceed 5 MB.");
+                return;
+            }
+
+            const allowedTypes = [
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+            ];
+
+            if (!allowedTypes.includes(file.type)) {
+                showMessage("Please select a JPG, PNG or WEBP screenshot.");
+                return;
+            }
+        }
+
+        button.disabled = true;
+        button.textContent = "Submitting...";
+
+        try {
+            const formData = new FormData(form);
+
+            const response = await fetch("/api/feedback/", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "Accept": "application/json"
+                },
+                body: formData
+            });
+
+            const data = await response.json().catch(() => null);
+
+            if (!response.ok || !data?.success) {
+                throw new Error(
+                    data?.message ||
+                    data?.error ||
+                    `Feedback submission failed (${response.status})`
+                );
+            }
+
+            showMessage(
+                "Feedback submitted successfully. It is pending admin approval. Redirecting...",
+                true
+            );
+
+            window.setTimeout(() => {
+                window.location.href = "/feedback";
+            }, 1200);
+
+        } catch (error) {
+            showMessage(error.message);
+
+            button.disabled = false;
+            button.textContent = "Submit Feedback";
+        }
+    }
+
+    async function initializePage() {
+        try {
+            const csrf = await requestJSON("/api/csrf-token");
+
+            csrfToken = csrf.csrf_token;
+
+            if (!csrfToken) {
+                throw new Error("Unable to obtain security token.");
+            }
+
+            createRatingFields();
+
+            await loadWebsite();
+            await loadApprovedFeedback();
+
+        } catch (error) {
+            showMessage(error.message || "Unable to load website details.");
+        }
+    }
+
+    document.getElementById("visitWebsiteBtn")
+        .addEventListener("click", recordVisit);
+
+    document.getElementById("feedbackForm")
+        .addEventListener("submit", submitFeedback);
+
+    document.addEventListener("DOMContentLoaded", initializePage);
+</script>
 
 </body>
 </html>

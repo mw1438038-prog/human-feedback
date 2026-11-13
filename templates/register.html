@@ -602,149 +602,158 @@
     </main>
 
     <script>
-        "use strict";
 
-        const registerForm = document.getElementById("registerForm");
-        const registerMessage = document.getElementById("registerMessage");
-        const registerButton = registerForm.querySelector('button[type="submit"]');
+"use strict";
 
-        function showRegisterMessage(type, message) {
-            registerMessage.className = "register-message " + type;
-            registerMessage.textContent = message;
-            registerMessage.style.display = "block";
+const registerForm = document.getElementById("registerForm");
+const registerMessage = document.getElementById("registerMessage");
+const registerButton = registerForm.querySelector('button[type="submit"]');
+
+function showRegisterMessage(type, message) {
+    registerMessage.className = "register-message " + type;
+    registerMessage.textContent = message;
+    registerMessage.style.display = "block";
+}
+
+function clearRegisterMessage() {
+    registerMessage.className = "register-message";
+    registerMessage.textContent = "";
+    registerMessage.style.display = "none";
+}
+
+document.querySelectorAll(".register-password-toggle").forEach(function (button) {
+    button.addEventListener("click", function () {
+        const input = document.getElementById(button.dataset.target);
+        const isPassword = input.type === "password";
+
+        input.type = isPassword ? "text" : "password";
+        button.textContent = isPassword ? "Hide" : "Show";
+    });
+});
+
+async function getCsrfToken() {
+    const response = await fetch("/api/csrf-token", {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+            "Accept": "application/json"
         }
+    });
 
-        function clearRegisterMessage() {
-            registerMessage.className = "register-message";
-            registerMessage.textContent = "";
-            registerMessage.style.display = "none";
-        }
+    if (!response.ok) {
+        throw new Error(
+            "Unable to initialize secure registration. Please refresh the page."
+        );
+    }
 
-        document.querySelectorAll(".register-password-toggle").forEach(function (button) {
-            button.addEventListener("click", function () {
-                const input = document.getElementById(button.dataset.target);
-                const isPassword = input.type === "password";
+    const data = await response.json();
 
-                input.type = isPassword ? "text" : "password";
-                button.textContent = isPassword ? "Hide" : "Show";
-            });
+    const token = typeof data === "string"
+        ? data
+        : (data.csrf_token || data.token || "");
+
+    if (!token) {
+        throw new Error(
+            "Security token unavailable. Please refresh the page."
+        );
+    }
+
+    return token;
+}
+
+registerForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    clearRegisterMessage();
+
+    if (!registerForm.reportValidity()) {
+        return;
+    }
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const termsAccepted = document.getElementById("terms").checked;
+
+    if (fullName.length < 2) {
+        showRegisterMessage("error", "Please enter your full name.");
+        return;
+    }
+
+    if (password.length < 8) {
+        showRegisterMessage(
+            "error",
+            "Password must contain at least 8 characters."
+        );
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showRegisterMessage("error", "Passwords do not match.");
+        return;
+    }
+
+    if (!termsAccepted) {
+        showRegisterMessage(
+            "error",
+            "Please accept the Terms & Conditions and Privacy Policy."
+        );
+        return;
+    }
+
+    registerButton.disabled = true;
+    registerButton.textContent = "Creating Account...";
+
+    try {
+        const csrfToken = await getCsrfToken();
+
+        const response = await fetch("/api/auth/register", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify({
+                name: fullName,
+                email: email,
+                password: password,
+                confirm_password: confirmPassword
+            })
         });
 
-        async function getCsrfToken() {
-            const response = await fetch("/api/csrf-token", {
-                method: "GET",
-                credentials: "same-origin",
-                headers: {
-                    "Accept": "application/json"
-                }
-            });
+        const data = await response.json().catch(() => ({}));
 
-            if (!response.ok) {
-                throw new Error("Unable to initialize secure registration. Please refresh the page.");
-            }
-
-            const data = await response.json();
-
-            const token = typeof data === "string"
-                ? data
-                : (data.csrf_token || data.token || "");
-
-            if (!token) {
-                throw new Error("Security token unavailable. Please refresh the page.");
-            }
-
-            return token;
+        if (!response.ok || data.success === false) {
+            throw new Error(
+                data.message || "Registration failed. Please try again."
+            );
         }
 
-        registerForm.addEventListener("submit", async function (event) {
-            event.preventDefault();
-            clearRegisterMessage();
+        showRegisterMessage(
+            "success",
+            "Account created successfully! Redirecting to login..."
+        );
 
-            if (!registerForm.reportValidity()) {
-                return;
-            }
+        registerForm.reset();
 
-            const fullName = document.getElementById("fullName").value.trim();
-            const email = document.getElementById("email").value.trim();
-            const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
-            const termsAccepted = document.getElementById("terms").checked;
+        setTimeout(function () {
+            window.location.href = "/login";
+        }, 1200);
 
-            if (fullName.length < 2) {
-                showRegisterMessage("error", "Please enter your full name.");
-                return;
-            }
+    } catch (error) {
+        showRegisterMessage(
+            "error",
+            error.message || "Something went wrong. Please try again."
+        );
 
-            if (password.length < 8) {
-                showRegisterMessage("error", "Password must contain at least 8 characters.");
-                return;
-            }
+    } finally {
+        registerButton.disabled = false;
+        registerButton.innerHTML = 'Create Account <span>→</span>';
+    }
+});
 
-            if (password !== confirmPassword) {
-                showRegisterMessage("error", "Passwords do not match. Please check both password fields.");
-                return;
-            }
-
-            if (!termsAccepted) {
-                showRegisterMessage("error", "Please accept the Terms & Conditions and Privacy Policy.");
-                return;
-            }
-
-            registerButton.disabled = true;
-            registerButton.textContent = "Creating Account...";
-
-            try {
-                const csrfToken = await getCsrfToken();
-
-                const response = await fetch("/api/auth/register", {
-                    method: "POST",
-                    credentials: "same-origin",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "X-CSRFToken": csrfToken
-                    },
-                    body: JSON.stringify({
-                        name: fullName,
-                        email: email,
-                        password: password,
-                        confirm_password: confirmPassword
-                    })
-                });
-
-                const data = await response.json().catch(() => ({}));
-
-                if (!response.ok || data.success === false) {
-                    throw new Error(
-                        data.message || "Registration failed. Please try again."
-                    );
-                }
-
-                registerForm.reset();
-
-                document.querySelectorAll(".register-password-toggle").forEach(function (button) {
-                    button.textContent = "Show";
-                });
-
-                document.getElementById("password").type = "password";
-                document.getElementById("confirmPassword").type = "password";
-
-                showRegisterMessage(
-                    "success",
-                    data.message || "Your account has been created. Please check your email to verify your account before signing in."
-                );
-
-            } catch (error) {
-                showRegisterMessage(
-                    "error",
-                    error.message || "Something went wrong. Please try again."
-                );
-
-            } finally {
-                registerButton.disabled = false;
-                registerButton.innerHTML = 'Create Account <span>→</span>';
-            }
-        });
     </script>
 
 </body>

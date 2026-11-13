@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | HUMAN FEEDBACK</title>
+
     <style>
         :root {
             --navy: #172554;
@@ -113,13 +114,14 @@
         .main { flex: 1; min-width: 0; }
 
         .topbar {
-            height: 75px;
+            min-height: 75px;
             background: white;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 32px;
+            gap: 15px;
         }
 
         .topbar h2 { color: var(--navy); font-size: 19px; }
@@ -132,14 +134,19 @@
 
         .top-right span { color: var(--muted); font-size: 12px; }
 
-        .top-right a {
+        .refresh-btn {
             background: var(--orange);
             color: white;
             padding: 10px 14px;
+            border: 0;
             border-radius: 8px;
             font-size: 11px;
             font-weight: 700;
+            cursor: pointer;
         }
+
+        .refresh-btn:hover { background: var(--orange-dark); }
+        .refresh-btn:disabled { opacity: .6; cursor: wait; }
 
         .content {
             max-width: 1400px;
@@ -219,6 +226,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            gap: 8px;
         }
 
         .stat-top span:first-child {
@@ -246,9 +254,8 @@
         .stat-card p {
             color: var(--muted);
             font-size: 10px;
+            line-height: 1.5;
         }
-
-        .stat-card p strong { color: var(--text); }
 
         .grid-two {
             display: grid;
@@ -271,7 +278,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .panel-heading h2 {
@@ -292,91 +299,7 @@
             white-space: nowrap;
         }
 
-        .chart-summary {
-            display: flex;
-            gap: 22px;
-            margin-bottom: 16px;
-        }
-
-        .chart-summary strong {
-            display: block;
-            color: var(--navy);
-            font-size: 19px;
-        }
-
-        .chart-summary small {
-            display: block;
-            color: var(--muted);
-            font-size: 10px;
-            margin-top: 4px;
-        }
-
-        .chart {
-            height: 185px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            gap: 9px;
-            padding: 12px 5px 0;
-            border-bottom: 1px solid var(--border);
-            background: repeating-linear-gradient(
-                to bottom,
-                transparent,
-                transparent 45px,
-                #EDF1F6 46px
-            );
-        }
-
-        .bar-group {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            height: 100%;
-            gap: 7px;
-        }
-
-        .bar {
-            width: min(28px, 70%);
-            min-height: 5px;
-            border-radius: 5px 5px 0 0;
-            background: var(--orange);
-        }
-
-        .bar.secondary { background: #A5B4FC; }
-
-        .bar-group small {
-            color: var(--muted);
-            font-size: 9px;
-        }
-
-        .legend {
-            display: flex;
-            gap: 16px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .legend span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--muted);
-            font-size: 10px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-            background: var(--orange);
-        }
-
-        .dot.blue { background: #A5B4FC; }
-
-        .quick-list { display: flex; flex-direction: column; gap: 0; }
+        .quick-list { display: flex; flex-direction: column; }
 
         .quick-item {
             display: flex;
@@ -412,47 +335,21 @@
         .count.red { background: #FEF2F2; color: var(--red); }
         .count.blue { background: #EEF2FF; color: #4338CA; }
 
-        .table-wrap { overflow-x: auto; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
-        }
-
-        th, td {
-            padding: 13px 12px;
-            border-bottom: 1px solid var(--border);
-            text-align: left;
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--green);
             font-size: 11px;
+            font-weight: 700;
+            margin-top: 14px;
         }
 
-        th {
-            background: #F8FAFC;
-            color: var(--muted);
-            font-weight: 700;
-        }
-
-        td { color: var(--text); }
-        td strong { color: var(--navy); }
-
-        .badge {
-            display: inline-block;
-            padding: 5px 8px;
-            border-radius: 20px;
-            font-size: 9px;
-            font-weight: 700;
-        }
-
-        .badge.pending { background: #FFF7ED; color: #C2410C; }
-        .badge.approved { background: #F0FDF4; color: #166534; }
-        .badge.review { background: #EEF2FF; color: #4338CA; }
-        .badge.rejected { background: #FEF2F2; color: #B91C1C; }
-
-        .action-link {
-            color: var(--orange-dark);
-            font-weight: 700;
-            font-size: 10px;
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--green);
         }
 
         .footer-note {
@@ -470,6 +367,27 @@
             font-size: 23px;
             cursor: pointer;
         }
+
+        .loading {
+            color: var(--muted);
+            font-size: 12px;
+            padding: 20px 0;
+        }
+
+        .error-box {
+            display: none;
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            border-left: 4px solid var(--red);
+            color: #991B1B;
+            padding: 14px 16px;
+            border-radius: 9px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .error-box.show { display: block; }
 
         @media(max-width: 1100px) {
             .sidebar { width: 220px; }
@@ -494,7 +412,7 @@
 
             .sidebar.show { left: 0; }
             .mobile-menu { display: block; }
-            .topbar { height: 65px; padding: 0 15px; }
+            .topbar { min-height: 65px; padding: 0 15px; }
             .topbar h2 { font-size: 16px; }
             .top-right span { display: none; }
             .content { padding: 20px 14px; }
@@ -508,10 +426,10 @@
             .stat-card h2 { font-size: 22px; }
             .stat-top span:first-child { font-size: 10px; }
             .panel { padding: 16px 13px; }
-            .chart-summary { gap: 14px; }
         }
     </style>
 </head>
+
 <body>
 <div class="app">
 
@@ -544,19 +462,408 @@
             <div class="user">
                 <div class="avatar">AD</div>
                 <div>
-                    <strong>Admin User</strong>
-                    <small>Administrator</small>
+                    <strong>Administrator</strong>
+                    <small>Admin Account</small>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
-</main>
+
+        <header class="topbar">
+            <div style="display:flex;align-items:center;gap:14px;">
+                <button class="mobile-menu" id="mobileMenu"
+                        type="button" aria-label="Open menu">☰</button>
+                <h2>Admin Dashboard</h2>
+            </div>
+
+            <div class="top-right">
+                <span id="lastUpdated">Loading dashboard...</span>
+                <button class="refresh-btn" id="refreshBtn" type="button">
+                    ↻ Refresh
+                </button>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <section class="heading">
+                <div>
+                    <h1>Dashboard Overview</h1>
+                    <p>
+                        Monitor users, websites, feedback, reports and
+                        platform activity from one place.
+                    </p>
+                </div>
+
+                <div class="date-label" id="currentDate">Loading date...</div>
+            </section>
+
+            <div class="error-box" id="errorBox" role="alert"></div>
+
+            <section class="notice">
+                <strong>Platform Administration</strong>
+                <p>
+                    This dashboard displays live statistics retrieved
+                    from the HUMAN FEEDBACK database.
+                    Use the management sections to review and manage records.
+                </p>
+            </section>
+
+            <section class="stats" aria-label="Platform statistics">
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Total Users</span>
+                        <span class="stat-icon">♙</span>
+                    </div>
+                    <h2 id="totalUsers">—</h2>
+                    <p>Registered user accounts</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Active Users</span>
+                        <span class="stat-icon">✓</span>
+                    </div>
+                    <h2 id="activeUsers">—</h2>
+                    <p>Active, non-suspended users</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Suspended Users</span>
+                        <span class="stat-icon">⊘</span>
+                    </div>
+                    <h2 id="suspendedUsers">—</h2>
+                    <p>Currently suspended accounts</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Total Websites</span>
+                        <span class="stat-icon">▣</span>
+                    </div>
+                    <h2 id="totalWebsites">—</h2>
+                    <p>All submitted websites</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Active Websites</span>
+                        <span class="stat-icon">◎</span>
+                    </div>
+                    <h2 id="activeWebsites">—</h2>
+                    <p>Websites with active status</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Pending Websites</span>
+                        <span class="stat-icon">◷</span>
+                    </div>
+                    <h2 id="pendingWebsites">—</h2>
+                    <p>Awaiting admin approval</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Approved Feedback</span>
+                        <span class="stat-icon">✓</span>
+                    </div>
+                    <h2 id="approvedFeedback">—</h2>
+                    <p>Successfully approved feedback</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Pending Feedback</span>
+                        <span class="stat-icon">✉</span>
+                    </div>
+                    <h2 id="pendingFeedback">—</h2>
+                    <p>Waiting for moderation</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Pending Reports</span>
+                        <span class="stat-icon">⚑</span>
+                    </div>
+                    <h2 id="pendingReports">—</h2>
+                    <p>Submitted or under review</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Total Subscriptions</span>
+                        <span class="stat-icon">◈</span>
+                    </div>
+                    <h2 id="totalSubscriptions">—</h2>
+                    <p>Subscription records</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Credits Issued</span>
+                        <span class="stat-icon">◆</span>
+                    </div>
+                    <h2 id="totalCreditsIssued">—</h2>
+                    <p>Total positive credit transactions</p>
+                </article>
+
+            </section>
+
+            <section class="grid-two">
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Moderation Overview</h2>
+                            <p>Items requiring admin attention</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-list">
+
+                        <a href="/admin/website-approvals" class="quick-item">
+                            <div>
+                                <strong>Website Approvals</strong>
+                                <small>Review submitted websites</small>
+                            </div>
+                            <span class="count" id="quickPendingWebsites">—</span>
+                        </a>
+
+                        <a href="/admin/feedback-moderation" class="quick-item">
+                            <div>
+                                <strong>Feedback Moderation</strong>
+                                <small>Review pending feedback</small>
+                            </div>
+                            <span class="count red" id="quickPendingFeedback">—</span>
+                        </a>
+
+                        <a href="/admin/reports" class="quick-item">
+                            <div>
+                                <strong>User Reports</strong>
+                                <small>Review submitted reports</small>
+                            </div>
+                            <span class="count blue" id="quickPendingReports">—</span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Platform Summary</h2>
+                            <p>Current database overview</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-list">
+                        <div class="quick-item">
+                            <div>
+                                <strong>Registered Users</strong>
+                                <small>Total user accounts</small>
+                            </div>
+                            <span class="count" id="summaryUsers">—</span>
+                        </div>
+
+                        <div class="quick-item">
+                            <div>
+                                <strong>Websites</strong>
+                                <small>Total website records</small>
+                            </div>
+                            <span class="count" id="summaryWebsites">—</span>
+                        </div>
+
+                        <div class="quick-item">
+                            <div>
+                                <strong>Subscriptions</strong>
+                                <small>Total subscription records</small>
+                            </div>
+                            <span class="count" id="summarySubscriptions">—</span>
+                        </div>
+                    </div>
+
+                    <div class="system-status">
+                        <span class="status-dot"></span>
+                        <span id="apiStatus">Connecting to database...</span>
+                    </div>
+                </div>
+
+            </section>
+
+            <div class="footer-note">
+                HUMAN FEEDBACK Admin Panel
+            </div>
+
+        </div>
+    </main>
 </div>
+
+<script>
+(function () {
+    "use strict";
+
+    const API_URL = "/api/admin/dashboard";
+
+    const numberFormat = new Intl.NumberFormat();
+
+    const elements = {
+        totalUsers: document.getElementById("totalUsers"),
+        activeUsers: document.getElementById("activeUsers"),
+        suspendedUsers: document.getElementById("suspendedUsers"),
+        totalWebsites: document.getElementById("totalWebsites"),
+        activeWebsites: document.getElementById("activeWebsites"),
+        pendingWebsites: document.getElementById("pendingWebsites"),
+        approvedFeedback: document.getElementById("approvedFeedback"),
+        pendingFeedback: document.getElementById("pendingFeedback"),
+        pendingReports: document.getElementById("pendingReports"),
+        totalSubscriptions: document.getElementById("totalSubscriptions"),
+        totalCreditsIssued: document.getElementById("totalCreditsIssued")
+    };
+
+    function formatNumber(value) {
+        const number = Number(value);
+
+        if (!Number.isFinite(number)) {
+            return "0";
+        }
+
+        return numberFormat.format(number);
+    }
+
+    function setText(id, value) {
+        const element = document.getElementById(id);
+
+        if (element) {
+            element.textContent = formatNumber(value);
+        }
+    }
+
+    function showError(message) {
+        const box = document.getElementById("errorBox");
+
+        box.textContent = message;
+        box.classList.add("show");
+    }
+
+    function hideError() {
+        const box = document.getElementById("errorBox");
+
+        box.textContent = "";
+        box.classList.remove("show");
+    }
+
+    function displayStatistics(stats) {
+        Object.keys(elements).forEach(function (key) {
+            elements[key].textContent = formatNumber(stats[key]);
+        });
+
+        setText("quickPendingWebsites", stats.pending_websites);
+        setText("quickPendingFeedback", stats.pending_feedback);
+        setText("quickPendingReports", stats.pending_reports);
+
+        setText("summaryUsers", stats.total_users);
+        setText("summaryWebsites", stats.total_websites);
+        setText("summarySubscriptions", stats.total_subscriptions);
+
+        document.getElementById("apiStatus").textContent =
+            "Database connection successful";
+    }
+
+    async function loadDashboard() {
+        const refreshButton = document.getElementById("refreshBtn");
+        const lastUpdated = document.getElementById("lastUpdated");
+        const apiStatus = document.getElementById("apiStatus");
+
+        refreshButton.disabled = true;
+        refreshButton.textContent = "Loading...";
+        hideError();
+
+        try {
+            const response = await fetch(API_URL, {
+                method: "GET",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+
+            if (response.status === 401) {
+                window.location.href = "/login";
+                return;
+            }
+
+            if (response.status === 403) {
+                showError(
+                    "Access denied. Your account does not have administrator permission."
+                );
+                apiStatus.textContent = "Access denied";
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    "Dashboard API request failed. HTTP status: " +
+                    response.status
+                );
+            }
+
+            const data = await response.json();
+
+            if (!data.success || !data.statistics) {
+                throw new Error(
+                    data.message || "Invalid dashboard response received."
+                );
+            }
+
+            displayStatistics(data.statistics);
+
+            lastUpdated.textContent =
+                "Updated: " + new Date().toLocaleTimeString();
+
+        } catch (error) {
+            console.error("Admin dashboard error:", error);
+
+            apiStatus.textContent = "Connection error";
+
+            showError(
+                error.message ||
+                "Unable to load dashboard statistics. Please try again."
+            );
+
+        } finally {
+            refreshButton.disabled = false;
+            refreshButton.textContent = "↻ Refresh";
+        }
+    }
+
+    document.getElementById("refreshBtn").addEventListener(
+        "click",
+        loadDashboard
+    );
+
+    document.getElementById("mobileMenu").addEventListener(
+        "click",
+        function () {
+            document.getElementById("sidebar").classList.toggle("show");
+        }
+    );
+
+    document.getElementById("currentDate").textContent =
+        new Date().toLocaleDateString(undefined, {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+
+    loadDashboard();
+})();
+</script>
+
 </body>
 </html>

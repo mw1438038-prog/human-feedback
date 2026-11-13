@@ -79,7 +79,9 @@ def analytics_overview():
         owner_id=current_user.id
     ).all()
 
-    website_ids = [website.id for website in websites]
+    website_ids = [
+        website.id for website in websites
+    ]
 
     approved_query = Feedback.query.filter(
         Feedback.website_id.in_(website_ids),
@@ -114,14 +116,22 @@ def analytics_overview():
         Feedback.created_at <= end_date
     ).count()
 
+    # Corrected: pending feedback within selected date range.
     pending_submitted_feedback = Feedback.query.filter_by(
         user_id=current_user.id,
         status="pending"
+    ).filter(
+        Feedback.created_at >= start_date,
+        Feedback.created_at <= end_date
     ).count()
 
+    # Corrected: rejected feedback within selected date range.
     rejected_submitted_feedback = Feedback.query.filter_by(
         user_id=current_user.id,
         status="rejected"
+    ).filter(
+        Feedback.created_at >= start_date,
+        Feedback.created_at <= end_date
     ).count()
 
     credits_earned = db.session.query(
@@ -157,34 +167,53 @@ def analytics_overview():
         ),
         "overview": {
             "total_websites": len(websites),
+
             "active_websites": sum(
                 1 for website in websites
                 if website.status == "active"
             ),
+
             "pending_websites": sum(
                 1 for website in websites
                 if website.status == "pending"
             ),
+
             "rejected_websites": sum(
                 1 for website in websites
                 if website.status == "rejected"
             ),
+
             "received_approved_feedback": received_feedback,
+
             "received_feedback_in_period": total_feedback,
+
             "average_received_rating": (
                 round(float(average_rating), 2)
                 if average_rating is not None else 0
             ),
+
             "submitted_feedback": submitted_feedback,
-            "approved_submitted_feedback": approved_submitted_feedback,
-            "pending_submitted_feedback": pending_submitted_feedback,
-            "rejected_submitted_feedback": rejected_submitted_feedback,
+
+            "approved_submitted_feedback": (
+                approved_submitted_feedback
+            ),
+
+            "pending_submitted_feedback": (
+                pending_submitted_feedback
+            ),
+
+            "rejected_submitted_feedback": (
+                rejected_submitted_feedback
+            ),
+
             "credits_balance": get_credit_balance(
                 current_user.id
             ),
+
             "credits_earned_in_period": int(
                 credits_earned or 0
             ),
+
             "credits_spent_in_period": int(
                 credits_spent or 0
             )
@@ -243,15 +272,19 @@ def website_analytics(website_id):
         "overall": average_rating(
             Feedback.overall_rating
         ),
+
         "design": average_rating(
             Feedback.design_rating
         ),
+
         "speed": average_rating(
             Feedback.speed_rating
         ),
+
         "ux": average_rating(
             Feedback.ux_rating
         ),
+
         "content": average_rating(
             Feedback.content_rating
         )
@@ -260,23 +293,28 @@ def website_analytics(website_id):
     rating_distribution = {}
 
     for rating in range(1, 6):
-        rating_distribution[str(rating)] = period_query.filter(
-            Feedback.overall_rating == rating
-        ).count()
+        rating_distribution[str(rating)] = (
+            period_query.filter(
+                Feedback.overall_rating == rating
+            ).count()
+        )
 
     return jsonify({
         "success": True,
+
         "website": {
             "id": website.id,
             "name": website.name,
             "url": website.url,
             "status": website.status
         },
+
         "period_days": request.args.get(
             "days",
             30,
             type=int
         ),
+
         "analytics": {
             "total_approved_feedback": total_feedback,
             "approved_feedback_in_period": period_feedback,
@@ -341,8 +379,9 @@ def website_feedback_trends(website_id):
             continue
 
         daily_data[date_key]["feedback_count"] += 1
+
         daily_data[date_key]["total_rating"] += (
-            feedback.overall_rating
+            feedback.overall_rating or 0
         )
 
     for item in daily_data.values():
@@ -360,11 +399,13 @@ def website_feedback_trends(website_id):
         "success": True,
         "website_id": website.id,
         "website_name": website.name,
+
         "period_days": request.args.get(
             "days",
             30,
             type=int
         ),
+
         "trends": list(daily_data.values())
     })
 
@@ -407,11 +448,13 @@ def my_feedback_analytics():
 
     return jsonify({
         "success": True,
+
         "period_days": request.args.get(
             "days",
             30,
             type=int
         ),
+
         "feedback_statistics": {
             "total": total,
             "approved": approved,

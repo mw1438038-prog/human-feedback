@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Replies & Conversations | HUMAN FEEDBACK</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --navy:#172554;
@@ -214,9 +216,9 @@
             cursor:pointer;
         }
 
-        .btn-primary { background:var(--orange); border-color:var(--orange); color:white; }
+        .btn:disabled { opacity:.6; cursor:not-allowed; }
 
-        .-banner {
+        .banner {
             background:#EFF4FF;
             border:1px solid #DCE6FF;
             border-radius:10px;
@@ -244,7 +246,6 @@
         }
 
         .stat-top { display:flex; justify-content:space-between; align-items:center; }
-
         .stat-label { color:var(--muted); font-size:11px; font-weight:600; }
 
         .stat-icon {
@@ -395,21 +396,10 @@
             align-items:center;
             justify-content:space-between;
             margin-top:7px;
+            gap:5px;
         }
 
         .conversation-bottom small { color:#929DAD; font-size:9px; }
-
-        .unread {
-            width:17px;
-            height:17px;
-            border-radius:50%;
-            display:grid;
-            place-items:center;
-            background:var(--orange);
-            color:white;
-            font-size:9px;
-            font-weight:800;
-        }
 
         .chat-panel { min-width:0; display:flex; flex-direction:column; }
 
@@ -438,18 +428,6 @@
             color:var(--muted);
             font-size:10px;
             margin-top:4px;
-        }
-
-        .chat-actions { display:flex; gap:8px; }
-
-        .icon-btn {
-            width:33px;
-            height:33px;
-            border:1px solid var(--border);
-            border-radius:8px;
-            background:white;
-            color:var(--navy);
-            cursor:pointer;
         }
 
         .chat-context {
@@ -504,7 +482,6 @@
         }
 
         .message { display:flex; gap:9px; max-width:82%; }
-
         .message.own { align-self:flex-end; flex-direction:row-reverse; }
 
         .message .avatar {
@@ -520,6 +497,8 @@
             color:#47556B;
             font-size:11px;
             line-height:1.7;
+            overflow-wrap:anywhere;
+            white-space:pre-wrap;
         }
 
         .message.own .message-bubble {
@@ -546,8 +525,9 @@
 
         .composer textarea {
             width:100%;
-            resize:none;
+            resize:vertical;
             min-height:68px;
+            max-height:180px;
             border:1px solid var(--border);
             border-radius:9px;
             padding:12px;
@@ -557,6 +537,7 @@
         }
 
         .composer textarea:focus { border-color:var(--orange); }
+        .composer textarea:disabled { background:#F8FAFC; cursor:not-allowed; }
 
         .composer-bottom {
             display:flex;
@@ -602,6 +583,7 @@
             background:none;
             color:var(--navy);
             font-size:23px;
+            cursor:pointer;
         }
 
         @media(max-width:1100px) {
@@ -662,8 +644,8 @@
         }
     </style>
 </head>
-<body>
 
+<body>
 <div class="app">
 
     <aside class="sidebar" id="sidebar">
@@ -674,38 +656,785 @@
 
         <div class="nav-label">MAIN MENU</div>
         <ul class="nav-list">
-            <li><a href="/dashboard"><span class="nav-icon">▦</span> Dashboard</a></li>
-            <li><a href="/websites"><span class="nav-icon">◫</span> My Websites</a></li>
-            <li><a href="/feedback"><span class="nav-icon">✦</span> Feedback</a></li>
-            <li><a href="/replies" class="active"><span class="nav-icon">◷</span> Replies & Conversations</a></li>
-            <li><a href="/credits"><span class="nav-icon">◈</span> Credits</a></li>
-            <li><a href="/analytics"><span class="nav-icon">▥</span> Analytics</a></li>
-            <li><a href="/notifications"><span class="nav-icon">♧</span> Notifications</a></li>
+            <li><a href="/dashboard"><span class="nav-icon">â–¦</span> Dashboard</a></li>
+            <li><a href="/websites"><span class="nav-icon">â—«</span> My Websites</a></li>
+            <li><a href="/feedback"><span class="nav-icon">âœ¦</span> Feedback</a></li>
+            <li><a href="/replies" class="active"><span class="nav-icon">â—·</span> Replies & Conversations</a></li>
+            <li><a href="/credits"><span class="nav-icon">â—ˆ</span> Credits</a></li>
+            <li><a href="/analytics"><span class="nav-icon">â–¥</span> Analytics</a></li>
+            <li><a href="/notifications"><span class="nav-icon">â™§</span> Notifications</a></li>
         </ul>
 
         <div class="nav-label">ACCOUNT</div>
         <ul class="nav-list">
-            <li><a href="/profile"><span class="nav-icon">◎</span> My Profile</a></li>
-            <li><a href="/settings"><span class="nav-icon">⚙</span> Settings</a></li>
+            <li><a href="/profile"><span class="nav-icon">â—Ž</span> My Profile</a></li>
+            <li><a href="/settings"><span class="nav-icon">âš™</span> Settings</a></li>
         </ul>
 
         <div class="sidebar-bottom">
             <div class="profile-mini">
-                <div class="avatar">MW</div>
+                <div class="avatar">HF</div>
                 <div>
-                    <strong>Michael Wilson</strong>
-                    <small>Pro Member</small>
+                    <strong>My Account</strong>
+                    <small>HUMAN FEEDBACK</small>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
-</main>
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Open menu">â˜°</button>
+                <h2>Replies & Conversations</h2>
+            </div>
+
+            <div class="topbar-right">
+                <span class="credit-pill">HUMAN FEEDBACK</span>
+                <div class="top-avatar">HF</div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="breadcrumb">
+                <a href="/dashboard">Dashboard</a>
+                <span>/</span>
+                <span>Replies & Conversations</span>
+            </div>
+
+            <div class="page-heading">
+                <div>
+                    <h1>Replies & Conversations</h1>
+                    <p>Manage conversations about your feedback and websites.</p>
+                </div>
+                <button class="btn" id="refreshBtn" type="button">â†» Refresh</button>
+            </div>
+
+            <div class="banner">
+                <span>â„¹</span>
+                <span>
+                    Conversations are available for approved feedback.
+                    Reply availability depends on the active-plan requirements.
+                </span>
+            </div>
+
+            <section class="stats">
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">TOTAL CONVERSATIONS</span>
+                        <span class="stat-icon">â—·</span>
+                    </div>
+                    <div class="stat-number" id="totalCount">â€”</div>
+                    <div class="stat-foot">Your available conversations</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">SENT FEEDBACK</span>
+                        <span class="stat-icon">â†—</span>
+                    </div>
+                    <div class="stat-number" id="sentCount">â€”</div>
+                    <div class="stat-foot">Approved feedback you submitted</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">RECEIVED FEEDBACK</span>
+                        <span class="stat-icon">â†™</span>
+                    </div>
+                    <div class="stat-number" id="receivedCount">â€”</div>
+                    <div class="stat-foot">Approved feedback on your websites</div>
+                </div>
+            </section>
+
+            <div id="pageError" role="alert"
+                 style="display:none;padding:13px;margin-bottom:15px;border-radius:8px;background:#FEF2F2;color:#B91C1C;font-size:12px;">
+            </div>
+
+            <section class="messenger">
+                <div class="conversation-panel">
+                    <div class="panel-heading">
+                        <h3>Conversations</h3>
+                        <div class="search-box">
+                            <span>âŒ•</span>
+                            <input
+                                type="search"
+                                id="conversationSearch"
+                                placeholder="Search conversations..."
+                                autocomplete="off"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="filters">
+                        <button class="filter-btn active" data-filter="all" type="button">All</button>
+                        <button class="filter-btn" data-filter="sent" type="button">Sent</button>
+                        <button class="filter-btn" data-filter="received" type="button">Received</button>
+                    </div>
+
+                    <div class="conversation-list" id="conversationList">
+                        <div class="empty-search" style="display:block;">Loading conversations...</div>
+                    </div>
+                </div>
+
+                <div class="chat-panel">
+                    <div class="chat-header" id="chatHeader">
+                        <div class="chat-person">
+                            <div class="avatar">?</div>
+                            <div>
+                                <strong>Select a conversation</strong>
+                                <small>Choose a conversation to view messages</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-context" id="chatContext" style="display:none;">
+                        <div class="context-info">
+                            <strong id="contextWebsite"></strong>
+                            <small id="contextFeedback"></small>
+                        </div>
+                        <span class="approved-tag">APPROVED</span>
+                    </div>
+
+                    <div class="messages" id="messages">
+                        <div class="empty-search" style="display:block;">
+                            Select a conversation to view its messages.
+                        </div>
+                    </div>
+
+                    <form class="composer" id="replyForm">
+                        <textarea
+                            id="replyMessage"
+                            maxlength="5000"
+                            placeholder="Select a conversation before writing a reply..."
+                            disabled
+                            required
+                        ></textarea>
+
+                        <div class="composer-bottom">
+                            <span class="composer-note" id="composerNote">
+                                Maximum 5,000 characters.
+                            </span>
+                            <button class="send-btn" id="sendBtn" type="submit" disabled>
+                                Send Reply â†’
+                            </button>
+                        </div>
+
+                        <div id="replyError" role="alert"
+                             style="display:none;color:#B91C1C;font-size:11px;margin-top:9px;">
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <div class="footer-note">
+                HUMAN FEEDBACK Â· Replies & Conversations
+            </div>
+        </div>
+    </main>
 </div>
+
+<script>
+(() => {
+    "use strict";
+
+    const API = "/api/feedback";
+
+    const state = {
+        conversations: [],
+        filtered: [],
+        selectedId: null,
+        filter: "all",
+        currentUserId: null,
+        sending: false,
+        selectionRequest: 0
+    };
+
+    const $ = id => document.getElementById(id);
+
+    const elements = {
+        list: $("conversationList"),
+        messages: $("messages"),
+        header: $("chatHeader"),
+        context: $("chatContext"),
+        search: $("conversationSearch"),
+        textarea: $("replyMessage"),
+        send: $("sendBtn"),
+        form: $("replyForm"),
+        pageError: $("pageError"),
+        replyError: $("replyError"),
+        refresh: $("refreshBtn")
+    };
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        })[char]);
+    }
+
+    function initials(name) {
+        const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+
+        if (!parts.length) return "?";
+
+        return parts.slice(0, 2)
+            .map(part => part.charAt(0).toUpperCase())
+            .join("");
+    }
+
+    function formatDate(value) {
+        if (!value) return "";
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) return "";
+
+        return date.toLocaleDateString(undefined, {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        });
+    }
+
+    function formatTime(value) {
+        if (!value) return "";
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) return "";
+
+        return date.toLocaleTimeString(undefined, {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    }
+
+    function showPageError(message) {
+        elements.pageError.textContent = message;
+        elements.pageError.style.display = "block";
+    }
+
+    function hidePageError() {
+        elements.pageError.textContent = "";
+        elements.pageError.style.display = "none";
+    }
+
+    function showReplyError(message) {
+        elements.replyError.textContent = message;
+        elements.replyError.style.display = "block";
+    }
+
+    function hideReplyError() {
+        elements.replyError.textContent = "";
+        elements.replyError.style.display = "none";
+    }
+
+    async function apiRequest(url, options = {}) {
+        const method = (options.method || "GET").toUpperCase();
+
+        const headers = {
+            ...(options.headers || {})
+        };
+
+        if (!["GET", "HEAD", "OPTIONS"].includes(method)) {
+            const csrfResponse = await fetch("/api/csrf-token", {
+                method: "GET",
+                credentials: "same-origin"
+            });
+
+            let csrfData;
+
+            try {
+                csrfData = await csrfResponse.json();
+            } catch {
+                throw new Error("Could not obtain CSRF security token.");
+            }
+
+            if (!csrfResponse.ok || !csrfData.csrf_token) {
+                throw new Error("Could not obtain CSRF security token. Please refresh the page.");
+            }
+
+            headers["X-CSRFToken"] = csrfData.csrf_token;
+        }
+
+        const response = await fetch(url, {
+            ...options,
+            method,
+            credentials: "same-origin",
+            headers
+        });
+
+        let data;
+
+        try {
+            data = await response.json();
+        } catch {
+            throw new Error("Server returned an invalid response.");
+        }
+
+        if (!response.ok || data.success === false) {
+            if (response.status === 401) {
+                throw new Error("Your session has expired. Please log in again.");
+            }
+
+            throw new Error(
+                data.message || "Something went wrong. Please try again."
+            );
+        }
+
+        return data;
+    }
+
+    function getOtherUser(conversation) {
+        return conversation.other_user || {};
+    }
+
+    function getSearchText(conversation) {
+        const other = getOtherUser(conversation);
+
+        return [
+            other.name,
+            conversation.website?.name,
+            conversation.feedback?.comment,
+            conversation.last_message
+        ].join(" ").toLowerCase();
+    }
+
+    function applyFilters() {
+        const query = elements.search.value.trim().toLowerCase();
+
+        state.filtered = state.conversations.filter(conversation => {
+            const matchesType =
+                state.filter === "all" ||
+                conversation.conversation_type === state.filter;
+
+            const matchesSearch =
+                !query || getSearchText(conversation).includes(query);
+
+            return matchesType && matchesSearch;
+        });
+
+        renderConversationList();
+
+        const selectedVisible = state.filtered.some(
+            item => Number(item.id) === Number(state.selectedId)
+        );
+
+        if (state.selectedId !== null && !selectedVisible) {
+            resetChat();
+        }
+    }
+
+    function renderConversationList() {
+        if (!state.filtered.length) {
+            const message = state.conversations.length
+                ? "No conversations match your search."
+                : "No approved conversations are available yet.";
+
+            elements.list.innerHTML =
+                `<div class="empty-search" style="display:block;">${escapeHTML(message)}</div>`;
+
+            return;
+        }
+
+        elements.list.innerHTML = state.filtered.map(conversation => {
+            const other = getOtherUser(conversation);
+            const name = other.name || "Unknown user";
+            const website = conversation.website?.name || "Website";
+            const preview = conversation.last_message || "No messages yet";
+            const active = Number(state.selectedId) === Number(conversation.id);
+
+            const typeLabel = conversation.conversation_type === "sent"
+                ? "Sent feedback"
+                : "Received feedback";
+
+            return `
+                <div class="conversation ${active ? "active" : ""}"
+                     data-id="${Number(conversation.id)}"
+                     role="button"
+                     tabindex="0"
+                     aria-label="Open conversation with ${escapeHTML(name)}">
+
+                    <div class="avatar">${escapeHTML(initials(name))}</div>
+
+                    <div class="conversation-body">
+                        <div class="conversation-top">
+                            <strong>${escapeHTML(name)}</strong>
+                            <time>${escapeHTML(formatDate(conversation.last_message_at))}</time>
+                        </div>
+
+                        <p>${escapeHTML(preview)}</p>
+
+                        <div class="conversation-bottom">
+                            <small>${escapeHTML(website)} Â· ${escapeHTML(typeLabel)}</small>
+                            <small>${Number(conversation.reply_count || 0)} replies</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function renderChatHeader(conversation) {
+        const other = getOtherUser(conversation);
+        const name = other.name || "Unknown user";
+
+        elements.header.innerHTML = `
+            <div class="chat-person">
+                <div class="avatar">${escapeHTML(initials(name))}</div>
+                <div>
+                    <strong>${escapeHTML(name)}</strong>
+                    <small>
+                        ${conversation.conversation_type === "sent"
+                            ? "Website owner"
+                            : "Feedback provider"}
+                    </small>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderContext(conversation) {
+        const website = conversation.website || {};
+        const feedback = conversation.feedback || {};
+
+        $("contextWebsite").textContent = website.name || "Website";
+
+        $("contextFeedback").textContent =
+            `Feedback submitted ${formatDate(feedback.created_at)} Â· Rating: ${feedback.overall_rating ?? "â€”"}/5`;
+
+        elements.context.style.display = "flex";
+    }
+
+    function renderMessages(conversation, replies) {
+        const feedback = conversation.feedback || {};
+        const provider = conversation.provider || {};
+
+        const items = [];
+
+        if (feedback.comment) {
+            items.push({
+                user_id: provider.id,
+                user_name: provider.name || "Feedback provider",
+                message: feedback.comment,
+                created_at: feedback.created_at,
+                original: true
+            });
+        }
+
+        items.push(...replies);
+
+        if (!items.length) {
+            elements.messages.innerHTML =
+                `<div class="empty-search" style="display:block;">No messages available.</div>`;
+            return;
+        }
+
+        let previousDate = "";
+
+        elements.messages.innerHTML = items.map(message => {
+            const own = state.currentUserId !== null &&
+                state.currentUserId !== undefined &&
+                Number(message.user_id) === Number(state.currentUserId);
+
+            const date = formatDate(message.created_at);
+            let divider = "";
+
+            if (date && date !== previousDate) {
+                divider = `<div class="date-divider">${escapeHTML(date)}</div>`;
+                previousDate = date;
+            }
+
+            return `
+                ${divider}
+                <div class="message ${own ? "own" : ""}">
+                    <div class="avatar">${escapeHTML(initials(message.user_name))}</div>
+
+                    <div>
+                        <div class="message-bubble">${escapeHTML(message.message)}</div>
+                        <div class="message-meta">
+                            <span>${escapeHTML(message.user_name || "User")}${message.original ? " Â· Original feedback" : ""}</span>
+                            <time>${escapeHTML(formatTime(message.created_at))}</time>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join("");
+
+        elements.messages.scrollTop = elements.messages.scrollHeight;
+    }
+
+    function setComposerEnabled(enabled) {
+        elements.textarea.disabled = !enabled;
+        elements.send.disabled = !enabled || state.sending;
+
+        elements.textarea.placeholder = enabled
+            ? "Write your reply..."
+            : "Select a conversation before writing a reply...";
+    }
+
+    async function selectConversation(id) {
+        hideReplyError();
+
+        const conversation = state.conversations.find(
+            item => Number(item.id) === Number(id)
+        );
+
+        if (!conversation) return;
+
+        const requestId = ++state.selectionRequest;
+
+        state.selectedId = conversation.id;
+
+        renderConversationList();
+        renderChatHeader(conversation);
+        renderContext(conversation);
+
+        elements.messages.innerHTML =
+            `<div class="empty-search" style="display:block;">Loading messages...</div>`;
+
+        setComposerEnabled(false);
+
+        try {
+            const data = await apiRequest(
+                `${API}/${encodeURIComponent(conversation.id)}/replies`
+            );
+
+            if (requestId !== state.selectionRequest) return;
+
+            if (Number(state.selectedId) !== Number(conversation.id)) return;
+
+            renderMessages(conversation, data.replies || []);
+            setComposerEnabled(true);
+
+        } catch (error) {
+            if (requestId !== state.selectionRequest) return;
+
+            elements.messages.innerHTML = "";
+
+            const errorMessage = document.createElement("div");
+            errorMessage.className = "empty-search";
+            errorMessage.style.display = "block";
+            errorMessage.textContent = error.message;
+
+            elements.messages.appendChild(errorMessage);
+
+            setComposerEnabled(false);
+        }
+    }
+
+    async function loadConversations() {
+        hidePageError();
+
+        elements.refresh.disabled = true;
+        elements.refresh.textContent = "Loading...";
+
+        elements.list.innerHTML =
+            `<div class="empty-search" style="display:block;">Loading conversations...</div>`;
+
+        try {
+            const data = await apiRequest(`${API}/conversations`);
+
+            state.conversations = Array.isArray(data.conversations)
+                ? data.conversations
+                : [];
+
+            state.currentUserId = data.current_user_id ?? null;
+
+            $("totalCount").textContent = data.total ?? state.conversations.length;
+            $("sentCount").textContent = data.sent_count ?? 0;
+            $("receivedCount").textContent = data.received_count ?? 0;
+
+            applyFilters();
+
+            if (state.selectedId !== null) {
+                const stillExists = state.filtered.some(
+                    item => Number(item.id) === Number(state.selectedId)
+                );
+
+                if (stillExists) {
+                    await selectConversation(state.selectedId);
+                } else {
+                    resetChat();
+                }
+            } else if (state.filtered.length) {
+                await selectConversation(state.filtered[0].id);
+            } else {
+                resetChat();
+            }
+
+        } catch (error) {
+            elements.list.innerHTML =
+                `<div class="empty-search" style="display:block;">${escapeHTML(error.message)}</div>`;
+
+            showPageError(error.message);
+
+            $("totalCount").textContent = "â€”";
+            $("sentCount").textContent = "â€”";
+            $("receivedCount").textContent = "â€”";
+
+            resetChat();
+
+        } finally {
+            elements.refresh.disabled = false;
+            elements.refresh.textContent = "â†» Refresh";
+        }
+    }
+
+    function resetChat() {
+        state.selectionRequest++;
+        state.selectedId = null;
+
+        elements.header.innerHTML = `
+            <div class="chat-person">
+                <div class="avatar">?</div>
+                <div>
+                    <strong>Select a conversation</strong>
+                    <small>Choose a conversation to view messages</small>
+                </div>
+            </div>
+        `;
+
+        elements.context.style.display = "none";
+
+        elements.messages.innerHTML = `
+            <div class="empty-search" style="display:block;">
+                Select a conversation to view its messages.
+            </div>
+        `;
+
+        elements.textarea.value = "";
+        setComposerEnabled(false);
+        renderConversationList();
+    }
+
+    async function sendReply(event) {
+        event.preventDefault();
+        hideReplyError();
+
+        if (state.sending) return;
+
+        if (state.selectedId === null) {
+            showReplyError("Please select a conversation first.");
+            return;
+        }
+
+        const message = elements.textarea.value.trim();
+
+        if (!message) {
+            showReplyError("Please enter a reply message.");
+            return;
+        }
+
+        if (message.length > 5000) {
+            showReplyError("Reply must not exceed 5,000 characters.");
+            return;
+        }
+
+        const conversationId = state.selectedId;
+
+        state.sending = true;
+        elements.send.disabled = true;
+        elements.send.textContent = "Sending...";
+
+        try {
+            await apiRequest(
+                `${API}/${encodeURIComponent(conversationId)}/replies`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message })
+                }
+            );
+
+            elements.textarea.value = "";
+
+            await loadConversations();
+
+            if (state.selectedId === null) {
+                const stillExists = state.conversations.some(
+                    item => Number(item.id) === Number(conversationId)
+                );
+
+                if (stillExists) {
+                    await selectConversation(conversationId);
+                }
+            }
+
+        } catch (error) {
+            showReplyError(error.message);
+
+        } finally {
+            state.sending = false;
+            elements.send.textContent = "Send Reply â†’";
+
+            setComposerEnabled(state.selectedId !== null);
+        }
+    }
+
+    elements.list.addEventListener("click", event => {
+        const item = event.target.closest(".conversation");
+
+        if (item) {
+            selectConversation(Number(item.dataset.id));
+        }
+    });
+
+    elements.list.addEventListener("keydown", event => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+
+        const item = event.target.closest(".conversation");
+
+        if (item) {
+            event.preventDefault();
+            selectConversation(Number(item.dataset.id));
+        }
+    });
+
+    document.querySelectorAll(".filter-btn").forEach(button => {
+        button.addEventListener("click", () => {
+            document.querySelectorAll(".filter-btn").forEach(item => {
+                item.classList.remove("active");
+            });
+
+            button.classList.add("active");
+            state.filter = button.dataset.filter;
+
+            applyFilters();
+        });
+    });
+
+    elements.search.addEventListener("input", applyFilters);
+    elements.form.addEventListener("submit", sendReply);
+    elements.refresh.addEventListener("click", loadConversations);
+
+    $("mobileMenu").addEventListener("click", () => {
+        $("sidebar").classList.toggle("open");
+    });
+
+    document.addEventListener("click", event => {
+        const sidebar = $("sidebar");
+        const menu = $("mobileMenu");
+
+        if (
+            window.innerWidth <= 650 &&
+            sidebar.classList.contains("open") &&
+            !sidebar.contains(event.target) &&
+            !menu.contains(event.target)
+        ) {
+            sidebar.classList.remove("open");
+        }
+    });
+
+    loadConversations();
+})();
+</script>
+
 </body>
 </html>

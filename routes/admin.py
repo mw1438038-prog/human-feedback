@@ -1100,6 +1100,215 @@ def restore_website(website_id):
 
 
 # --------------------------------------------------
+# Website suspension history
+# --------------------------------------------------
+
+@admin_bp.get("/website-suspensions")
+@login_required
+def website_suspensions_list():
+    access_error = admin_required()
+    if access_error:
+        return access_error
+
+    now = utc_now()
+
+    # Automatically mark expired suspensions as inactive.
+    expired_active = WebsiteSuspension.query.filter(
+        WebsiteSuspension.is_active.is_(True),
+        WebsiteSuspension.expires_at <= now
+    ).all()
+
+    if expired_active:
+        for suspension in expired_active:
+            suspension.is_active = False
+            suspension.restored_at = suspension.expires_at
+            suspension.restored_by = None
+
+        db.session.commit()
+
+    # Pagination
+    page = request.args.get("page", 1, type=int)
+    per_page = min(
+        request.args.get("per_page", 20, type=int),
+        100
+    )
+
+    if page < 1 or per_page < 1:
+        return error_response("Invalid pagination values.")
+
+    # Status filter
+    status = request.args.get("status", "all").strip().lower()
+
+    allowed_statuses = {
+        "all", "active", "expired", "restored"
+    }
+
+    if status not in allowed_statuses:
+        return error_response("Invalid suspension status.")
+
+    # Base query with website owner.
+    query = (
+        WebsiteSuspension.query
+        .join(
+            Website,
+            WebsiteSuspension.website_id == Website.id
+        )
+        .join(
+            User,
+            Website.owner_id == User.id
+        )
+    )
+
+    # Search
+    search = request.args.get("search", "").strip()
+
+    if len(search) > 200:
+        return error_response("Search must not exceed 200 characters.")
+
+    if search:
+        search_term = f"%{search}%"
+
+        query = query.filter(
+            or_(
+                Website.name.ilike(search_term),
+                Website.url.ilike(search_term),
+                User.name.ilike(search_term),
+                User.email.ilike(search_term),
+                WebsiteSuspension.reason.ilike(search_term)
+            )
+        )
+
+    # Apply status filter
+    if status == "active":
+        query = query.filter(
+            WebsiteSuspension.is_active.is_(True)
+        )
+
+    elif status == "expired":
+        query = query.filter(
+            WebsiteSuspension.is_active.is_(False),
+            WebsiteSuspension.restored_by.is_(None)
+        )
+
+    elif status == "restored":
+        query = query.filter(
+            WebsiteSuspension.is_active.is_(False),
+            WebsiteSuspension.restored_by.isnot(None)
+        )
+
+    # Statistics
+    total_count = WebsiteSuspension.query.count()
+
+    active_count = WebsiteSuspension.query.filter(
+        WebsiteSuspension.is_active.is_(True)
+    ).count()
+
+    expired_count = WebsiteSuspension.query.filter(
+        WebsiteSuspension.is_active.is_(False),
+        WebsiteSuspension.restored_by.is_(None)
+    ).count()
+
+    restored_count = WebsiteSuspension.query.filter(
+        WebsiteSuspension.is_active.is_(False),
+        WebsiteSuspension.restored_by.isnot(None)
+    ).count()
+
+    # Paginated records
+    pagination = query.order_by(
+        WebsiteSuspension.started_at.desc()
+    ).paginate(
+        page=page,
+        per_page=per_page,
+        error_out=False
+    )
+
+    suspensions = []
+
+    for item in pagination.items:
+        website = item.website
+        owner = website.owner if website else None
+
+        if item.is_active:
+            item_status = "active"
+        elif item.restored_by is None:
+            item_status = "expired"
+        else:
+            item_status = "restored"
+
+        suspensions.append({
+            "id": item.id,
+
+            "website": {
+                "id": website.id if website else None,
+                "name": website.name if website else None,
+                "url": website.url if website else None,
+                "status": website.status if website else None
+            },
+
+            "owner": {
+                "id": owner.id if owner else None,
+                "name": owner.name if owner else None,
+                "email": owner.email if owner else None
+            },
+
+            "admin": (
+                {
+                    "id": item.admin.id,
+                    "name": item.admin.name,
+                    "email": item.admin.email
+                }
+                if item.admin else None
+            ),
+
+            "restorer": (
+                {
+                    "id": item.restorer.id,
+                    "name": item.restorer.name,
+                    "email": item.restorer.email
+                }
+                if item.restorer else None
+            ),
+
+            "reason": item.reason,
+            "duration_days": item.duration_days,
+
+            "started_at": (
+                item.started_at.isoformat()
+                if item.started_at else None
+            ),
+
+            "expires_at": (
+                item.expires_at.isoformat()
+                if item.expires_at else None
+            ),
+
+            "restored_at": (
+                item.restored_at.isoformat()
+                if item.restored_at else None
+            ),
+
+            "status": item_status
+        })
+
+    return jsonify({
+        "success": True,
+
+        "statistics": {
+            "total": total_count,
+            "active": active_count,
+            "expired": expired_count,
+            "restored": restored_count
+        },
+
+        "page": pagination.page,
+        "per_page": pagination.per_page,
+        "total": pagination.total,
+        "pages": pagination.pages,
+
+        "suspensions": suspensions
+    })
+
+# --------------------------------------------------
 # Feedback management
 # --------------------------------------------------
 
@@ -1110,32 +1319,101 @@ def feedback_list():
     if access_error:
         return access_error
 
-    status = request.args.get("status")
-    query = Feedback.query
+    page = request.args.get("page", 1, type=int)
+    per_page = min(
+        request.args.get("per_page", 20, type=int),
+        100
+    )
 
-    if status:
-        allowed_statuses = {
-            "pending", "approved", "rejected", "removed"
-        }
+    if page < 1 or per_page < 1:
+        return error_response("Invalid pagination values.")
 
-        if status not in allowed_statuses:
-            return error_response("Invalid feedback status.")
+    status = request.args.get("status", "all").strip().lower()
 
-        query = query.filter_by(status=status)
+    allowed_statuses = {
+        "all", "pending", "approved", "rejected", "removed"
+    }
 
-    feedback_items = query.order_by(
+    if status not in allowed_statuses:
+        return error_response("Invalid feedback status.")
+
+    search = request.args.get("search", "").strip()
+
+    if len(search) > 200:
+        return error_response(
+            "Search must not exceed 200 characters."
+        )
+
+    # Global statistics
+    statistics = {
+        "total": Feedback.query.count(),
+        "pending": Feedback.query.filter_by(
+            status="pending"
+        ).count(),
+        "approved": Feedback.query.filter_by(
+            status="approved"
+        ).count(),
+        "rejected": Feedback.query.filter_by(
+            status="rejected"
+        ).count(),
+        "removed": Feedback.query.filter_by(
+            status="removed"
+        ).count()
+    }
+
+    # Base query with website and feedback author
+    query = (
+        Feedback.query
+        .join(
+            Website,
+            Feedback.website_id == Website.id
+        )
+        .join(
+            User,
+            Feedback.user_id == User.id
+        )
+    )
+
+    # Status filter
+    if status != "all":
+        query = query.filter(
+            Feedback.status == status
+        )
+
+    # Search feedback, website and user information
+    if search:
+        search_term = f"%{search}%"
+
+        query = query.filter(
+            or_(
+                Feedback.comment.ilike(search_term),
+                Website.name.ilike(search_term),
+                Website.url.ilike(search_term),
+                User.name.ilike(search_term),
+                User.email.ilike(search_term)
+            )
+        )
+
+    pagination = query.order_by(
         Feedback.created_at.desc()
-    ).limit(200).all()
+    ).paginate(
+        page=page,
+        per_page=per_page,
+        error_out=False
+    )
 
     return jsonify({
         "success": True,
-        "total": len(feedback_items),
+        "statistics": statistics,
+        "page": pagination.page,
+        "per_page": pagination.per_page,
+        "total": pagination.total,
+        "pages": pagination.pages,
         "feedback": [
             serialize_feedback(item)
-            for item in feedback_items
+            for item in pagination.items
         ]
     })
-
 
 @admin_bp.put("/feedback/<int:feedback_id>/review")
 @login_required
@@ -1315,32 +1593,87 @@ def reports_list():
     if access_error:
         return access_error
 
-    status = request.args.get("status")
-    query = Report.query
+    page = request.args.get("page", 1, type=int)
+    per_page = min(
+        request.args.get("per_page", 20, type=int),
+        100
+    )
 
-    if status:
-        allowed_statuses = {
-            "submitted", "under_review", "resolved", "rejected"
-        }
+    if page < 1 or per_page < 1:
+        return error_response("Invalid pagination values.")
 
-        if status not in allowed_statuses:
-            return error_response("Invalid report status.")
+    status = request.args.get("status", "all").strip().lower()
 
-        query = query.filter_by(status=status)
+    allowed_statuses = {
+        "all", "submitted", "under_review", "resolved", "rejected"
+    }
 
-    reports = query.order_by(
+    if status not in allowed_statuses:
+        return error_response("Invalid report status.")
+
+    search = request.args.get("search", "").strip()
+
+    if len(search) > 200:
+        return error_response(
+            "Search must not exceed 200 characters."
+        )
+
+    statistics = {
+        "total": Report.query.count(),
+        "submitted": Report.query.filter_by(
+            status="submitted"
+        ).count(),
+        "under_review": Report.query.filter_by(
+            status="under_review"
+        ).count(),
+        "resolved": Report.query.filter_by(
+            status="resolved"
+        ).count(),
+        "rejected": Report.query.filter_by(
+            status="rejected"
+        ).count()
+    }
+
+    query = (
+        Report.query
+        .join(User, Report.reporter_id == User.id)
+    )
+
+    if status != "all":
+        query = query.filter(Report.status == status)
+
+    if search:
+        search_term = f"%{search}%"
+
+        query = query.filter(
+            or_(
+                User.name.ilike(search_term),
+                User.email.ilike(search_term),
+                Report.reason.ilike(search_term),
+                Report.target_type.ilike(search_term)
+            )
+        )
+
+    pagination = query.order_by(
         Report.created_at.desc()
-    ).limit(200).all()
+    ).paginate(
+        page=page,
+        per_page=per_page,
+        error_out=False
+    )
 
     return jsonify({
         "success": True,
-        "total": len(reports),
+        "statistics": statistics,
+        "page": pagination.page,
+        "per_page": pagination.per_page,
+        "total": pagination.total,
+        "pages": pagination.pages,
         "reports": [
-            serialize_report(report)
-            for report in reports
+            serialize_report(item)
+            for item in pagination.items
         ]
     })
-
 
 @admin_bp.get("/reports/<int:report_id>")
 @login_required

@@ -105,8 +105,6 @@ def get_access_data(user, trial_active, subscription):
         status = "inactive"
     elif user.is_suspended:
         status = "suspended"
-    elif not user.is_email_verified:
-        status = "email_not_verified"
     elif not trial_active and not subscription:
         status = "plan_expired"
     else:

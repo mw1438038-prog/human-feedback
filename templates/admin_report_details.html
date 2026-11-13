@@ -28,6 +28,7 @@ button,input,select,textarea{font:inherit}
 .topbar{height:75px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
 .topbar h2{color:var(--navy);font-size:19px}
 .top-right a{color:var(--orange-dark);font-size:11px;font-weight:700}
+.mobile-menu{display:none;border:0;background:none;color:var(--navy);font-size:23px;cursor:pointer}
 .content{max-width:1200px;margin:auto;padding:30px}
 .breadcrumb{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:11px;margin-bottom:20px;flex-wrap:wrap}
 .breadcrumb a{color:var(--orange-dark);font-weight:700}
@@ -39,7 +40,6 @@ button,input,select,textarea{font:inherit}
 .badge.progress{background:#EFF6FF;color:#1D4ED8}
 .badge.resolved{background:#F0FDF4;color:#166534}
 .badge.closed{background:#F1F5F9;color:#475569}
-.badge.high{background:#FEF2F2;color:#B91C1C}
 .notice{background:var(--soft);border:1px solid #FED7AA;border-left:4px solid var(--orange);border-radius:9px;padding:13px 16px;margin-bottom:20px}
 .notice strong{display:block;color:var(--navy);font-size:12px;margin-bottom:5px}
 .notice p{color:var(--muted);font-size:11px;line-height:1.6}
@@ -53,8 +53,7 @@ button,input,select,textarea{font:inherit}
 .field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:8px;color:var(--text);background:white;font-size:11px;outline:none}
 .field textarea{min-height:115px;resize:vertical;line-height:1.6}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--orange)}
-.field input[readonly]{background:#F8FAFC}
-.report-description{background:#F8FAFC;border:1px solid var(--border);border-radius:9px;padding:16px;font-size:12px;line-height:1.8;color:var(--text)}
+.report-description{background:#F8FAFC;border:1px solid var(--border);border-radius:9px;padding:16px;font-size:12px;line-height:1.8;color:var(--text);overflow-wrap:anywhere;white-space:pre-wrap}
 .info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
 .info-item span{display:block;font-size:9px;color:var(--muted);margin-bottom:5px}
 .info-item strong{display:block;font-size:11px;color:var(--navy);overflow-wrap:anywhere}
@@ -62,20 +61,24 @@ button,input,select,textarea{font:inherit}
 .detail-list li{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);font-size:10px}
 .detail-list li:last-child{border-bottom:0}
 .detail-list span{color:var(--muted)}
-.detail-list strong{color:var(--navy);text-align:right}
+.detail-list strong{color:var(--navy);text-align:right;overflow-wrap:anywhere}
 .timeline{display:flex;flex-direction:column;gap:16px}
 .timeline-item{display:flex;gap:11px}
 .timeline-dot{width:9px;height:9px;border-radius:50%;background:var(--orange);margin-top:4px;flex-shrink:0}
 .timeline-item strong{display:block;color:var(--navy);font-size:10px}
-.timeline-item p{font-size:10px;color:var(--muted);line-height:1.5;margin-top:4px}
+.timeline-item p{font-size:10px;color:var(--muted);line-height:1.5;margin-top:4px;overflow-wrap:anywhere}
 .btn{display:inline-flex;justify-content:center;align-items:center;border:1px solid var(--border);background:white;color:var(--text);border-radius:8px;padding:10px 14px;font-size:10px;font-weight:700;cursor:pointer}
 .btn.primary{background:var(--orange);color:white;border-color:var(--orange)}
 .btn.danger{background:#FEF2F2;color:#B91C1C;border-color:#FECACA}
-.btn:hover{filter:brightness(.97)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
 .message{display:none;padding:12px 14px;border-radius:8px;background:#FFF7ED;color:#9A3412;font-size:11px;line-height:1.6;margin-bottom:16px}
-.mobile-menu{display:none;border:0;background:none;color:var(--navy);font-size:23px;cursor:pointer}
+.message.success{background:#F0FDF4;color:#166534}
+.message.error{background:#FEF2F2;color:#B91C1C}
+.loading,.empty-state{background:white;border:1px solid var(--border);border-radius:12px;padding:35px;text-align:center;color:var(--muted);font-size:12px}
+.evidence-link{display:inline-block;color:var(--orange-dark);font-size:11px;font-weight:700;margin-top:12px}
 .footer-note{text-align:center;padding:20px 5px 5px;color:var(--muted);font-size:10px}
+.hidden{display:none!important}
 @media(max-width:1000px){.layout{grid-template-columns:1fr}.content{padding:24px 20px}}
 @media(max-width:720px){.sidebar{position:fixed;z-index:20;top:0;bottom:0;left:-260px;width:250px;transition:left .25s}.sidebar.show{left:0}.mobile-menu{display:block}.topbar{height:65px;padding:0 15px}.topbar h2{font-size:16px}.content{padding:20px 14px}.heading{flex-direction:column}.heading h1{font-size:22px}.panel{padding:16px 13px}}
 @media(max-width:450px){.info-grid{grid-template-columns:1fr}.actions .btn{width:100%}}
@@ -108,11 +111,452 @@ button,input,select,textarea{font:inherit}
 </aside>
 
 <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
+<header class="topbar">
+    <div style="display:flex;align-items:center;gap:14px">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+        <h2>Report Details</h2>
+    </div>
+    <div class="top-right"><a href="/admin/reports">← Back to Reports</a></div>
+</header>
+
+<div class="content">
+    <div class="breadcrumb">
+        <a href="/admin">Dashboard</a><span>/</span>
+        <a href="/admin/reports">User Reports</a><span>/</span>
+        <span id="breadcrumbId">Report Details</span>
+    </div>
+
+    <div id="pageMessage" class="message"></div>
+
+    <div id="loading" class="loading">Loading report details...</div>
+
+    <div id="notFound" class="empty-state hidden">
+        <h2 style="color:var(--navy);margin-bottom:8px">Report not found</h2>
+        <p id="notFoundText">The report could not be loaded.</p>
+        <div class="actions" style="justify-content:center">
+            <a class="btn primary" href="/admin/reports">Back to Reports</a>
+        </div>
+    </div>
+
+    <div id="reportContent" class="hidden">
+        <div class="heading">
+            <div>
+                <h1 id="reportTitle">Report Details</h1>
+                <p id="reportSubtitle">Review the submitted report and take an appropriate action.</p>
+            </div>
+            <span id="statusBadge" class="badge open">Open</span>
+        </div>
+
+        <div class="notice">
+            <strong>Admin moderation guidelines</strong>
+            <p>Review the report carefully before taking action. Every review action requires an explanation. Only use actions that match the report's target type.</p>
+        </div>
+
+        <div class="layout">
+            <div>
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Report Information</h2>
+                        <p>Original information submitted by the reporting user.</p>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item"><span>Report ID</span><strong id="reportId">—</strong></div>
+                        <div class="info-item"><span>Category</span><strong id="category">—</strong></div>
+                        <div class="info-item"><span>Target Type</span><strong id="targetType">—</strong></div>
+                        <div class="info-item"><span>Target ID</span><strong id="targetId">—</strong></div>
+                        <div class="info-item"><span>Reporter</span><strong id="reporter">—</strong></div>
+                        <div class="info-item"><span>Submitted</span><strong id="createdAt">—</strong></div>
+                    </div>
+                    <div style="margin-top:20px">
+                        <div class="field">
+                            <label>Report Reason</label>
+                            <div class="report-description" id="reportReason">—</div>
+                        </div>
+                        <div id="evidenceContainer" class="hidden">
+                            <span style="font-size:10px;color:var(--muted)">Evidence attachment</span><br>
+                            <a id="evidenceLink" class="evidence-link" href="#" target="_blank" rel="noopener">View / Download Evidence ↗</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Admin Review</h2>
+                        <p>Select an action and provide a clear reason for your decision.</p>
+                    </div>
+
+                    <div id="reviewMessage" class="message"></div>
+
+                    <div class="field">
+                        <label for="action">Moderation Action</label>
+                        <select id="action">
+                            <option value="under_review">Mark Under Review</option>
+                            <option value="keep_pending">Keep Pending</option>
+                            <option value="resolve">Resolve Report</option>
+                            <option value="dismiss">Dismiss Report</option>
+                            <option value="reject">Reject Report</option>
+                            <option value="warn">Issue Warning</option>
+                        </select>
+                    </div>
+
+                    <div class="field hidden" id="durationField">
+                        <label for="duration">Website Suspension Duration</label>
+                        <select id="duration">
+                            <option value="7">7 Days</option>
+                            <option value="15">15 Days</option>
+                            <option value="30">30 Days</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="adminReason">Admin Review Reason *</label>
+                        <textarea id="adminReason" maxlength="2000" placeholder="Explain why you are taking this action..." required></textarea>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn primary" id="submitReview" type="button">Submit Review</button>
+                        <a class="btn" href="/admin/reports">Cancel</a>
+                    </div>
+                </section>
+            </div>
+
+            <div>
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Report Status</h2>
+                        <p>Current moderation information.</p>
+                    </div>
+                    <ul class="detail-list">
+                        <li><span>Current Status</span><strong id="sideStatus">—</strong></li>
+                        <li><span>Admin Action</span><strong id="adminAction">—</strong></li>
+                        <li><span>Reviewed At</span><strong id="reviewedAt">—</strong></li>
+                        <li><span>Evidence</span><strong id="hasEvidence">—</strong></li>
+                    </ul>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Review History</h2>
+                        <p>Available report activity information.</p>
+                    </div>
+                    <div class="timeline" id="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div><strong>Report submitted</strong><p id="timelineCreated">—</p></div>
+                        </div>
+                        <div class="timeline-item hidden" id="reviewTimeline">
+                            <div class="timeline-dot"></div>
+                            <div><strong>Admin review</strong><p id="timelineReview">—</p></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Admin Decision</h2>
+                        <p>Previously recorded review reason.</p>
+                    </div>
+                    <div class="report-description" id="previousReason">No admin reason recorded yet.</div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">HUMAN FEEDBACK Admin Panel · Report Management</div>
+</div>
 </main>
 </div>
+
+<script>
+(() => {
+    "use strict";
+
+    const $ = (id) => document.getElementById(id);
+
+    const pathParts = window.location.pathname.split("/").filter(Boolean);
+    const reportId = Number(pathParts[pathParts.length - 1]);
+
+    let currentReport = null;
+
+    function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+            "&": "&amp;", "<": "&lt;", ">": "&gt;",
+            '"': "&quot;", "'": "&#39;"
+        })[char]);
+    }
+
+    function showMessage(element, message, type = "error") {
+        element.textContent = message;
+        element.className = "message " + type;
+        element.style.display = "block";
+    }
+
+    function hideMessage(element) {
+        element.style.display = "none";
+        element.textContent = "";
+    }
+
+    async function apiRequest(url, options = {}) {
+        const response = await fetch(url, {
+            credentials: "same-origin",
+            ...options,
+            headers: {
+                ...(options.headers || {}),
+                ...(options.body ? {"Content-Type": "application/json"} : {})
+            }
+        });
+
+        let data;
+        try {
+            data = await response.json();
+        } catch {
+            throw new Error("Server returned an invalid response.");
+        }
+
+        if (!response.ok || data.success === false) {
+            throw new Error(data.message || data.error || `Request failed (${response.status}).`);
+        }
+
+        return data;
+    }
+
+    function formatDate(value) {
+        if (!value) return "—";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return String(value);
+        return date.toLocaleString();
+    }
+
+    function readable(value) {
+        if (!value) return "—";
+        return String(value).replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function statusClass(status) {
+        if (status === "submitted") return "open";
+        if (status === "under_review") return "progress";
+        if (status === "resolved") return "resolved";
+        if (status === "rejected") return "closed";
+        return "closed";
+    }
+
+    function setText(id, value) {
+        $(id).textContent = value ?? "—";
+    }
+
+    function configureActions(report) {
+        const select = $("action");
+        const targetType = String(report.target_type || "").toLowerCase();
+
+        const options = [
+            ["under_review", "Mark Under Review"],
+            ["keep_pending", "Keep Pending"],
+            ["resolve", "Resolve Report"],
+            ["dismiss", "Dismiss Report"],
+            ["reject", "Reject Report"],
+            ["warn", "Issue Warning"]
+        ];
+
+        if (targetType === "feedback") {
+            options.push(["remove_feedback", "Remove Reported Feedback"]);
+        }
+
+        if (targetType === "website") {
+            options.push(["suspend_website", "Suspend Reported Website"]);
+        }
+
+        select.innerHTML = "";
+        options.forEach(([value, label]) => {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = label;
+            select.appendChild(option);
+        });
+
+        updateDurationVisibility();
+    }
+
+    function updateDurationVisibility() {
+        $("durationField").classList.toggle(
+            "hidden",
+            $("action").value !== "suspend_website"
+        );
+    }
+
+    function renderReport(report) {
+        currentReport = report;
+
+        const status = String(report.status || "").toLowerCase();
+        const badge = $("statusBadge");
+
+        badge.textContent = readable(status);
+        badge.className = "badge " + statusClass(status);
+
+        setText("reportTitle", `Report #${report.id}`);
+        setText("reportSubtitle", `${readable(report.target_type)} report · ${readable(report.category)}`);
+        setText("breadcrumbId", `Report #${report.id}`);
+
+        setText("reportId", report.id);
+        setText("category", readable(report.category));
+        setText("targetType", readable(report.target_type));
+        setText("targetId", report.target_id);
+        setText("reporter", report.reporter_name || `User #${report.reporter_id || "—"}`);
+        setText("createdAt", formatDate(report.created_at));
+        setText("reportReason", report.reason || "No report reason provided.");
+
+        setText("sideStatus", readable(status));
+        setText("adminAction", readable(report.admin_action));
+        setText("reviewedAt", formatDate(report.reviewed_at));
+        setText("hasEvidence", report.has_evidence ? "Available" : "Not attached");
+        setText("timelineCreated", formatDate(report.created_at));
+
+        if (report.reviewed_at) {
+            $("reviewTimeline").classList.remove("hidden");
+            setText(
+                "timelineReview",
+                `${formatDate(report.reviewed_at)} · ${readable(report.admin_action)}`
+            );
+        } else {
+            $("reviewTimeline").classList.add("hidden");
+        }
+
+        setText("previousReason", report.admin_reason || "No admin reason recorded yet.");
+
+        if (report.has_evidence) {
+            $("evidenceContainer").classList.remove("hidden");
+            $("evidenceLink").href = `/api/admin/reports/${encodeURIComponent(report.id)}/evidence`;
+        } else {
+            $("evidenceContainer").classList.add("hidden");
+        }
+
+        configureActions(report);
+
+        const isFinal = ["resolved", "rejected"].includes(status);
+        $("submitReview").disabled = isFinal;
+        $("action").disabled = isFinal;
+        $("adminReason").disabled = isFinal;
+        $("duration").disabled = isFinal;
+
+        if (isFinal) {
+            showMessage(
+                $("reviewMessage"),
+                "This report has already been closed. No further review action is available.",
+                "success"
+            );
+        }
+
+        $("loading").classList.add("hidden");
+        $("reportContent").classList.remove("hidden");
+    }
+
+    async function loadReport() {
+        if (!Number.isInteger(reportId) || reportId <= 0) {
+            $("loading").classList.add("hidden");
+            $("notFound").classList.remove("hidden");
+            setText("notFoundText", "The report ID in the page URL is invalid.");
+            return;
+        }
+
+        try {
+            const data = await apiRequest(`/api/admin/reports/${reportId}`);
+
+            if (!data.report) {
+                throw new Error("Report details were not included in the server response.");
+            }
+
+            renderReport(data.report);
+        } catch (error) {
+            $("loading").classList.add("hidden");
+            $("notFound").classList.remove("hidden");
+            setText("notFoundText", error.message);
+        }
+    }
+
+    async function submitReview() {
+        if (!currentReport) return;
+
+        const action = $("action").value;
+        const reason = $("adminReason").value.trim();
+
+        hideMessage($("reviewMessage"));
+
+        if (!reason) {
+            showMessage($("reviewMessage"), "Please enter an admin review reason.");
+            $("adminReason").focus();
+            return;
+        }
+
+        if (reason.length > 2000) {
+            showMessage($("reviewMessage"), "Reason cannot exceed 2,000 characters.");
+            return;
+        }
+
+        const payload = { action, reason };
+
+        if (action === "suspend_website") {
+            if (currentReport.target_type !== "website") {
+                showMessage($("reviewMessage"), "Website suspension is only available for website reports.");
+                return;
+            }
+            payload.duration_days = Number($("duration").value);
+        }
+
+        if (action === "remove_feedback" && currentReport.target_type !== "feedback") {
+            showMessage($("reviewMessage"), "Feedback removal is only available for feedback reports.");
+            return;
+        }
+
+        if (!window.confirm("Are you sure you want to submit this moderation action?")) {
+            return;
+        }
+
+        const button = $("submitReview");
+        button.disabled = true;
+        button.textContent = "Submitting...";
+
+        try {
+            const data = await apiRequest(
+                `/api/admin/reports/${currentReport.id}/review`,
+                {
+                    method: "PUT",
+                    body: JSON.stringify(payload)
+                }
+            );
+
+            showMessage(
+                $("reviewMessage"),
+                data.message || "Review action submitted successfully.",
+                "success"
+            );
+
+            if (data.report) {
+                renderReport(data.report);
+            } else {
+                await loadReport();
+            }
+
+            $("adminReason").value = "";
+        } catch (error) {
+            showMessage($("reviewMessage"), error.message);
+        } finally {
+            button.disabled = false;
+            button.textContent = "Submit Review";
+
+            if (currentReport && ["resolved", "rejected"].includes(currentReport.status)) {
+                button.disabled = true;
+            }
+        }
+    }
+
+    $("mobileMenu").addEventListener("click", () => {
+        $("sidebar").classList.toggle("show");
+    });
+
+    $("action").addEventListener("change", updateDurationVisibility);
+    $("submitReview").addEventListener("click", submitReview);
+
+    loadReport();
+})();
+</script>
 </body>
 </html>

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notifications | HUMAN FEEDBACK</title>
+
     <style>
         :root {
             --navy: #172554;
@@ -31,7 +32,7 @@
         }
 
         a { text-decoration: none; color: inherit; }
-        button, select { font: inherit; }
+        button { font: inherit; }
 
         .app { display: flex; min-height: 100vh; }
 
@@ -77,7 +78,9 @@
             color: white;
         }
 
-        .nav a.active { border-left: 3px solid var(--orange); }
+        .nav a.active {
+            border-left: 3px solid var(--orange);
+        }
 
         .sidebar-bottom {
             margin-top: auto;
@@ -85,7 +88,11 @@
             padding: 20px 10px 0;
         }
 
-        .user { display: flex; align-items: center; gap: 10px; }
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
         .avatar {
             width: 38px;
@@ -184,6 +191,11 @@
 
         .btn.primary:hover { background: var(--orange-dark); }
 
+        .btn:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -238,38 +250,16 @@
             font-weight: 700;
         }
 
-        .toolbar select {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 9px 12px;
-            background: white;
-            color: var(--text);
-            font-size: 12px;
-            outline: none;
-        }
-
-        .section-label {
-            padding: 15px 20px 10px;
-            color: var(--muted);
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            background: #FBFCFE;
-        }
-
         .notification {
             display: flex;
             align-items: flex-start;
             gap: 14px;
             padding: 18px 20px;
             border-bottom: 1px solid var(--border);
-            transition: background .2s;
         }
 
         .notification:last-child { border-bottom: 0; }
         .notification.unread { background: #FFFCF8; }
-
-        .notification:hover { background: #F8FAFC; }
 
         .notification-icon {
             width: 42px;
@@ -324,6 +314,7 @@
             color: var(--muted);
             font-size: 12px;
             line-height: 1.7;
+            overflow-wrap: anywhere;
         }
 
         .notification-meta {
@@ -335,12 +326,6 @@
 
         .notification-meta small { color: #94A3B8; font-size: 10px; }
 
-        .notification-meta a {
-            color: var(--orange-dark);
-            font-size: 11px;
-            font-weight: 700;
-        }
-
         .notification-actions {
             display: flex;
             align-items: center;
@@ -351,17 +336,17 @@
         .icon-btn {
             border: 0;
             background: transparent;
-            color: #94A3B8;
+            color: var(--orange-dark);
             padding: 7px;
             cursor: pointer;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 11px;
+            font-weight: 700;
         }
 
-        .icon-btn:hover { color: var(--orange-dark); background: var(--soft); }
+        .icon-btn:hover { background: var(--soft); }
 
         .empty-state {
-            display: none;
             padding: 55px 20px;
             text-align: center;
         }
@@ -371,26 +356,50 @@
             margin-bottom: 13px;
         }
 
-        .empty-state h3 { color: var(--navy); font-size: 17px; margin-bottom: 7px; }
-        .empty-state p { color: var(--muted); font-size: 12px; }
-
-        .info-banner {
-            margin-top: 20px;
-            background: var(--soft);
-            border: 1px solid #FED7AA;
-            border-left: 4px solid var(--orange);
-            border-radius: 9px;
-            padding: 16px 18px;
+        .empty-state h3 {
+            color: var(--navy);
+            font-size: 17px;
+            margin-bottom: 7px;
         }
 
-        .info-banner h3 { color: var(--navy); font-size: 13px; margin-bottom: 6px; }
-        .info-banner p { color: var(--muted); font-size: 12px; line-height: 1.7; }
+        .empty-state p { color: var(--muted); font-size: 12px; }
 
-        .-note {
-            text-align: center;
-            padding: 20px 5px 5px;
+        .message {
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .message.error {
+            display: block;
+            background: #FEF2F2;
+            color: var(--red);
+            border: 1px solid #FECACA;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .pagination span {
             color: var(--muted);
-            font-size: 11px;
+            font-size: 12px;
+        }
+
+        .pagination-actions { display: flex; gap: 8px; }
+
+        .loading {
+            padding: 45px 20px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
         }
 
         .mobile-menu {
@@ -443,9 +452,11 @@
             .stats { grid-template-columns: 1fr; }
             .heading-actions { width: 100%; }
             .heading-actions .btn { flex: 1; }
+            .pagination { align-items: flex-start; flex-direction: column; }
         }
     </style>
 </head>
+
 <body>
 <div class="app">
 
@@ -454,41 +465,452 @@
 
         <nav class="nav">
             <div class="nav-label">MAIN MENU</div>
-            <a href="/dashboard">▦ Dashboard</a>
-            <a href="/my-websites">▣ My Websites</a>
-            <a href="/feedback">✉ Feedback</a>
-            <a href="/replies">▤ Replies</a>
+            <a href="{{ url_for('dashboard_page') }}">▦ Dashboard</a>
+            <a href="{{ url_for('my_websites_page') }}">▣ My Websites</a>
+            <a href="{{ url_for('feedback_page') }}">✉ Feedback</a>
+            <a href="{{ url_for('replies_page') }}">▤ Replies</a>
 
             <div class="nav-label">ACCOUNT</div>
-            <a href="/credits">◈ My Credits</a>
-            <a href="/credit-history">◷ Credit History</a>
-            <a href="/analytics">▥ Analytics</a>
-            <a href="/notifications" class="active">♢ Notifications</a>
-            <a href="/reports">⚑ Reports</a>
+            <a href="{{ url_for('credits_page') }}">◈ My Credits</a>
+            <a href="{{ url_for('credit_history_page') }}">◷ Credit History</a>
+            <a href="{{ url_for('analytics_page') }}">▥ Analytics</a>
+            <a href="{{ url_for('notifications_page') }}" class="active">
+                ♢ Notifications
+            </a>
+            <a href="{{ url_for('reports_page') }}">⚑ Reports</a>
 
             <div class="nav-label">SETTINGS</div>
-            <a href="/profile">♙ My Profile</a>
-            <a href="/settings">⚙ Settings</a>
-            <a href="/subscription">◇ Subscription</a>
+            <a href="{{ url_for('profile_page') }}">♙ My Profile</a>
+            <a href="{{ url_for('settings_page') }}">⚙ Settings</a>
+            <a href="{{ url_for('pricing_page') }}">◇ Pricing</a>
         </nav>
 
         <div class="sidebar-bottom">
             <div class="user">
                 <div class="avatar">HF</div>
                 <div>
-                    <strong>Account</strong>
-                    <small>Pro Member</small>
+                    <strong>{{ current_user.name }}</strong>
+                    <small>{{ current_user.email }}</small>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
-</main>
+
+        <header class="topbar">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="mobile-menu" id="mobileMenu" type="button">☰</button>
+                <h2>Notifications</h2>
+            </div>
+
+            <div class="top-right">
+                <a href="{{ url_for('profile_page') }}">My Account</a>
+                <a href="{{ url_for('pricing_page') }}" class="upgrade">View Plans</a>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <div class="page-heading">
+                <div>
+                    <h1>Notifications</h1>
+                    <p>Stay updated with your HUMAN FEEDBACK account activity.</p>
+                </div>
+
+                <div class="heading-actions">
+                    <button class="btn primary" id="markAllBtn" type="button">
+                        Mark All as Read
+                    </button>
+                    <button class="btn" id="refreshBtn" type="button">
+                        ↻ Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <section class="stats">
+                <div class="stat-card">
+                    <span>Total Notifications</span>
+                    <h3 id="totalCount">0</h3>
+                </div>
+
+                <div class="stat-card">
+                    <span>Unread Notifications</span>
+                    <h3 id="unreadCount">0</h3>
+                </div>
+
+                <div class="stat-card">
+                    <span>Read Notifications</span>
+                    <h3 id="readCount">0</h3>
+                </div>
+            </section>
+
+            <section class="notification-panel">
+
+                <div class="toolbar">
+                    <div class="tabs">
+                        <button class="tab active" data-filter="all" type="button">
+                            All
+                        </button>
+                        <button class="tab" data-filter="unread" type="button">
+                            Unread
+                        </button>
+                        <button class="tab" data-filter="read" type="button">
+                            Read
+                        </button>
+                    </div>
+                </div>
+
+                <div id="notificationList">
+                    <div class="loading">Loading notifications...</div>
+                </div>
+
+                <div class="pagination" id="pagination" style="display:none;">
+                    <span id="pageInfo">Page 1</span>
+
+                    <div class="pagination-actions">
+                        <button class="btn" id="prevBtn" type="button">Previous</button>
+                        <button class="btn" id="nextBtn" type="button">Next</button>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
 </div>
+
+<script>
+    const API_URL = "/api/notifications/";
+
+    let currentPage = 1;
+    const perPage = 20;
+
+    let currentFilter = "all";
+    let notifications = [];
+    let totalNotifications = 0;
+    let totalPages = 0;
+    let unreadNotifications = 0;
+
+    const notificationList = document.getElementById("notificationList");
+    const messageBox = document.getElementById("message");
+
+    function showError(message) {
+        messageBox.textContent = message;
+        messageBox.className = "message error";
+    }
+
+    function clearMessage() {
+        messageBox.textContent = "";
+        messageBox.className = "message";
+    }
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        })[char]);
+    }
+
+    function formatDate(value) {
+        if (!value) return "Date unavailable";
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return "Date unavailable";
+        }
+
+        return date.toLocaleString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    }
+
+    function getNotificationStyle(type) {
+        const value = String(type || "").toLowerCase();
+
+        if (value.includes("approved") || value.includes("success")) {
+            return { icon: "✓", color: "green" };
+        }
+
+        if (value.includes("reject") || value.includes("error")) {
+            return { icon: "!", color: "red" };
+        }
+
+        if (value.includes("reply") || value.includes("feedback")) {
+            return { icon: "✉", color: "blue" };
+        }
+
+        return { icon: "♢", color: "" };
+    }
+
+    function updateStats() {
+        document.getElementById("totalCount").textContent =
+            totalNotifications;
+
+        document.getElementById("unreadCount").textContent =
+            unreadNotifications;
+
+        document.getElementById("readCount").textContent =
+            Math.max(0, totalNotifications - unreadNotifications);
+
+        document.getElementById("markAllBtn").disabled =
+            unreadNotifications === 0;
+    }
+
+    function renderNotifications() {
+        let filtered = notifications;
+
+        if (currentFilter === "unread") {
+            filtered = notifications.filter(item => !item.is_read);
+        } else if (currentFilter === "read") {
+            filtered = notifications.filter(item => item.is_read);
+        }
+
+        if (filtered.length === 0) {
+            let heading = "No notifications yet";
+            let description = "Your notifications will appear here when there is new account activity.";
+
+            if (currentFilter === "unread") {
+                heading = "No unread notifications";
+                description = "You are all caught up.";
+            } else if (currentFilter === "read") {
+                heading = "No read notifications";
+                description = "Notifications you have read will appear here.";
+            }
+
+            notificationList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">♢</div>
+                    <h3>${heading}</h3>
+                    <p>${description}</p>
+                </div>
+            `;
+            return;
+        }
+
+        notificationList.innerHTML = filtered.map(item => {
+            const style = getNotificationStyle(item.notification_type);
+
+            return `
+                <article class="notification ${item.is_read ? "" : "unread"}">
+                    <div class="notification-icon ${style.color}">
+                        ${style.icon}
+                    </div>
+
+                    <div class="notification-body">
+                        <div class="notification-title">
+                            <strong>${escapeHTML(item.title)}</strong>
+                            ${!item.is_read
+                                ? '<span class="unread-dot" title="Unread"></span>'
+                                : ''}
+                        </div>
+
+                        <p>${escapeHTML(item.message)}</p>
+
+                        <div class="notification-meta">
+                            <small>${escapeHTML(formatDate(item.created_at))}</small>
+                            <small>${item.is_read ? "Read" : "Unread"}</small>
+                        </div>
+                    </div>
+
+                    <div class="notification-actions">
+                        ${!item.is_read
+                            ? `<button class="icon-btn"
+                                type="button"
+                                data-read-id="${item.id}">
+                                Mark as Read
+                               </button>`
+                            : '<span style="font-size:11px;color:#94A3B8;">✓ Read</span>'}
+                    </div>
+                </article>
+            `;
+        }).join("");
+    }
+
+    function updatePagination() {
+        const pagination = document.getElementById("pagination");
+
+        if (totalPages <= 1) {
+            pagination.style.display = "none";
+            return;
+        }
+
+        pagination.style.display = "flex";
+
+        document.getElementById("pageInfo").textContent =
+            `Page ${currentPage} of ${totalPages}`;
+
+        document.getElementById("prevBtn").disabled =
+            currentPage <= 1;
+
+        document.getElementById("nextBtn").disabled =
+            currentPage >= totalPages;
+    }
+
+    async function loadNotifications() {
+        clearMessage();
+
+        notificationList.innerHTML =
+            '<div class="loading">Loading notifications...</div>';
+
+        try {
+            const response = await fetch(
+                `${API_URL}?page=${currentPage}&per_page=${perPage}`,
+                {
+                    method: "GET",
+                    credentials: "same-origin",
+                    headers: { "Accept": "application/json" }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || "Unable to load notifications.");
+            }
+
+            notifications = data.notifications || [];
+            totalNotifications = Number(data.total || 0);
+            unreadNotifications = Number(data.unread_count || 0);
+            totalPages = Number(data.pages || 0);
+
+            updateStats();
+            renderNotifications();
+            updatePagination();
+
+        } catch (error) {
+            notificationList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">⚠</div>
+                    <h3>Unable to load notifications</h3>
+                    <p>Please refresh the page and try again.</p>
+                </div>
+            `;
+
+            showError(error.message);
+        }
+    }
+
+    async function markAsRead(notificationId) {
+        clearMessage();
+
+        try {
+            const response = await fetch(
+                `${API_URL}${notificationId}/read`,
+                {
+                    method: "PUT",
+                    credentials: "same-origin",
+                    headers: { "Accept": "application/json" }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || "Could not mark notification as read.");
+            }
+
+            await loadNotifications();
+
+        } catch (error) {
+            showError(error.message);
+        }
+    }
+
+    async function markAllAsRead() {
+        if (unreadNotifications === 0) return;
+
+        clearMessage();
+
+        const button = document.getElementById("markAllBtn");
+        button.disabled = true;
+
+        try {
+            const response = await fetch(
+                `${API_URL}read-all`,
+                {
+                    method: "PUT",
+                    credentials: "same-origin",
+                    headers: { "Accept": "application/json" }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || "Could not update notifications.");
+            }
+
+            await loadNotifications();
+
+        } catch (error) {
+            showError(error.message);
+        } finally {
+            button.disabled = unreadNotifications === 0;
+        }
+    }
+
+    document.querySelectorAll(".tab").forEach(button => {
+        button.addEventListener("click", () => {
+            document.querySelectorAll(".tab").forEach(tab => {
+                tab.classList.remove("active");
+            });
+
+            button.classList.add("active");
+            currentFilter = button.dataset.filter;
+
+            renderNotifications();
+        });
+    });
+
+    notificationList.addEventListener("click", event => {
+        const button = event.target.closest("[data-read-id]");
+
+        if (button) {
+            markAsRead(button.dataset.readId);
+        }
+    });
+
+    document.getElementById("markAllBtn").addEventListener(
+        "click",
+        markAllAsRead
+    );
+
+    document.getElementById("refreshBtn").addEventListener(
+        "click",
+        loadNotifications
+    );
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            loadNotifications();
+        }
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            loadNotifications();
+        }
+    });
+
+    document.getElementById("mobileMenu").addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("show");
+    });
+
+    loadNotifications();
+</script>
+
 </body>
 </html>

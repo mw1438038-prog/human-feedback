@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Website Details | HUMAN FEEDBACK Admin</title>
 <style>
-:root{--navy:#172554;--dark:#101B40;--orange:#F97316;--orange-dark:#EA580C;--bg:#F8FAFC;--soft:#FFF7ED;--text:#263247;--muted:#64748B;--border:#E2E8F0;--green:#15803D;--red:#DC2626}
+:root{--navy:#172554;--dark:#101B40;--orange:#F97316;--orange-dark:#EA580C;--bg:#F8FAFC;--text:#263247;--muted:#64748B;--border:#E2E8F0;--green:#15803D;--red:#DC2626}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
 a{text-decoration:none;color:inherit}
@@ -28,31 +28,35 @@ button,input,select,textarea{font:inherit}
 .topbar{height:75px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
 .topbar h2{color:var(--navy);font-size:19px}
 .top-right a{color:var(--orange-dark);font-size:11px;font-weight:700}
+.mobile-menu{display:none;border:0;background:none;color:var(--navy);font-size:23px;cursor:pointer}
 .content{max-width:1350px;margin:auto;padding:30px}
 .breadcrumb{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:11px;margin-bottom:20px}
 .breadcrumb a{color:var(--orange-dark);font-weight:700}
 .heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
 .heading h1{color:var(--navy);font-size:25px;margin-bottom:7px}
 .heading p{color:var(--muted);font-size:12px;line-height:1.6}
-.btn{display:inline-flex;justify-content:center;align-items:center;border:1px solid var(--border);background:white;color:var(--text);border-radius:8px;padding:10px 13px;font-size:10px;font-weight:700;cursor:pointer}
+.btn{display:inline-flex;justify-content:center;align-items:center;border:1px solid var(--border);background:white;color:var(--text);border-radius:8px;padding:10px 13px;font-size:11px;font-weight:700;cursor:pointer}
 .btn.primary{background:var(--orange);color:white;border-color:var(--orange)}
+.btn.success{background:var(--green);color:white;border-color:var(--green)}
 .btn.danger{color:var(--red);border-color:#FECACA}
-.btn:hover{filter:brightness(.97)}
-.notice{background:var(--soft);border:1px solid #FED7AA;border-left:4px solid var(--orange);border-radius:9px;padding:13px 16px;margin-bottom:20px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.notice{background:#FFF7ED;border:1px solid #FED7AA;border-left:4px solid var(--orange);border-radius:9px;padding:13px 16px;margin-bottom:20px}
 .notice strong{display:block;color:var(--navy);font-size:12px;margin-bottom:5px}
 .notice p{color:var(--muted);font-size:11px;line-height:1.6}
-.message{display:none;padding:12px 14px;border-radius:8px;background:#FFF7ED;color:#9A3412;font-size:11px;line-height:1.6;margin-bottom:16px}
+.message{display:none;padding:12px 14px;border-radius:8px;font-size:12px;line-height:1.6;margin-bottom:16px}
+.message.error{display:block;background:#FEF2F2;color:#991B1B;border:1px solid #FECACA}
+.message.success{display:block;background:#F0FDF4;color:#166534;border:1px solid #BBF7D0}
 .website-card{background:white;border:1px solid var(--border);border-radius:12px;padding:22px;display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:20px}
-.website-main{display:flex;align-items:center;gap:16px}
-.site-icon{width:58px;height:58px;background:#EEF2FF;border-radius:13px;display:grid;place-items:center;color:var(--navy);font-size:23px;font-weight:800}
-.website-main h2{font-size:18px;color:var(--navy);margin-bottom:5px}
+.website-main{display:flex;align-items:center;gap:16px;min-width:0}
+.site-icon{width:58px;height:58px;flex-shrink:0;background:#EEF2FF;border-radius:13px;display:grid;place-items:center;color:var(--navy);font-size:23px;font-weight:800}
+.website-main h2{font-size:18px;color:var(--navy);margin-bottom:5px;overflow-wrap:anywhere}
 .website-main p{font-size:11px;color:var(--muted);margin-bottom:8px}
-.website-url{color:var(--orange-dark);font-size:11px;font-weight:700}
-.status{display:inline-block;padding:5px 9px;border-radius:20px;background:#FFF7ED;color:#C2410C;font-size:9px;font-weight:700}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
-.stat-card{background:white;border:1px solid var(--border);border-radius:11px;padding:17px}
-.stat-card span{display:block;color:var(--muted);font-size:10px;margin-bottom:11px}
-.stat-card strong{display:block;color:var(--navy);font-size:23px}
+.website-url{color:var(--orange-dark);font-size:11px;font-weight:700;overflow-wrap:anywhere}
+.status{display:inline-block;padding:6px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:capitalize}
+.status.pending{background:#FFF7ED;color:#C2410C}
+.status.active{background:#F0FDF4;color:#166534}
+.status.rejected{background:#FEF2F2;color:#991B1B}
+.status.suspended{background:#FEF2F2;color:#991B1B}
 .grid-two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
 .panel{background:white;border:1px solid var(--border);border-radius:12px;padding:21px;min-width:0;margin-bottom:20px}
 .grid-two .panel{margin-bottom:0}
@@ -62,34 +66,33 @@ button,input,select,textarea{font:inherit}
 .detail-list{display:flex;flex-direction:column}
 .detail-row{display:flex;justify-content:space-between;gap:15px;padding:12px 0;border-bottom:1px solid #EDF1F6;font-size:11px}
 .detail-row:last-child{border-bottom:0}
-.detail-row span:first-child{color:var(--muted)}
+.detail-row span:first-child{color:var(--muted);flex-shrink:0}
 .detail-row strong{text-align:right;color:var(--navy);overflow-wrap:anywhere}
-.proof-box{background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:9px;padding:18px}
+.proof-box{background:#F8FAFC;border:1px solid var(--border);border-radius:9px;padding:15px;margin-bottom:10px}
+.proof-box:last-child{margin-bottom:0}
 .proof-box strong{display:block;color:var(--navy);font-size:12px;margin-bottom:7px}
-.proof-box p{font-size:11px;color:var(--muted);line-height:1.6}
-.proof-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.proof-box p{font-size:11px;color:var(--muted);line-height:1.6;margin:4px 0}
+.proof-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;min-width:570px}
 th,td{padding:13px 11px;border-bottom:1px solid var(--border);text-align:left;font-size:10px}
 th{background:#F8FAFC;color:var(--muted);font-weight:700}
 td{color:var(--text)}
 td strong{color:var(--navy)}
-.badge{display:inline-block;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+.badge{display:inline-block;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700;text-transform:capitalize}
 .badge.pending{background:#FFF7ED;color:#C2410C}
 .badge.approved{background:#F0FDF4;color:#166534}
-.timeline{display:flex;flex-direction:column;gap:17px}
-.timeline-item{display:flex;gap:12px;align-items:flex-start}
-.timeline-dot{width:10px;height:10px;flex-shrink:0;border-radius:50%;background:var(--orange);margin-top:3px}
-.timeline-item strong{display:block;color:var(--navy);font-size:11px;margin-bottom:4px}
-.timeline-item p{color:var(--muted);font-size:10px;line-height:1.5}
+.badge.rejected{background:#FEF2F2;color:#991B1B}
 .review-form label{display:block;font-size:11px;font-weight:700;color:var(--navy);margin:14px 0 7px}
-.review-form select,.review-form textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px;font-size:11px;outline:none;background:white;color:var(--text)}
-.review-form textarea{min-height:100px;resize:vertical}
-.review-form select:focus,.review-form textarea:focus{border-color:var(--orange)}
+.review-form select,.review-form textarea,.review-form input{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px;font-size:11px;outline:none;background:white;color:var(--text)}
+.review-form textarea{min-height:95px;resize:vertical}
+.review-form select:focus,.review-form textarea:focus,.review-form input:focus{border-color:var(--orange)}
 .review-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.empty{padding:22px;text-align:center;color:var(--muted);font-size:11px;background:#F8FAFC;border-radius:8px}
 .footer-note{text-align:center;padding:20px 5px 5px;color:var(--muted);font-size:10px}
-.mobile-menu{display:none;border:0;background:none;color:var(--navy);font-size:23px;cursor:pointer}
-@media(max-width:1100px){.sidebar{width:220px}.content{padding:24px 20px}.stats{grid-template-columns:repeat(2,1fr)}}
+.loading{text-align:center;padding:60px 15px;color:var(--muted);font-size:13px}
+.hidden{display:none!important}
+@media(max-width:1100px){.sidebar{width:220px}.content{padding:24px 20px}}
 @media(max-width:850px){.grid-two{grid-template-columns:1fr}}
 @media(max-width:720px){
 .sidebar{position:fixed;z-index:20;top:0;bottom:0;left:-260px;width:250px;transition:left .25s}
@@ -99,7 +102,6 @@ td strong{color:var(--navy)}
 .heading h1{font-size:22px}.website-card{align-items:flex-start;flex-direction:column}
 .panel{padding:16px 13px}
 }
-@media(max-width:450px){.stats{gap:9px}.stat-card{padding:13px}.stat-card strong{font-size:20px}.site-icon{width:48px;height:48px}}
 </style>
 </head>
 <body>
@@ -114,7 +116,7 @@ td strong{color:var(--navy)}
         <a href="/admin/users">♙ All Users</a>
         <a href="/admin/credit-management">◈ Credit Management</a>
         <div class="nav-label">WEBSITE MANAGEMENT</div>
-        <a href="/admin/website-approvals" class="active">▣ Website Approvals</a>
+        <a href="/admin/website-approvals">▣ Website Approvals</a>
         <a href="/admin/website-suspensions">⊘ Suspensions</a>
         <div class="nav-label">MODERATION</div>
         <a href="/admin/feedback-moderation">✉ Feedback Moderation</a>
@@ -129,11 +131,479 @@ td strong{color:var(--navy)}
 </aside>
 
 <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
+    <header class="topbar">
+        <div style="display:flex;align-items:center;gap:13px">
+            <button class="mobile-menu" id="menuButton" aria-label="Open menu">☰</button>
+            <h2>Website Management</h2>
+        </div>
+        <div class="top-right"><a href="/admin/website-approvals">← Back to Websites</a></div>
+    </header>
+
+    <div class="content">
+        <div class="breadcrumb">
+            <a href="/admin">Dashboard</a><span>›</span>
+            <a href="/admin/website-approvals">Website Approvals</a><span>›</span>
+            <span>Website Details</span>
+        </div>
+
+        <div class="heading">
+            <div>
+                <h1>Website Details</h1>
+                <p>Review website information, verification proofs and moderation status.</p>
+            </div>
+            <button class="btn" id="refreshButton" type="button">↻ Refresh</button>
+        </div>
+
+        <div id="message" class="message" role="alert"></div>
+        <div id="loading" class="loading">Loading website information...</div>
+
+        <div id="pageContent" class="hidden">
+            <section class="website-card">
+                <div class="website-main">
+                    <div class="site-icon">W</div>
+                    <div>
+                        <h2 id="websiteName">—</h2>
+                        <p id="websiteOwner">—</p>
+                        <a id="websiteUrl" class="website-url" href="#" target="_blank" rel="noopener noreferrer">—</a>
+                    </div>
+                </div>
+                <div><span id="websiteStatus" class="status">—</span></div>
+            </section>
+
+            <div class="grid-two">
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Website Information</h2>
+                        <p>Information submitted by the website owner.</p>
+                    </div>
+                    <div class="detail-list">
+                        <div class="detail-row"><span>Website ID</span><strong id="websiteId">—</strong></div>
+                        <div class="detail-row"><span>Website Name</span><strong id="detailName">—</strong></div>
+                        <div class="detail-row"><span>Website URL</span><strong id="detailUrl">—</strong></div>
+                        <div class="detail-row"><span>Category</span><strong id="detailCategory">—</strong></div>
+                        <div class="detail-row"><span>Description</span><strong id="detailDescription">—</strong></div>
+                        <div class="detail-row"><span>Submitted</span><strong id="detailCreated">—</strong></div>
+                        <div class="detail-row"><span>Approved At</span><strong id="detailApproved">—</strong></div>
+                        <div class="detail-row"><span>Resubmissions</span><strong id="detailResubmissions">—</strong></div>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Website Owner</h2>
+                        <p>Account associated with this website.</p>
+                    </div>
+                    <div class="detail-list">
+                        <div class="detail-row"><span>Owner ID</span><strong id="ownerId">—</strong></div>
+                        <div class="detail-row"><span>Owner Name</span><strong id="ownerName">—</strong></div>
+                        <div class="detail-row"><span>Email Address</span><strong id="ownerEmail">—</strong></div>
+                    </div>
+                    <div id="rejectionBox" class="notice hidden" style="margin-top:18px;margin-bottom:0">
+                        <strong>Rejection Information</strong>
+                        <p><b>Category:</b> <span id="rejectionCategory">—</span></p>
+                        <p><b>Reason:</b> <span id="rejectionReason">—</span></p>
+                    </div>
+                    <div id="suspensionBox" class="notice hidden" style="margin-top:18px;margin-bottom:0">
+                        <strong>Active Website Suspension</strong>
+                        <p><b>Reason:</b> <span id="suspensionReason">—</span></p>
+                        <p><b>Duration:</b> <span id="suspensionDuration">—</span> days</p>
+                        <p><b>Expires:</b> <span id="suspensionExpiry">—</span></p>
+                    </div>
+                </section>
+            </div>
+
+            <section class="panel">
+                <div class="panel-heading">
+                    <h2>Verification Proofs</h2>
+                    <p>Submitted verification records and their review status.</p>
+                </div>
+                <div id="proofList"></div>
+            </section>
+
+            <section class="panel" id="reviewPanel">
+                <div class="panel-heading">
+                    <h2>Review Website</h2>
+                    <p>Approve the submission or reject it with a mandatory category and reason.</p>
+                </div>
+                <form id="reviewForm" class="review-form">
+                    <label for="decision">Admin Decision</label>
+                    <select id="decision" required>
+                        <option value="">Select decision</option>
+                        <option value="approve">Approve Website</option>
+                        <option value="reject">Reject Website</option>
+                    </select>
+
+                    <div id="rejectionFields" class="hidden">
+                        <label for="rejectionCategoryInput">Rejection Category</label>
+                        <select id="rejectionCategoryInput">
+                            <option value="">Select category</option>
+                            <option value="Incomplete information">Incomplete information</option>
+                            <option value="Invalid website">Invalid website</option>
+                            <option value="Website inaccessible">Website inaccessible</option>
+                            <option value="Policy violation">Policy violation</option>
+                            <option value="Duplicate website">Duplicate website</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <label for="reviewReason">Rejection Reason</label>
+                        <textarea id="reviewReason" maxlength="2000" placeholder="Explain why this website is being rejected..."></textarea>
+                    </div>
+
+                    <div class="review-actions">
+                        <button class="btn success" id="submitReview" type="submit">Submit Review</button>
+                    </div>
+                </form>
+                <div id="reviewLocked" class="empty hidden">This website is not pending review. A new review is only available after resubmission.</div>
+            </section>
+
+            <section class="panel" id="suspensionPanel">
+                <div class="panel-heading">
+                    <h2>Website Moderation</h2>
+                    <p>Suspend an active website or restore a currently suspended website.</p>
+                </div>
+                <form id="suspendForm" class="review-form">
+                    <label for="suspensionDurationInput">Suspension Duration</label>
+                    <select id="suspensionDurationInput">
+                        <option value="7">7 days</option>
+                        <option value="15">15 days</option>
+                        <option value="30">30 days</option>
+                    </select>
+                    <label for="suspensionReasonInput">Suspension Reason</label>
+                    <textarea id="suspensionReasonInput" maxlength="2000" placeholder="Enter the reason for suspension..." required></textarea>
+                    <div class="review-actions">
+                        <button class="btn danger" id="suspendButton" type="submit">Suspend Website</button>
+                        <button class="btn success hidden" id="restoreButton" type="button">Restore Website</button>
+                    </div>
+                </form>
+                <div id="moderationLocked" class="empty hidden">Website moderation actions are available for active websites.</div>
+            </section>
+        </div>
+
+        <div class="footer-note">HUMAN FEEDBACK Administration Panel</div>
+    </div>
 </main>
 </div>
+
+<script>
+(() => {
+    "use strict";
+
+    const API_BASE = "/api/admin/websites";
+    const websiteId = Number(window.location.pathname.split("/").filter(Boolean).pop());
+
+    const $ = (id) => document.getElementById(id);
+
+    let currentWebsite = null;
+    let currentSuspension = null;
+
+    function showMessage(message, type = "error") {
+        const box = $("message");
+        box.textContent = message;
+        box.className = "message " + type;
+        box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function clearMessage() {
+        $("message").textContent = "";
+        $("message").className = "message";
+    }
+
+    function setText(id, value) {
+        $(id).textContent =
+            value === null || value === undefined || value === ""
+                ? "—"
+                : String(value);
+    }
+
+    function formatDate(value) {
+        if (!value) return "—";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "—";
+        return date.toLocaleString();
+    }
+
+    function statusClass(status) {
+        const value = String(status || "").toLowerCase();
+        return ["pending", "active", "rejected"].includes(value)
+            ? value
+            : "";
+    }
+
+    async function apiRequest(url, options = {}) {
+        const response = await fetch(url, {
+            credentials: "same-origin",
+            ...options,
+            headers: {
+                ...(options.body ? { "Content-Type": "application/json" } : {}),
+                ...(options.headers || {})
+            }
+        });
+
+        if (response.status === 401) {
+            throw new Error("Your session has expired. Please log in again.");
+        }
+
+        if (response.status === 403) {
+            throw new Error("Admin access denied. Please check your account permissions.");
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        let data = {};
+
+        if (contentType.includes("application/json")) {
+            data = await response.json();
+        }
+
+        if (!response.ok || data.success === false) {
+            throw new Error(data.message || `Request failed (${response.status}).`);
+        }
+
+        return data;
+    }
+
+    function renderProofs(verifications) {
+        const container = $("proofList");
+        container.replaceChildren();
+
+        if (!Array.isArray(verifications) || verifications.length === 0) {
+            const empty = document.createElement("div");
+            empty.className = "empty";
+            empty.textContent = "No verification records have been submitted.";
+            container.appendChild(empty);
+            return;
+        }
+
+        verifications.forEach((item) => {
+            const card = document.createElement("div");
+            card.className = "proof-box";
+
+            const title = document.createElement("strong");
+            title.textContent = item.proof_type || "Verification proof";
+
+            const status = document.createElement("span");
+            status.className = "badge " + statusClass(item.status);
+            status.textContent = item.status || "Unknown";
+
+            const created = document.createElement("p");
+            created.textContent = "Submitted: " + formatDate(item.created_at);
+
+            const reviewed = document.createElement("p");
+            reviewed.textContent = "Reviewed: " + formatDate(item.reviewed_at);
+
+            const reason = document.createElement("p");
+            reason.textContent = "Admin note: " + (item.admin_reason || "—");
+
+            const actions = document.createElement("div");
+            actions.className = "proof-actions";
+
+            const download = document.createElement("a");
+            download.className = "btn";
+            download.textContent = "Download Proof";
+            download.href = `${API_BASE}/${websiteId}/proof/${encodeURIComponent(item.id)}`;
+            download.setAttribute("aria-label", "Download verification proof");
+
+            actions.appendChild(download);
+            card.append(title, status, created, reviewed, reason, actions);
+            container.appendChild(card);
+        });
+    }
+
+    function renderWebsite(data) {
+        const website = data.website;
+        currentWebsite = website;
+        currentSuspension = data.active_suspension || null;
+
+        setText("websiteName", website.name);
+        setText("websiteOwner", `${website.owner_name || "Unknown owner"} · ${website.owner_email || "No email"}`);
+
+        const websiteUrl = $("websiteUrl");
+        websiteUrl.textContent = website.url || "No website URL";
+        websiteUrl.href = website.url || "#";
+        websiteUrl.style.pointerEvents = website.url ? "auto" : "none";
+
+        const status = $("websiteStatus");
+        status.textContent = currentSuspension ? "Suspended" : (website.status || "Unknown");
+        status.className = "status " + (currentSuspension ? "suspended" : statusClass(website.status));
+
+        setText("websiteId", website.id);
+        setText("detailName", website.name);
+        setText("detailUrl", website.url);
+        setText("detailCategory", website.category);
+        setText("detailDescription", website.description);
+        setText("detailCreated", formatDate(website.created_at));
+        setText("detailApproved", formatDate(website.approved_at));
+        setText("detailResubmissions", website.resubmission_count);
+
+        setText("ownerId", website.owner_id);
+        setText("ownerName", website.owner_name);
+        setText("ownerEmail", website.owner_email);
+
+        const rejectionBox = $("rejectionBox");
+        rejectionBox.classList.toggle(
+            "hidden",
+            !website.rejection_category && !website.rejection_reason
+        );
+        setText("rejectionCategory", website.rejection_category);
+        setText("rejectionReason", website.rejection_reason);
+
+        $("suspensionBox").classList.toggle("hidden", !currentSuspension);
+        if (currentSuspension) {
+            setText("suspensionReason", currentSuspension.reason);
+            setText("suspensionDuration", currentSuspension.duration_days);
+            setText("suspensionExpiry", formatDate(currentSuspension.expires_at));
+        }
+
+        renderProofs(data.verifications);
+
+        const isPending = website.status === "pending";
+        $("reviewForm").classList.toggle("hidden", !isPending);
+        $("reviewLocked").classList.toggle("hidden", isPending);
+
+        const isActive = website.status === "active";
+        $("suspendForm").classList.toggle("hidden", !isActive || Boolean(currentSuspension));
+        $("restoreButton").classList.toggle("hidden", !currentSuspension);
+        $("moderationLocked").classList.toggle(
+            "hidden",
+            isActive && !currentSuspension || Boolean(currentSuspension)
+        );
+
+        $("pageContent").classList.remove("hidden");
+        $("loading").classList.add("hidden");
+    }
+
+    async function loadWebsite() {
+        clearMessage();
+
+        if (!Number.isInteger(websiteId) || websiteId < 1) {
+            $("loading").classList.add("hidden");
+            showMessage("Invalid website ID in the page URL.");
+            return;
+        }
+
+        $("loading").classList.remove("hidden");
+        $("pageContent").classList.add("hidden");
+
+        try {
+            const data = await apiRequest(`${API_BASE}/${websiteId}`);
+            renderWebsite(data);
+        } catch (error) {
+            $("loading").classList.add("hidden");
+            showMessage(error.message || "Unable to load website information.");
+        }
+    }
+
+    $("decision").addEventListener("change", () => {
+        const rejecting = $("decision").value === "reject";
+        $("rejectionFields").classList.toggle("hidden", !rejecting);
+        $("rejectionCategoryInput").required = rejecting;
+        $("reviewReason").required = rejecting;
+    });
+
+    $("reviewForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        clearMessage();
+
+        const decision = $("decision").value;
+        if (!["approve", "reject"].includes(decision)) {
+            showMessage("Please select an admin decision.");
+            return;
+        }
+
+        const payload = { decision };
+
+        if (decision === "reject") {
+            payload.rejection_category = $("rejectionCategoryInput").value.trim();
+            payload.reason = $("reviewReason").value.trim();
+
+            if (!payload.rejection_category || !payload.reason) {
+                showMessage("Rejection category and reason are required.");
+                return;
+            }
+        }
+
+        const button = $("submitReview");
+        button.disabled = true;
+        button.textContent = "Submitting...";
+
+        try {
+            const result = await apiRequest(`${API_BASE}/${websiteId}/review`, {
+                method: "PUT",
+                body: JSON.stringify(payload)
+            });
+
+            showMessage(result.message || "Website review completed.", "success");
+            await loadWebsite();
+        } catch (error) {
+            showMessage(error.message || "Unable to submit website review.");
+        } finally {
+            button.disabled = false;
+            button.textContent = "Submit Review";
+        }
+    });
+
+    $("suspendForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        clearMessage();
+
+        const reason = $("suspensionReasonInput").value.trim();
+        if (!reason) {
+            showMessage("Suspension reason is required.");
+            return;
+        }
+
+        const button = $("suspendButton");
+        button.disabled = true;
+        button.textContent = "Suspending...";
+
+        try {
+            const result = await apiRequest(`${API_BASE}/${websiteId}/suspend`, {
+                method: "PUT",
+                body: JSON.stringify({
+                    duration_days: Number($("suspensionDurationInput").value),
+                    reason
+                })
+            });
+
+            showMessage(result.message || "Website suspended successfully.", "success");
+            $("suspensionReasonInput").value = "";
+            await loadWebsite();
+        } catch (error) {
+            showMessage(error.message || "Unable to suspend website.");
+        } finally {
+            button.disabled = false;
+            button.textContent = "Suspend Website";
+        }
+    });
+
+    $("restoreButton").addEventListener("click", async () => {
+        if (!window.confirm("Are you sure you want to restore this website?")) return;
+
+        clearMessage();
+        const button = $("restoreButton");
+        button.disabled = true;
+        button.textContent = "Restoring...";
+
+        try {
+            const result = await apiRequest(`${API_BASE}/${websiteId}/restore`, {
+                method: "PUT"
+            });
+
+            showMessage(result.message || "Website restored successfully.", "success");
+            await loadWebsite();
+        } catch (error) {
+            showMessage(error.message || "Unable to restore website.");
+        } finally {
+            button.disabled = false;
+            button.textContent = "Restore Website";
+        }
+    });
+
+    $("refreshButton").addEventListener("click", loadWebsite);
+    $("menuButton").addEventListener("click", () => {
+        $("sidebar").classList.toggle("show");
+    });
+
+    loadWebsite();
+})();
+</script>
 </body>
 </html>

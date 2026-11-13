@@ -4,19 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Manage your websites on HUMAN FEEDBACK.">
-    <title>My Websites | HUMAN FEEDBACK</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>My Websites - HUMAN FEEDBACK</title>
+
     <style>
         :root {
             --navy: #172554;
-            --dark: #101B40;
+            --navy-dark: #101B40;
             --orange: #F97316;
             --orange-dark: #EA580C;
-            --bg: #F8FAFC;
             --text: #263247;
-            --muted: #64748B;
-            --border: #E2E8F0;
+            --muted: #718096;
+            --border: #E5EAF1;
+            --background: #F8FAFC;
             --white: #FFFFFF;
         }
 
@@ -24,158 +23,138 @@
 
         body {
             margin: 0;
-            background: var(--bg);
+            background: var(--background);
             color: var(--text);
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
-        .layout { display: flex; min-height: 100vh; }
+        a { text-decoration: none; color: inherit; }
+
+        button, input, select { font: inherit; }
+
+        .app-layout {
+            min-height: 100vh;
+            display: flex;
+        }
 
         .sidebar {
             width: 255px;
-            background: var(--dark);
+            flex-shrink: 0;
+            background: var(--navy-dark);
             color: white;
-            padding: 26px 18px;
+            padding: 25px 17px;
             display: flex;
             flex-direction: column;
-            flex-shrink: 0;
         }
 
         .brand {
-            color: white;
-            text-decoration: none;
             font-size: 21px;
             font-weight: 800;
-            padding: 5px 10px 32px;
+            padding: 0 12px 30px;
+            letter-spacing: -.5px;
         }
 
         .brand span { color: var(--orange); }
 
-        .nav-label {
-            color: #94A3B8;
+        .sidebar-label {
+            color: #8E9AB8;
             font-size: 10px;
             font-weight: 700;
-            letter-spacing: 1.4px;
-            padding: 10px 12px;
-            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            padding: 13px 12px 9px;
         }
 
-        .nav-list { display: flex; flex-direction: column; gap: 5px; }
-
-        .nav-list a {
+        .nav-link {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 12px;
             border-radius: 9px;
-            color: #CBD5E1;
-            text-decoration: none;
+            color: #C5CEE0;
             font-size: 13px;
+            margin-bottom: 4px;
+            transition: .2s;
         }
 
-        .nav-list a:hover,
-        .nav-list a.active {
-            background: rgba(249,115,22,.16);
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255,255,255,.10);
             color: white;
         }
 
-        .nav-list a.active { border-left: 3px solid var(--orange); }
-
-        .nav-icon { width: 20px; text-align: center; font-size: 16px; }
-
-        .sidebar-bottom { margin-top: auto; padding-top: 30px; }
-
-        .plan-box {
-            background: rgba(255,255,255,.07);
-            border: 1px solid rgba(255,255,255,.1);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 16px;
+        .nav-link.active {
+            border-left: 3px solid var(--orange);
+            padding-left: 9px;
         }
 
-        .plan-box small { color: #94A3B8; font-size: 11px; }
-        .plan-box strong { display: block; margin: 7px 0; font-size: 15px; }
-        .plan-box a { color: #FDBA74; text-decoration: none; font-size: 12px; font-weight: 700; }
+        .nav-icon { width: 19px; text-align: center; }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,.12);
+            padding-top: 18px;
+        }
 
         .user-box {
-            border-top: 1px solid rgba(255,255,255,.12);
-            padding: 17px 7px 0;
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 10px;
         }
 
-        .avatar {
-            width: 36px;
-            height: 36px;
+        .avatar,
+        .top-avatar {
             border-radius: 50%;
-            background: var(--orange);
+            background: #FDE7D7;
+            color: #9A3412;
             display: grid;
             place-items: center;
-            color: white;
-            font-size: 12px;
-            font-weight: 700;
-            flex-shrink: 0;
+            font-weight: 800;
         }
 
-        .user-box strong { display: block; font-size: 12px; }
-        .user-box small { color: #94A3B8; font-size: 10px; }
+        .avatar { width: 36px; height: 36px; font-size: 13px; }
+        .user-name { font-size: 12px; font-weight: 700; }
+        .user-plan { font-size: 10px; color: #AAB5CC; margin-top: 3px; }
 
-        .main { flex: 1; min-width: 0; }
+        .main-content { flex: 1; min-width: 0; }
 
         .topbar {
-            height: 75px;
+            height: 72px;
             background: white;
             border-bottom: 1px solid var(--border);
-            padding: 0 34px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 0 35px;
         }
 
-        .topbar-left { display: flex; align-items: center; gap: 14px; }
-        .topbar h1 { margin: 0; font-size: 19px; color: var(--navy); }
-
-        .menu-button {
-            display: none;
-            border: 0;
-            background: none;
-            color: var(--navy);
-            font-size: 23px;
-            cursor: pointer;
-        }
+        .breadcrumb { color: var(--muted); font-size: 12px; }
+        .breadcrumb strong { color: var(--navy); }
 
         .topbar-right { display: flex; align-items: center; gap: 20px; }
-        .notification { color: var(--navy); text-decoration: none; font-size: 21px; }
+        .top-icon { color: #64748B; font-size: 19px; }
 
-        .top-profile {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .top-profile .avatar { width: 34px; height: 34px; }
+        .top-avatar { width: 34px; height: 34px; font-size: 12px; }
 
         .content {
-            max-width: 1500px;
+            max-width: 1250px;
+            padding: 32px 35px 55px;
             margin: auto;
-            padding: 32px 34px 55px;
         }
 
         .page-heading {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            gap: 20px;
+            align-items: flex-start;
+            gap: 18px;
             margin-bottom: 25px;
         }
 
-        .page-heading h2 {
-            margin: 0 0 8px;
+        .page-heading h1 {
             color: var(--navy);
-            font-size: 25px;
+            font-size: 27px;
+            margin: 0 0 8px;
+            letter-spacing: -.7px;
         }
 
         .page-heading p {
@@ -185,361 +164,813 @@
             line-height: 1.6;
         }
 
-        .primary-button {
+        .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: var(--orange);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 9px;
-            text-decoration: none;
             border: 0;
-            font-size: 12px;
+            border-radius: 8px;
+            padding: 11px 15px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
-            white-space: nowrap;
+            transition: .2s;
         }
 
-        .primary-button:hover { background: var(--orange-dark); }
+        .btn-primary { background: var(--orange); color: white; }
+        .btn-primary:hover { background: var(--orange-dark); }
 
-        .-notice {
-            background: #FFF7ED;
-            border: 1px solid #FED7AA;
-            border-radius: 10px;
-            padding: 12px 15px;
-            color: #9A3412;
-            font-size: 12px;
-            line-height: 1.6;
-            margin-bottom: 22px;
-        }
-
-        .-notice strong { color: #7C2D12; }
+        .btn:disabled { opacity: .55; cursor: not-allowed; }
 
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0,1fr));
-            gap: 16px;
-            margin-bottom: 23px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .summary-card {
             background: white;
             border: 1px solid var(--border);
-            border-radius: 13px;
+            border-radius: 11px;
             padding: 19px;
         }
 
-        .summary-card .label {
-            color: var(--muted);
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .summary-card .number {
-            color: var(--navy);
-            font-size: 27px;
-            font-weight: 800;
-            margin: 12px 0 6px;
-        }
-
-        .summary-card small { color: #94A3B8; font-size: 10px; }
+        .summary-label { color: var(--muted); font-size: 10px; margin-bottom: 10px; }
+        .summary-value { color: var(--navy); font-size: 27px; font-weight: 800; }
+        .summary-note { color: #94A3B8; font-size: 9px; margin-top: 6px; }
 
         .toolbar {
             background: white;
             border: 1px solid var(--border);
-            border-radius: 13px;
+            border-radius: 11px;
             padding: 17px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
-            margin-bottom: 19px;
-            flex-wrap: wrap;
+            gap: 13px;
+            margin-bottom: 20px;
         }
 
-        .search-box {
-            position: relative;
+        .toolbar-title { color: var(--navy); font-size: 14px; font-weight: 800; }
+
+        .toolbar-controls {
+            display: flex;
+            gap: 10px;
             flex: 1;
-            min-width: 220px;
+            justify-content: flex-end;
         }
 
-        .search-box span {
-            position: absolute;
-            left: 13px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94A3B8;
-        }
-
-        .search-box input {
-            width: 100%;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 11px 12px 11px 38px;
-            font-size: 12px;
-            outline: none;
-        }
-
-        .search-box input:focus,
-        .filter-select:focus {
-            border-color: var(--orange);
-        }
-
+        .search-input,
         .filter-select {
-            min-width: 155px;
-            padding: 11px;
             border: 1px solid var(--border);
             border-radius: 8px;
-            color: var(--text);
             background: white;
-            font-size: 12px;
+            padding: 10px 12px;
+            color: var(--text);
+            font-size: 11px;
             outline: none;
         }
 
-        .website-count { color: var(--muted); font-size: 11px; white-space: nowrap; }
+        .search-input { width: min(270px, 100%); }
+        .filter-select { min-width: 145px; }
+
+        .search-input:focus,
+        .filter-select:focus { border-color: var(--orange); }
+
+        .page-message {
+            display: none;
+            padding: 13px 15px;
+            margin-bottom: 18px;
+            border-radius: 9px;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .page-message.error {
+            display: block;
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            color: #B91C1C;
+        }
+
+        .page-message.success {
+            display: block;
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+            color: #047857;
+        }
 
         .website-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0,1fr));
-            gap: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 17px;
         }
 
         .website-card {
             background: white;
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 12px;
             padding: 21px;
             min-width: 0;
             transition: box-shadow .2s, transform .2s;
         }
 
         .website-card:hover {
-            box-shadow: 0 9px 25px rgba(16,27,64,.07);
+            box-shadow: 0 8px 25px rgba(15, 23, 42, .06);
             transform: translateY(-2px);
         }
 
-        .website-card-top {
+        .card-top {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 12px;
-            margin-bottom: 18px;
         }
 
         .website-identity {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 13px;
             min-width: 0;
         }
 
-        .website-icon {
-            width: 44px;
-            height: 44px;
+        .website-logo {
+            width: 48px;
+            height: 48px;
             flex-shrink: 0;
+            border-radius: 11px;
+            background: #FFF0E4;
+            color: var(--orange-dark);
             display: grid;
             place-items: center;
-            background: #FFF7ED;
-            color: var(--orange-dark);
-            border-radius: 11px;
-            font-size: 20px;
+            font-size: 21px;
+            font-weight: 800;
         }
 
-        .website-name { min-width: 0; }
-
-        .website-name h3 {
-            margin: 0 0 6px;
+        .website-name {
             color: var(--navy);
             font-size: 15px;
-        }
-
-        .website-name a {
-            color: var(--muted);
-            font-size: 11px;
-            text-decoration: none;
+            font-weight: 800;
+            margin: 0 0 6px;
             overflow-wrap: anywhere;
         }
 
-        .status {
-            display: inline-block;
-            padding: 6px 9px;
-            border-radius: 20px;
-            font-size: 9px;
-            font-weight: 700;
-            white-space: nowrap;
+        .website-url {
+            color: #64748B;
+            font-size: 10px;
+            overflow-wrap: anywhere;
         }
 
-        .approved { background: #DCFCE7; color: #166534; }
-        .pending { background: #FEF3C7; color: #92400E; }
-        .rejected { background: #FEE2E2; color: #991B1B; }
-        .suspended { background: #E2E8F0; color: #475569; }
+        .status-badge {
+            flex-shrink: 0;
+            border-radius: 20px;
+            padding: 6px 9px;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .status-approved { background: #ECFDF5; color: #047857; }
+        .status-pending { background: #FFF7ED; color: #C2410C; }
+        .status-rejected { background: #FEF2F2; color: #B91C1C; }
+        .status-inactive { background: #F1F5F9; color: #475569; }
 
         .website-description {
-            color: var(--muted);
-            font-size: 12px;
+            color: #64748B;
+            font-size: 11px;
             line-height: 1.7;
-            margin: 0 0 17px;
+            margin: 17px 0;
+            min-height: 38px;
+            overflow-wrap: anywhere;
         }
-
-        .website-metrics {
-            display: grid;
-            grid-template-columns: repeat(3,1fr);
-            gap: 8px;
-            padding: 15px 0;
-            border-top: 1px solid #F1F5F9;
-            border-bottom: 1px solid #F1F5F9;
-        }
-
-        .metric { text-align: center; }
-        .metric strong { display: block; color: var(--navy); font-size: 18px; margin-bottom: 5px; }
-        .metric small { color: #94A3B8; font-size: 10px; }
 
         .website-meta {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
             gap: 10px;
-            padding-top: 15px;
+            padding-top: 13px;
+            border-top: 1px solid #EEF1F5;
+            color: #94A3B8;
+            font-size: 9px;
         }
 
-        .website-meta small { color: #94A3B8; font-size: 10px; }
-
-        .details-link {
-            color: var(--orange-dark);
-            text-decoration: none;
-            font-size: 11px;
+        .website-category {
+            color: #1D4ED8;
+            background: #EFF6FF;
+            padding: 5px 8px;
+            border-radius: 20px;
             font-weight: 700;
         }
 
+        .website-actions {
+            display: flex;
+            gap: 9px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .website-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 7px;
+            padding: 10px 13px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: .2s;
+        }
+
+        .website-action.visit {
+            background: white;
+            color: var(--navy);
+            border-color: var(--border);
+        }
+
+        .website-action.visit:hover {
+            border-color: var(--navy);
+            background: #F8FAFC;
+        }
+
+        .website-action.feedback {
+            background: var(--orange);
+            color: white;
+        }
+
+        .website-action.feedback:hover { background: var(--orange-dark); }
+
+        .website-action:disabled { opacity: .55; cursor: not-allowed; }
+
+        .card-rejection {
+            margin-top: 13px;
+            background: #FEF2F2;
+            border-radius: 7px;
+            padding: 10px;
+            color: #991B1B;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
         .empty-state {
-            display: none;
             background: white;
             border: 1px dashed #CBD5E1;
-            border-radius: 14px;
+            border-radius: 12px;
             padding: 55px 20px;
             text-align: center;
             grid-column: 1 / -1;
         }
 
-        .empty-state .empty-icon { font-size: 38px; margin-bottom: 13px; }
-        .empty-state h3 { color: var(--navy); margin: 0 0 8px; font-size: 17px; }
-        .empty-state p { color: var(--muted); font-size: 12px; line-height: 1.7; }
+        .empty-icon {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 15px;
+            border-radius: 15px;
+            background: #FFF0E4;
+            color: var(--orange-dark);
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+        }
 
-        .info-panel {
+        .empty-state h3 { color: var(--navy); font-size: 16px; margin: 0 0 8px; }
+        .empty-state p { color: var(--muted); font-size: 11px; line-height: 1.7; margin: 0; }
+
+        .loading-state {
             background: white;
             border: 1px solid var(--border);
-            border-radius: 13px;
-            padding: 21px;
-            margin-top: 22px;
-        }
-
-        .info-panel h3 { color: var(--navy); font-size: 15px; margin: 0 0 13px; }
-
-        .info-panel ul {
-            margin: 0;
-            padding-left: 19px;
+            border-radius: 12px;
+            padding: 35px;
+            text-align: center;
             color: var(--muted);
             font-size: 12px;
-            line-height: 1.9;
+            grid-column: 1 / -1;
         }
 
-        .footer {
-            text-align: center;
-            padding: 27px 10px 0;
-            color: #94A3B8;
-            font-size: 11px;
+        .info-panel {
+            margin-top: 22px;
+            background: #FFF7ED;
+            border: 1px solid #FED7AA;
+            border-radius: 10px;
+            padding: 15px 17px;
+            color: #9A3412;
+            font-size: 10px;
+            line-height: 1.7;
         }
 
-        @media(max-width:1100px) {
-            .summary-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-            .sidebar { width: 225px; }
-        }
-
-        @media(max-width:850px) {
-            .sidebar {
-                position: fixed;
-                z-index: 1000;
-                top: 0;
-                bottom: 0;
-                left: -270px;
-                width: 255px;
-                overflow-y: auto;
-                transition: left .25s;
-            }
-            .sidebar.open { left: 0; }
-            .menu-button { display: block; }
-            .content { padding: 25px 20px 40px; }
-            .topbar { padding: 0 20px; }
-        }
-
-        @media(max-width:650px) {
+        @media (max-width: 1050px) {
             .website-grid { grid-template-columns: 1fr; }
-            .page-heading { align-items: flex-start; flex-direction: column; }
-            .toolbar { align-items: stretch; }
-            .search-box { min-width: 100%; }
-            .filter-select { width: 100%; }
         }
 
-        @media(max-width:550px) {
-            .topbar { height: 65px; padding: 0 14px; }
-            .top-profile > span { display: none; }
-            .content { padding: 22px 14px 35px; }
-            .summary-grid { gap: 10px; }
+        @media (max-width: 760px) {
+            .sidebar { display: none; }
+            .topbar { height: 62px; padding: 0 17px; }
+            .content { padding: 24px 15px 40px; }
+            .page-heading { flex-direction: column; }
+            .page-heading h1 { font-size: 23px; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .summary-card { padding: 14px; }
-            .summary-card .number { font-size: 23px; }
-            .website-card { padding: 17px; }
+            .summary-value { font-size: 23px; }
+            .toolbar { align-items: stretch; flex-direction: column; }
+            .toolbar-controls { justify-content: stretch; }
+            .search-input { width: 100%; min-width: 0; }
+            .filter-select { min-width: 125px; }
+        }
+
+        @media (max-width: 430px) {
+            .toolbar-controls { flex-direction: column; }
+            .filter-select { width: 100%; }
+            .card-top { flex-direction: column; }
+            .website-actions { flex-direction: column; }
+            .website-action { width: 100%; }
         }
     </style>
 </head>
+
 <body>
 
-<div class="layout">
+<div class="app-layout">
 
-    <aside class="sidebar" id="sidebar">
-        <a href="/" class="brand">HUMAN <span>FEEDBACK</span></a>
+    <aside class="sidebar">
+        <a href="/dashboard" class="brand">HUMAN<span>FEEDBACK</span></a>
 
-        <div class="nav-label">Workspace</div>
-        <nav class="nav-list">
-            <a href="{{ url_for('dashboard_page') }}"><span class="nav-icon">▦</span>Dashboard</a>
-            <a href="#" class="active"><span class="nav-icon">◎</span>My Websites</a>
-            <a href="#"><span class="nav-icon">＋</span>Add Website</a>
-            <a href="#"><span class="nav-icon">◉</span>Feedback</a>
-            <a href="#"><span class="nav-icon">↩</span>Replies</a>
-        </nav>
+        <div class="sidebar-label">WORKSPACE</div>
+        <a href="/dashboard" class="nav-link"><span class="nav-icon">▦</span> Dashboard</a>
+        <a href="/websites" class="nav-link active"><span class="nav-icon">◉</span> My Websites</a>
+        <a href="/feedback" class="nav-link"><span class="nav-icon">✎</span> Feedback</a>
+        <a href="/replies" class="nav-link"><span class="nav-icon">▤</span> Conversations</a>
 
-        <div class="nav-label" style="margin-top:20px;">Account</div>
-        <nav class="nav-list">
-            <a href="#"><span class="nav-icon">◈</span>Credits</a>
-            <a href="#"><span class="nav-icon">▤</span>Credit History</a>
-            <a href="#"><span class="nav-icon">▥</span>Analytics</a>
-            <a href="#"><span class="nav-icon">♧</span>Notifications</a>
-            <a href="#"><span class="nav-icon">⚑</span>Reports</a>
-            <a href="#"><span class="nav-icon">⚙</span>Profile & Settings</a>
-        </nav>
+        <div class="sidebar-label">ACCOUNT</div>
+        <a href="/credits" class="nav-link"><span class="nav-icon">◈</span> Credits</a>
+        <a href="/analytics" class="nav-link"><span class="nav-icon">▥</span> Analytics</a>
+        <a href="/notifications" class="nav-link"><span class="nav-icon">♧</span> Notifications</a>
+        <a href="/reports" class="nav-link"><span class="nav-icon">⚑</span> Reports</a>
+        <a href="/profile" class="nav-link"><span class="nav-icon">◎</span> My Profile</a>
+        <a href="/settings" class="nav-link"><span class="nav-icon">⚙</span> Settings</a>
 
         <div class="sidebar-bottom">
-            <div class="plan-box">
-                <small>CURRENT PLAN</small>
-                <strong>Free Trial</strong>
-                <a href="#">Explore Plans →</a>
-            </div>
             <div class="user-box">
                 <div class="avatar">HF</div>
                 <div>
-                    <strong>Account</strong>
-                    <small></small>
+                    <div class="user-name">Account</div>
+                    <div class="user-plan">Account</div>
                 </div>
             </div>
         </div>
     </aside>
 
-    <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
-</main>
+    <main class="main-content">
+
+        <header class="topbar">
+            <div class="breadcrumb">
+                Workspace / <strong>My Websites</strong>
+            </div>
+
+            <div class="topbar-right">
+                <a href="/notifications" class="top-icon">♧</a>
+                <div class="top-avatar">HF</div>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <div class="page-heading">
+                <div>
+                    <h1>My Websites</h1>
+                    <p>Manage your registered websites and submit feedback.</p>
+                </div>
+
+                <a href="/websites/add" class="btn btn-primary">+ Add Website</a>
+            </div>
+
+            <div class="page-message" id="pageMessage" role="alert"></div>
+
+            <section class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-label">Total Websites</div>
+                    <div class="summary-value" id="totalCount">0</div>
+                    <div class="summary-note">All registered websites</div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-label">Approved</div>
+                    <div class="summary-value" id="approvedCount">0</div>
+                    <div class="summary-note">Active websites</div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-label">Pending Review</div>
+                    <div class="summary-value" id="pendingCount">0</div>
+                    <div class="summary-note">Awaiting approval</div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-label">Rejected</div>
+                    <div class="summary-value" id="rejectedCount">0</div>
+                    <div class="summary-note">Need attention</div>
+                </div>
+            </section>
+
+            <section class="toolbar">
+                <div class="toolbar-title">Your Websites</div>
+
+                <div class="toolbar-controls">
+                    <input
+                        type="search"
+                        class="search-input"
+                        id="websiteSearch"
+                        placeholder="Search websites..."
+                        aria-label="Search websites"
+                    >
+
+                    <select
+                        class="filter-select"
+                        id="statusFilter"
+                        aria-label="Filter by status"
+                    >
+                        <option value="all">All Statuses</option>
+                        <option value="active">Approved</option>
+                        <option value="pending">Pending</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="inactive">Other</option>
+                    </select>
+                </div>
+            </section>
+
+            <section class="website-grid" id="websiteGrid" aria-live="polite">
+                <div class="loading-state">Loading your websites...</div>
+            </section>
+
+            <div class="info-panel">
+                <strong>Feedback reminder:</strong>
+                You can submit feedback for approved websites. First click
+                <strong>Visit Website</strong> to record your visit, then click
+                <strong>Submit Feedback</strong>. Approved feedback earns 10 credits.
+            </div>
+
+        </div>
+    </main>
 </div>
+
+<script>
+    let websites = [];
+    let csrfToken = "";
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        })[character]);
+    }
+
+    function safeWebsiteURL(value) {
+        if (!value) return null;
+
+        try {
+            let url = String(value).trim();
+
+            if (!/^https?:\/\//i.test(url)) {
+                url = "https://" + url;
+            }
+
+            const parsed = new URL(url);
+
+            if (!["http:", "https:"].includes(parsed.protocol)) {
+                return null;
+            }
+
+            return parsed.href;
+        } catch {
+            return null;
+        }
+    }
+
+    function formatDate(value) {
+        if (!value) return "—";
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) return "—";
+
+        return date.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        });
+    }
+
+    function normalizeStatus(status) {
+        const value = String(status || "").toLowerCase().trim();
+
+        if (["active", "approved"].includes(value)) {
+            return { key: "active", label: "Approved", css: "status-approved" };
+        }
+
+        if (["pending", "under_review", "under review"].includes(value)) {
+            return { key: "pending", label: "Pending", css: "status-pending" };
+        }
+
+        if (["rejected", "declined"].includes(value)) {
+            return { key: "rejected", label: "Rejected", css: "status-rejected" };
+        }
+
+        return { key: "inactive", label: status || "Other", css: "status-inactive" };
+    }
+
+    function showPageMessage(message, type = "error") {
+        const box = document.getElementById("pageMessage");
+
+        box.textContent = message;
+        box.className = `page-message ${type}`;
+    }
+
+    function hidePageMessage() {
+        const box = document.getElementById("pageMessage");
+
+        box.textContent = "";
+        box.className = "page-message";
+    }
+
+    function updateSummary() {
+        const total = websites.length;
+
+        const approved = websites.filter(website =>
+            normalizeStatus(website.status).key === "active"
+        ).length;
+
+        const pending = websites.filter(website =>
+            normalizeStatus(website.status).key === "pending"
+        ).length;
+
+        const rejected = websites.filter(website =>
+            normalizeStatus(website.status).key === "rejected"
+        ).length;
+
+        document.getElementById("totalCount").textContent = total;
+        document.getElementById("approvedCount").textContent = approved;
+        document.getElementById("pendingCount").textContent = pending;
+        document.getElementById("rejectedCount").textContent = rejected;
+    }
+
+    function renderWebsiteCard(website) {
+        const status = normalizeStatus(website.status);
+        const websiteId = Number(website.id);
+        const websiteURL = safeWebsiteURL(website.url);
+
+        const canSubmitFeedback =
+            status.key === "active" &&
+            Number.isInteger(websiteId) &&
+            websiteId > 0;
+
+        const category = typeof website.category === "object"
+            ? website.category?.name
+            : website.category;
+
+        const rejectionReason =
+            website.rejection_reason ||
+            website.rejection_message ||
+            "";
+
+        const actionHTML = canSubmitFeedback
+            ? `
+                <div class="website-actions">
+                    <button
+                        type="button"
+                        class="website-action visit"
+                        onclick="visitWebsite(${websiteId}, this)"
+                        data-url="${escapeHTML(websiteURL || "")}"
+                        ${websiteURL ? "" : "disabled"}
+                    >
+                        Visit Website
+                    </button>
+
+                    <a
+                        href="/websites/${websiteId}"
+                        class="website-action feedback"
+                    >
+                        Submit Feedback
+                    </a>
+                </div>
+            `
+            : "";
+
+        const rejectionHTML =
+            status.key === "rejected" && rejectionReason
+                ? `<div class="card-rejection">
+                    <strong>Reason:</strong> ${escapeHTML(rejectionReason)}
+                   </div>`
+                : "";
+
+        return `
+            <article class="website-card">
+
+                <div class="card-top">
+                    <div class="website-identity">
+                        <div class="website-logo">◎</div>
+
+                        <div>
+                            <h2 class="website-name">
+                                ${escapeHTML(website.name || "Unnamed Website")}
+                            </h2>
+
+                            <div class="website-url">
+                                ${escapeHTML(website.url || "URL not available")}
+                            </div>
+                        </div>
+                    </div>
+
+                    <span class="status-badge ${status.css}">
+                        ${escapeHTML(status.label)}
+                    </span>
+                </div>
+
+                <p class="website-description">
+                    ${escapeHTML(website.description || "No description provided.")}
+                </p>
+
+                <div class="website-meta">
+                    <span class="website-category">
+                        ${escapeHTML(category || "Uncategorized")}
+                    </span>
+
+                    <span>
+                        ID: ${escapeHTML(website.id)}
+                        &nbsp;·&nbsp;
+                        Updated: ${escapeHTML(formatDate(website.updated_at))}
+                    </span>
+                </div>
+
+                ${rejectionHTML}
+
+                ${actionHTML}
+
+            </article>
+        `;
+    }
+
+    function filterWebsites() {
+        const search = document.getElementById("websiteSearch")
+            .value.trim().toLowerCase();
+
+        const filter = document.getElementById("statusFilter").value;
+
+        return websites.filter(website => {
+            const status = normalizeStatus(website.status);
+
+            const searchableText = [
+                website.name,
+                website.url,
+                website.description,
+                typeof website.category === "object"
+                    ? website.category?.name
+                    : website.category
+            ].join(" ").toLowerCase();
+
+            const matchesSearch = searchableText.includes(search);
+            const matchesStatus = filter === "all" || status.key === filter;
+
+            return matchesSearch && matchesStatus;
+        });
+    }
+
+    function renderWebsites() {
+        const grid = document.getElementById("websiteGrid");
+        const filtered = filterWebsites();
+
+        if (!filtered.length) {
+            const hasWebsites = websites.length > 0;
+
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">◎</div>
+                    <h3>${hasWebsites ? "No matching websites" : "No websites yet"}</h3>
+                    <p>
+                        ${
+                            hasWebsites
+                                ? "Try changing your search or status filter."
+                                : "Add your first website to get started."
+                        }
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+        grid.innerHTML = filtered.map(renderWebsiteCard).join("");
+    }
+
+    async function getJSON(url, options = {}) {
+        const response = await fetch(url, {
+            credentials: "same-origin",
+            ...options
+        });
+
+        const data = await response.json().catch(() => null);
+
+        if (!response.ok || !data || data.success !== true) {
+            throw new Error(
+                data?.message ||
+                data?.error ||
+                `Request failed (${response.status})`
+            );
+        }
+
+        return data;
+    }
+
+    async function visitWebsite(websiteId, button) {
+        const url = safeWebsiteURL(button.dataset.url);
+
+        if (!url) {
+            showPageMessage("This website does not have a valid URL.");
+            return;
+        }
+
+        hidePageMessage();
+
+        // Open a blank tab immediately so the browser does not block it.
+        const newTab = window.open("about:blank", "_blank");
+
+        const originalText = button.textContent;
+
+        button.disabled = true;
+        button.textContent = "Recording Visit...";
+
+        try {
+            if (!csrfToken) {
+                const csrf = await getJSON("/api/csrf-token");
+                csrfToken = csrf.csrf_token;
+            }
+
+            if (!csrfToken) {
+                throw new Error("Unable to obtain security token.");
+            }
+
+            await getJSON(`/api/feedback/visit/${websiteId}`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "Accept": "application/json"
+                }
+            });
+
+            if (newTab) {
+                newTab.location.href = url;
+            } else {
+                window.location.href = url;
+            }
+
+        } catch (error) {
+            if (newTab) newTab.close();
+
+            showPageMessage(error.message || "Unable to record website visit.");
+
+            button.disabled = false;
+            button.textContent = originalText;
+        }
+    }
+
+    async function loadWebsites() {
+        const grid = document.getElementById("websiteGrid");
+
+        try {
+            const data = await getJSON("/api/websites/");
+
+            websites = Array.isArray(data.websites)
+                ? data.websites
+                : [];
+
+            updateSummary();
+            renderWebsites();
+
+        } catch (error) {
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">!</div>
+                    <h3>Unable to load websites</h3>
+                    <p></p>
+                </div>
+            `;
+
+            grid.querySelector(".empty-state p").textContent =
+                error.message || "Please refresh the page and try again.";
+        }
+    }
+
+    document.getElementById("websiteSearch")
+        .addEventListener("input", renderWebsites);
+
+    document.getElementById("statusFilter")
+        .addEventListener("change", renderWebsites);
+
+    loadWebsites();
+</script>
+
 </body>
 </html>

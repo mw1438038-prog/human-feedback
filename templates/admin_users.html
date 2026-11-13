@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users | HUMAN FEEDBACK</title>
+
     <style>
         :root {
             --navy: #172554;
@@ -114,13 +115,13 @@
         .main { flex: 1; min-width: 0; }
 
         .topbar {
-            height: 75px;
+            min-height: 75px;
             background: white;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 32px;
+            padding: 12px 32px;
         }
 
         .topbar h2 { color: var(--navy); font-size: 19px; }
@@ -167,6 +168,19 @@
             font-size: 13px;
             line-height: 1.6;
         }
+
+        .refresh-btn {
+            border: 0;
+            background: var(--orange);
+            color: white;
+            padding: 11px 16px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .refresh-btn:disabled { opacity: .6; cursor: wait; }
 
         .stats {
             display: grid;
@@ -265,7 +279,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 850px;
+            min-width: 1000px;
         }
 
         th, td {
@@ -291,8 +305,8 @@
         }
 
         .mini-avatar {
-            width: 31px;
-            height: 31px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             display: grid;
             place-items: center;
@@ -302,6 +316,9 @@
             font-size: 10px;
             flex-shrink: 0;
         }
+
+        .user-name { font-weight: 700; color: var(--navy); }
+        .user-email { color: var(--muted); margin-top: 4px; font-size: 10px; }
 
         .badge {
             display: inline-block;
@@ -317,18 +334,24 @@
         .badge.suspended { background: #FEF2F2; color: #B91C1C; }
         .badge.expired { background: #F1F5F9; color: #475569; }
 
-        .view-link {
-            color: var(--orange-dark);
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .empty {
-            display: none;
-            padding: 28px;
+        .empty, .loading, .error {
+            padding: 35px 20px;
             text-align: center;
             color: var(--muted);
             font-size: 12px;
+        }
+
+        .error { color: var(--red); }
+
+        .retry-btn {
+            margin-top: 12px;
+            border: 0;
+            border-radius: 7px;
+            padding: 9px 15px;
+            background: var(--navy);
+            color: white;
+            cursor: pointer;
+            font-size: 11px;
         }
 
         .table-footer {
@@ -351,12 +374,6 @@
             padding: 7px 10px;
             font-size: 10px;
             cursor: pointer;
-        }
-
-        .pagination button.active {
-            background: var(--navy);
-            border-color: var(--navy);
-            color: white;
         }
 
         .pagination button:disabled {
@@ -399,7 +416,7 @@
 
             .sidebar.show { left: 0; }
             .mobile-menu { display: block; }
-            .topbar { height: 65px; padding: 0 15px; }
+            .topbar { min-height: 65px; padding: 10px 15px; }
             .topbar h2 { font-size: 16px; }
             .top-right span { display: none; }
             .content { padding: 20px 14px; }
@@ -415,9 +432,11 @@
             .stat-card { padding: 13px; }
             .stat-card strong { font-size: 21px; }
             .table-footer { align-items: flex-start; flex-direction: column; }
+            .heading { flex-direction: column; }
         }
     </style>
 </head>
+
 <body>
 <div class="app">
 
@@ -458,11 +477,480 @@
     </aside>
 
     <main class="main">
-<section class="empty-state" role="status">
-  <h1>No data available</h1>
-  <p>Records will appear here when connected to the HUMAN FEEDBACK API.</p>
-</section>
-</main>
+
+        <header class="topbar">
+            <div style="display:flex;align-items:center;gap:13px;">
+                <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+                <h2>User Management</h2>
+            </div>
+
+            <div class="top-right">
+                <span id="currentDate"></span>
+                <a href="/admin">Dashboard</a>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <section class="heading">
+                <div>
+                    <h1>Manage Users</h1>
+                    <p>View registered users and monitor their account status.</p>
+                </div>
+
+                <button class="refresh-btn" id="refreshBtn" type="button">
+                    ↻ Refresh Users
+                </button>
+            </section>
+
+            <section class="stats">
+                <div class="stat-card">
+                    <span>Total Registered Users</span>
+                    <strong id="totalUsers">—</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Active (Loaded Page)</span>
+                    <strong id="activeUsers">—</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Suspended (Loaded Page)</span>
+                    <strong id="suspendedUsers">—</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Email Verified (Loaded Page)</span>
+                    <strong id="verifiedUsers">—</strong>
+                </div>
+            </section>
+
+            <section class="notice">
+                <strong>Account Management</strong>
+                <p>
+                    User information is loaded directly from the HUMAN FEEDBACK
+                    backend. Page statistics other than total users represent
+                    the currently loaded page.
+                </p>
+            </section>
+
+            <section class="panel">
+
+                <div class="toolbar">
+                    <h2>Registered Users</h2>
+
+                    <div class="filters">
+                        <input
+                            type="search"
+                            id="searchInput"
+                            placeholder="Search name or email..."
+                            aria-label="Search users"
+                        >
+
+                        <select id="statusFilter" aria-label="Filter by account status">
+                            <option value="all">All Account Statuses</option>
+                            <option value="active">Active</option>
+                            <option value="suspended">Suspended</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+
+                        <select id="verificationFilter" aria-label="Filter by email verification">
+                            <option value="all">All Email Statuses</option>
+                            <option value="verified">Verified</option>
+                            <option value="unverified">Unverified</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="loadingState" class="loading">
+                    Loading users...
+                </div>
+
+                <div id="errorState" class="error" hidden>
+                    <p id="errorMessage">Unable to load users.</p>
+                    <button class="retry-btn" id="retryBtn" type="button">
+                        Try Again
+                    </button>
+                </div>
+
+                <div id="tableContainer" hidden>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>USER</th>
+                                    <th>USER ID</th>
+                                    <th>ROLE</th>
+                                    <th>ACCOUNT STATUS</th>
+                                    <th>EMAIL STATUS</th>
+                                    <th>FREE TRIAL</th>
+                                    <th>REGISTERED</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="usersTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div id="emptyState" class="empty" hidden>
+                        No users match your search or filters.
+                    </div>
+
+                    <div class="table-footer">
+                        <span id="resultsInfo">Showing 0 users</span>
+
+                        <div class="pagination">
+                            <button id="previousBtn" type="button">Previous</button>
+                            <button id="nextBtn" type="button">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <div class="footer-note">
+                HUMAN FEEDBACK Administration Panel
+            </div>
+
+        </div>
+    </main>
 </div>
+
+<script>
+(function () {
+    "use strict";
+
+    const API_URL = "/api/admin/users";
+    const PER_PAGE = 20;
+
+    let currentPage = 1;
+    let totalPages = 1;
+    let allUsers = [];
+    let isLoading = false;
+
+    const elements = {
+        sidebar: document.getElementById("sidebar"),
+        mobileMenu: document.getElementById("mobileMenu"),
+        currentDate: document.getElementById("currentDate"),
+        refreshBtn: document.getElementById("refreshBtn"),
+        retryBtn: document.getElementById("retryBtn"),
+        loading: document.getElementById("loadingState"),
+        error: document.getElementById("errorState"),
+        errorMessage: document.getElementById("errorMessage"),
+        tableContainer: document.getElementById("tableContainer"),
+        tableBody: document.getElementById("usersTableBody"),
+        empty: document.getElementById("emptyState"),
+        search: document.getElementById("searchInput"),
+        status: document.getElementById("statusFilter"),
+        verification: document.getElementById("verificationFilter"),
+        total: document.getElementById("totalUsers"),
+        active: document.getElementById("activeUsers"),
+        suspended: document.getElementById("suspendedUsers"),
+        verified: document.getElementById("verifiedUsers"),
+        resultsInfo: document.getElementById("resultsInfo"),
+        previous: document.getElementById("previousBtn"),
+        next: document.getElementById("nextBtn")
+    };
+
+    elements.currentDate.textContent = new Date().toLocaleDateString(
+        undefined,
+        { year: "numeric", month: "short", day: "numeric" }
+    );
+
+    elements.mobileMenu.addEventListener("click", function () {
+        elements.sidebar.classList.toggle("show");
+    });
+
+    elements.refreshBtn.addEventListener("click", function () {
+        loadUsers(currentPage);
+    });
+
+    elements.retryBtn.addEventListener("click", function () {
+        loadUsers(currentPage);
+    });
+
+    elements.previous.addEventListener("click", function () {
+        if (currentPage > 1) {
+            loadUsers(currentPage - 1);
+        }
+    });
+
+    elements.next.addEventListener("click", function () {
+        if (currentPage < totalPages) {
+            loadUsers(currentPage + 1);
+        }
+    });
+
+    elements.search.addEventListener("input", renderUsers);
+    elements.status.addEventListener("change", renderUsers);
+    elements.verification.addEventListener("change", renderUsers);
+
+    function showLoading() {
+        elements.loading.hidden = false;
+        elements.error.hidden = true;
+        elements.tableContainer.hidden = true;
+    }
+
+    function showError(message) {
+        elements.loading.hidden = true;
+        elements.tableContainer.hidden = true;
+        elements.error.hidden = false;
+        elements.errorMessage.textContent = message;
+    }
+
+    function formatDate(value) {
+        if (!value) return "Not available";
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return "Not available";
+        }
+
+        return date.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        });
+    }
+
+    function getInitials(name) {
+        const cleanName = String(name || "").trim();
+
+        if (!cleanName) return "U";
+
+        return cleanName
+            .split(/\s+/)
+            .slice(0, 2)
+            .map(part => part.charAt(0).toUpperCase())
+            .join("");
+    }
+
+    function createBadge(label, className) {
+        const badge = document.createElement("span");
+        badge.className = "badge " + className;
+        badge.textContent = label;
+        return badge;
+    }
+
+    function appendCell(row, content) {
+        const cell = document.createElement("td");
+
+        if (content instanceof Node) {
+            cell.appendChild(content);
+        } else {
+            cell.textContent = content;
+        }
+
+        row.appendChild(cell);
+        return cell;
+    }
+
+    function getAccountStatus(user) {
+        if (user.is_suspended) {
+            return { label: "Suspended", className: "suspended" };
+        }
+
+        if (user.is_active) {
+            return { label: "Active", className: "active" };
+        }
+
+        return { label: "Inactive", className: "expired" };
+    }
+
+    function getTrialStatus(user) {
+        if (user.free_trial_used) {
+            if (user.free_trial_expires_at) {
+                const expiry = new Date(user.free_trial_expires_at);
+
+                if (!Number.isNaN(expiry.getTime()) && expiry < new Date()) {
+                    return "Expired";
+                }
+            }
+
+            return "Used";
+        }
+
+        return "Not started";
+    }
+
+    function updateStatistics(users, total) {
+        elements.total.textContent = Number(total || 0).toLocaleString();
+
+        elements.active.textContent = users.filter(
+            user => user.is_active && !user.is_suspended
+        ).length;
+
+        elements.suspended.textContent = users.filter(
+            user => user.is_suspended
+        ).length;
+
+        elements.verified.textContent = users.filter(
+            user => user.is_email_verified
+        ).length;
+    }
+
+    function renderUsers() {
+        const searchTerm = elements.search.value.trim().toLowerCase();
+        const statusFilter = elements.status.value;
+        const verificationFilter = elements.verification.value;
+
+        const filteredUsers = allUsers.filter(function (user) {
+            const name = String(user.name || "").toLowerCase();
+            const email = String(user.email || "").toLowerCase();
+
+            const matchesSearch =
+                !searchTerm ||
+                name.includes(searchTerm) ||
+                email.includes(searchTerm) ||
+                String(user.id).includes(searchTerm);
+
+            const accountStatus = getAccountStatus(user);
+
+            const matchesStatus =
+                statusFilter === "all" ||
+                (statusFilter === "active" && accountStatus.label === "Active") ||
+                (statusFilter === "suspended" && accountStatus.label === "Suspended") ||
+                (statusFilter === "inactive" && accountStatus.label === "Inactive");
+
+            const matchesVerification =
+                verificationFilter === "all" ||
+                (verificationFilter === "verified" && user.is_email_verified) ||
+                (verificationFilter === "unverified" && !user.is_email_verified);
+
+            return matchesSearch && matchesStatus && matchesVerification;
+        });
+
+        elements.tableBody.replaceChildren();
+
+        filteredUsers.forEach(function (user) {
+            const row = document.createElement("tr");
+
+            const userCell = document.createElement("div");
+            userCell.className = "user-cell";
+
+            const avatar = document.createElement("div");
+            avatar.className = "mini-avatar";
+            avatar.textContent = getInitials(user.name);
+
+            const details = document.createElement("div");
+
+            const name = document.createElement("div");
+            name.className = "user-name";
+            name.textContent = user.name || "Unnamed User";
+
+            const email = document.createElement("div");
+            email.className = "user-email";
+            email.textContent = user.email || "No email";
+
+            details.append(name, email);
+            userCell.append(avatar, details);
+
+            appendCell(row, userCell);
+            appendCell(row, "#" + user.id);
+            appendCell(row, user.role || "User");
+
+            const account = getAccountStatus(user);
+            appendCell(row, createBadge(account.label, account.className));
+
+            if (user.is_email_verified) {
+                appendCell(row, createBadge("Verified", "active"));
+            } else {
+                appendCell(row, createBadge("Unverified", "pending"));
+            }
+
+            const trial = getTrialStatus(user);
+            appendCell(row, trial);
+
+            appendCell(row, formatDate(user.created_at));
+
+            elements.tableBody.appendChild(row);
+        });
+
+        elements.empty.hidden = filteredUsers.length !== 0;
+
+        elements.resultsInfo.textContent =
+            "Showing " + filteredUsers.length +
+            " of " + allUsers.length +
+            " users on this page";
+
+        elements.previous.disabled = currentPage <= 1 || isLoading;
+        elements.next.disabled = currentPage >= totalPages || isLoading;
+    }
+
+    async function loadUsers(page) {
+        if (isLoading) return;
+
+        isLoading = true;
+        currentPage = page;
+        elements.refreshBtn.disabled = true;
+        elements.refreshBtn.textContent = "Loading...";
+        showLoading();
+
+        try {
+            const url = new URL(API_URL, window.location.origin);
+            url.searchParams.set("page", String(page));
+            url.searchParams.set("per_page", String(PER_PAGE));
+
+            const response = await fetch(url.toString(), {
+                method: "GET",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+
+            if (response.status === 401) {
+                throw new Error("Your session has expired. Please log in again.");
+            }
+
+            if (response.status === 403) {
+                throw new Error("You do not have permission to access user management.");
+            }
+
+            if (!response.ok) {
+                throw new Error("Server returned an error (HTTP " + response.status + ").");
+            }
+
+            const data = await response.json();
+
+            if (!data.success || !Array.isArray(data.users)) {
+                throw new Error("The server returned an unexpected users response.");
+            }
+
+            allUsers = data.users;
+            currentPage = Number(data.page || page);
+            totalPages = Math.max(1, Number(data.pages || 1));
+
+            updateStatistics(allUsers, data.total);
+
+            elements.loading.hidden = true;
+            elements.error.hidden = true;
+            elements.tableContainer.hidden = false;
+
+            renderUsers();
+
+        } catch (error) {
+            console.error("Admin users loading error:", error);
+
+            const message = error instanceof TypeError
+                ? "Could not connect to the server. Check your connection and try again."
+                : error.message || "An unexpected error occurred.";
+
+            showError(message);
+
+        } finally {
+            isLoading = false;
+            elements.refreshBtn.disabled = false;
+            elements.refreshBtn.textContent = "↻ Refresh Users";
+            elements.previous.disabled = currentPage <= 1;
+            elements.next.disabled = currentPage >= totalPages;
+        }
+    }
+
+    loadUsers(1);
+
+})();
+</script>
 </body>
 </html>
